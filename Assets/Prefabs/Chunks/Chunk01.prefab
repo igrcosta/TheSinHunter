@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 969748812805301733}
   - component: {fileID: 7962283998661622521}
   - component: {fileID: 8735384914987528771}
+  - component: {fileID: 2687798462456024759}
   m_Layer: 0
   m_Name: Chunk01
   m_TagString: Untagged
@@ -141,6 +142,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &2687798462456024759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4943994269217985609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dea247584b038344bdf089540793453, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ChunkScript
+  DespawningTime: 300
 --- !u!1 &6447672472635291053
 GameObject:
   m_ObjectHideFlags: 0
