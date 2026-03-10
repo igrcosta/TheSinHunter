@@ -185,6 +185,7 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.DownArrow) && IsOnALane)
         {
             LaneCollider.enabled = false;
+            rb.AddForce(GravityFactor*4, ForceMode.Acceleration);
             Invoke("TurnLaneToNormal", 1.0f);
         }
         //primeiro ao apertar seta pra baixo
