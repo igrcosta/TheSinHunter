@@ -24,6 +24,10 @@ public class Player : MonoBehaviour
     private Vector3 GravityFactor;
     public bool CanJump = false;
 
+    //variáveis para lanes
+    private BoxCollider LaneCollider;
+    private bool IsOnALane = false;
+
 
 
 
@@ -57,6 +61,8 @@ public class Player : MonoBehaviour
         Jumping();
 
         GravityAction();
+
+        DescendingLanes();
     }
 
      IEnumerator SistemaSpeed() // Sistema de aumento de velocidade
@@ -123,7 +129,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    //Parte referente ao sistema de pulo do jogador -> INÍCIO
+    //Pulo do jogador -> INÍCIO
 
     void OnCollisionEnter(Collision collisionInfo)
     {
@@ -135,6 +141,14 @@ public class Player : MonoBehaviour
         else
         {
             CanJump = false;
+        }
+
+        //PARTE PARA DESCER DE LANES
+        if(collisionInfo.gameObject.CompareTag("Lane"))
+        {
+            CanJump = true;
+            LaneCollider = collisionInfo.gameObject.GetComponent<BoxCollider>();
+            IsOnALane = true;
         }
     }
 
@@ -163,5 +177,30 @@ public class Player : MonoBehaviour
         rb.AddForce(GravityFactor, ForceMode.Acceleration);
     }
 
-    //Parte referente ao sistema de pulo do jogador -> FINAL
+    //Pulo do jogador -> FINAL
+
+    //Troca de Lanes -> INÍCIO
+    void DescendingLanes()
+    {
+        if (Input.GetKey(KeyCode.DownArrow) && IsOnALane)
+        {
+            LaneCollider.enabled = false;
+            Invoke("TurnLaneToNormal", 1.0f);
+        }
+        //primeiro ao apertar seta pra baixo
+
+        
+
+        //depois pra quando pular e esbarrar em algo da tag Lane
+    }
+
+    void TurnLaneToNormal()
+    {
+        LaneCollider.enabled = true;
+    }
+
+    
+
+
+        //Troca de Lanes -> FINAL
 }
