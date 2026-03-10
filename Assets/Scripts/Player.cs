@@ -15,6 +15,10 @@ public class Player : MonoBehaviour
     [SerializeField] int Postura = 1;
     [SerializeField] float Taxaderegeneracao = 1;
 
+    [Header("Valores para pulo")]
+    [SerializeField] float JumpForce = 20f;
+    private Vector3 JumpVector;
+
 
 
     //Variaveis privadas
@@ -30,6 +34,8 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
+        Jumping();
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             mAnimator.SetBool("Colidiu", true);
@@ -102,6 +108,18 @@ public class Player : MonoBehaviour
             Colidiu = true;
             QuebradePostura();
             Destroy(other);
+        }
+    }
+
+    void Jumping()
+    {
+        //script para o player poder pular
+
+        JumpVector = new Vector3(0f,JumpForce,0f);
+
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            rb.AddForce(JumpVector, ForceMode.Impulse);
         }
     }
 }
