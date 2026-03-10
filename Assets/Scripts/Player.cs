@@ -1,6 +1,8 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using System.Collections;
+using Unity.Android.Gradle.Manifest;
+using System;
 
 public class Player : MonoBehaviour
 {
@@ -16,16 +18,19 @@ public class Player : MonoBehaviour
     [SerializeField] float Taxaderegeneracao = 1;
 
     [Header("Infos para Pulo")]
-    [SerializeField] float JumpForce = 20f;
+    [SerializeField] float JumpForce = 85f;
     private Vector3 JumpVector;
+    private float gravity = -9.81f;
+    private Vector3 GravityFactor;
     public bool CanJump = false;
+
 
 
 
     //Variaveis privadas
     float RegeneracaoPostura = 1;
     bool Colidiu = false;
-    Rigidbody rb;
+    public Rigidbody rb;
     public Animator mAnimator;
     private Vector3 V3Move;
 
@@ -50,6 +55,8 @@ public class Player : MonoBehaviour
     void Update()
     {
         Jumping();
+
+        GravityAction();
     }
 
      IEnumerator SistemaSpeed() // Sistema de aumento de velocidade
@@ -138,9 +145,9 @@ public class Player : MonoBehaviour
         //as outras forças ele mantém padrão, mantendo o X como deveria estar
         //JÁ FUNCIONA ATÉ PARA PULO DUPLO
 
-        if (Input.GetKeyDown(KeyCode.UpArrow) && CanJump == true)
+        if (Input.GetKeyDown(KeyCode.UpArrow) && CanJump)
         {
-            JumpVector = new Vector3(0f,JumpForce,0f);
+            JumpVector = new Vector3(0f,JumpForce, 0f);
             //definimos um vetor com a força que queremos que o jogador pule
 
             rb.AddForce(JumpVector, ForceMode.Impulse);
@@ -148,6 +155,12 @@ public class Player : MonoBehaviour
 
             CanJump = false;
         }
+    }
+
+    void GravityAction()
+    {
+        GravityFactor = new Vector3(0f, gravity, 0f);
+        rb.AddForce(GravityFactor, ForceMode.Acceleration);
     }
 
     //Parte referente ao sistema de pulo do jogador -> FINAL

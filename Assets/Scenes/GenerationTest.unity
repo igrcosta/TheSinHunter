@@ -295,8 +295,9 @@ MonoBehaviour:
   Tempo_Voltaramover: 0.9
   Postura: 2
   Taxaderegeneracao: 0.1
-  JumpForce: 40
+  JumpForce: 85
   CanJump: 0
+  rb: {fileID: 0}
   mAnimator: {fileID: 0}
 --- !u!54 &394380751
 Rigidbody:
@@ -844,8 +845,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3771837697673094158, guid: c4779827ef80b5a4a952bf89f93c3164, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3771837697673094158, guid: c4779827ef80b5a4a952bf89f93c3164, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3771837697673094158, guid: c4779827ef80b5a4a952bf89f93c3164, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3771837697673094158, guid: c4779827ef80b5a4a952bf89f93c3164, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 13.5
+      value: 30.4
       objectReference: {fileID: 0}
     - target: {fileID: 3771837697673094158, guid: c4779827ef80b5a4a952bf89f93c3164, type: 3}
       propertyPath: m_LocalPosition.y
