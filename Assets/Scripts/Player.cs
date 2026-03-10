@@ -15,9 +15,10 @@ public class Player : MonoBehaviour
     [SerializeField] int Postura = 1;
     [SerializeField] float Taxaderegeneracao = 1;
 
-    [Header("Valores para pulo")]
+    [Header("Infos para Pulo")]
     [SerializeField] float JumpForce = 20f;
     private Vector3 JumpVector;
+    public bool CanJump = false;
 
 
 
@@ -26,6 +27,7 @@ public class Player : MonoBehaviour
     bool Colidiu = false;
     Rigidbody rb;
     public Animator mAnimator;
+    private Vector3 V3Move;
 
     void Awake()
     {
@@ -34,8 +36,6 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        Jumping();
-
         if (Input.GetKeyDown(KeyCode.Space))
         {
             mAnimator.SetBool("Colidiu", true);
@@ -45,6 +45,11 @@ public class Player : MonoBehaviour
        StartCoroutine("SistemaSpeed");
        QuebradePostura();
         RecuperacaoPostura();
+    }
+
+    void Update()
+    {
+        Jumping();
     }
 
      IEnumerator SistemaSpeed() // Sistema de aumento de velocidade
@@ -78,7 +83,7 @@ public class Player : MonoBehaviour
     {
         float MoveX = 1;
 
-        Vector3 V3Move = new Vector3(MoveX, 0, 0);
+        V3Move = new Vector3(MoveX, 0, 0);
 
         if (Colidiu == false)
         {
@@ -111,15 +116,39 @@ public class Player : MonoBehaviour
         }
     }
 
+    //Parte referente ao sistema de pulo do jogador -> INÍCIO
+
+    void OnCollisionEnter(Collision collisionInfo)
+    {
+        if (collisionInfo.gameObject.CompareTag("Floor"))
+        //lembrar que com colisões, precisamos acessar o gameObject deles para pegar coisas como tags
+        {
+            CanJump = true;
+        }
+        else
+        {
+            CanJump = false;
+        }
+    }
+
     void Jumping()
     {
         //script para o player poder pular
+        //ao clicar na seta pra cima, ele define a força y dele pra 0, para poder dar um impulso pra cima
+        //as outras forças ele mantém padrão, mantendo o X como deveria estar
+        //JÁ FUNCIONA ATÉ PARA PULO DUPLO
 
-        JumpVector = new Vector3(0f,JumpForce,0f);
-
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow) && CanJump == true)
         {
+            JumpVector = new Vector3(0f,JumpForce,0f);
+            //definimos um vetor com a força que queremos que o jogador pule
+
             rb.AddForce(JumpVector, ForceMode.Impulse);
+            //aplicamos a força em Y como impulso, de forma que mantenha a velocidade de X
+
+            CanJump = false;
         }
     }
+
+    //Parte referente ao sistema de pulo do jogador -> FINAL
 }
