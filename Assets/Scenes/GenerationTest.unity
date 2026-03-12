@@ -1022,7 +1022,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3771837697673094158, guid: c4779827ef80b5a4a952bf89f93c3164, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 101
+      value: 207
       objectReference: {fileID: 0}
     - target: {fileID: 3771837697673094158, guid: c4779827ef80b5a4a952bf89f93c3164, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1080,7 +1080,7 @@ GameObject:
   - component: {fileID: 2062858911}
   - component: {fileID: 2062858912}
   m_Layer: 0
-  m_Name: ChunkGenerator
+  m_Name: "ChunkGenerator N\xC3O APAGAR"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1116,6 +1116,9 @@ MonoBehaviour:
   PrefabsToSpawn:
   - {fileID: 4432206363135979181, guid: 392bc017eb36638469289ecf3ddedfa3, type: 3}
   - {fileID: 5103040708361768494, guid: c0dc0b07042c8744895f04492c561a6a, type: 3}
+  - {fileID: 4432206363135979181, guid: 8abbe14f41cffdc418b5f7554f33e633, type: 3}
+  - {fileID: 5103040708361768494, guid: 644671b0bd16d324ab2c7387bdacce5f, type: 3}
+  - {fileID: 4432206363135979181, guid: 6be5c13536c8a404b84238a172585bb0, type: 3}
   DecisionPoint: {fileID: 0}
 --- !u!1001 &6599963863246991340
 PrefabInstance:
@@ -1127,7 +1130,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3771837697673094158, guid: c4779827ef80b5a4a952bf89f93c3164, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 51.6
+      value: 157.6
       objectReference: {fileID: 0}
     - target: {fileID: 3771837697673094158, guid: c4779827ef80b5a4a952bf89f93c3164, type: 3}
       propertyPath: m_LocalPosition.y
