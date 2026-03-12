@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     [SerializeField] float Taxaderegeneracao = 1;
 
     [Header("Infos para Pulo")]
-    [SerializeField] float JumpForce = 85f;
+    [SerializeField] float JumpForce = 100f;
     private Vector3 JumpVector;
     private float gravity = -9.81f;
     private Vector3 GravityFactor;
@@ -28,6 +28,8 @@ public class Player : MonoBehaviour
     private BoxCollider LaneCollider;
     private bool IsOnALane = false;
 
+    private int LanesLayer;
+    private int PlayerLayer;
 
 
 
@@ -40,7 +42,14 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
-        rb = GetComponent<Rigidbody>(); 
+        rb = GetComponent<Rigidbody>();
+    }
+
+    void Start()
+    {
+        //identificar qual camada de colisão é qual para permitir atravessar as lanes
+        LanesLayer = LayerMask.NameToLayer("Lanes");
+        PlayerLayer = LayerMask.NameToLayer("Player");
     }
 
     void FixedUpdate()
@@ -147,7 +156,7 @@ public class Player : MonoBehaviour
         if(collisionInfo.gameObject.CompareTag("Lane"))
         {
             CanJump = true;
-            LaneCollider = collisionInfo.gameObject.GetComponent<BoxCollider>();
+            /* LaneCollider = collisionInfo.gameObject.GetComponent<BoxCollider>(); */
             IsOnALane = true;
         }
     }
@@ -167,6 +176,8 @@ public class Player : MonoBehaviour
             rb.AddForce(JumpVector, ForceMode.Impulse);
             //aplicamos a força em Y como impulso, de forma que mantenha a velocidade de X
 
+            DisableLayersCollision();
+
             CanJump = false;
         }
     }
@@ -184,9 +195,8 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.DownArrow) && IsOnALane)
         {
-            LaneCollider.enabled = false;
-            rb.AddForce(GravityFactor*4, ForceMode.Acceleration);
-            Invoke("TurnLaneToNormal", 1.0f);
+            DisableLayersCollision();
+            rb.AddForce(GravityFactor*2, ForceMode.Acceleration);
         }
         //primeiro ao apertar seta pra baixo
 
@@ -195,9 +205,15 @@ public class Player : MonoBehaviour
         //depois pra quando pular e esbarrar em algo da tag Lane
     }
 
-    void TurnLaneToNormal()
+    void EnableLayersCollision()
     {
-        LaneCollider.enabled = true;
+        Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, false);
+    }
+
+    void DisableLayersCollision()
+    {
+        Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, true);
+        Invoke("EnableLayersCollision", 0.3f);
     }
 
     
