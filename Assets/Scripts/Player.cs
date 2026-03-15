@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
 
     //Variaveis privadas
     float RegeneracaoPostura = 1;
-    bool Colidiu = false;
+   public bool Colidiu = false;
     Rigidbody rb;
     public Animator mAnimator;
     private Vector3 V3Move;
@@ -36,15 +36,11 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            mAnimator.SetBool("Colidiu", true);
-        }
-
-        Mover();
+       Mover();
        StartCoroutine("SistemaSpeed");
        QuebradePostura();
-        RecuperacaoPostura();
+       RecuperacaoPostura();
+
     }
 
     void Update()
@@ -75,7 +71,6 @@ public class Player : MonoBehaviour
         if (Colidiu)
         {
             speedcrescente = 0;
-            mAnimator.SetTrigger("TrKnockback");
         }
 
     }
