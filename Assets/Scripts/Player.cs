@@ -54,15 +54,11 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            mAnimator.SetBool("Colidiu", true);
-        }
-
-        Mover();
+       Mover();
        StartCoroutine("SistemaSpeed");
        QuebradePostura();
-        RecuperacaoPostura();
+       RecuperacaoPostura();
+
     }
 
     void Update()
@@ -97,7 +93,6 @@ public class Player : MonoBehaviour
         if (Colidiu)
         {
             speedcrescente = 0;
-            mAnimator.SetTrigger("TrKnockback");
         }
 
     }
