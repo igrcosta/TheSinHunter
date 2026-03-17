@@ -213,7 +213,7 @@ public class Player : MonoBehaviour
     void DisableLayersCollision()
     {
         Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, true);
-        Invoke("EnableLayersCollision", 0.3f);
+        Invoke("EnableLayersCollision", 0.5f);
     }
 
     

@@ -407,7 +407,7 @@ MonoBehaviour:
   Tempo_Voltaramover: 0.9
   Postura: 2
   Taxaderegeneracao: 0.1
-  JumpForce: 120
+  JumpForce: 90
   CanJump: 0
   rb: {fileID: 0}
   mAnimator: {fileID: 0}
