@@ -229,8 +229,5 @@ public class Player : MonoBehaviour
         Invoke("EnableLayersCollision", 0.3f);
     }
 
-
-
-
     //Troca de Lanes -> FINAL
 }

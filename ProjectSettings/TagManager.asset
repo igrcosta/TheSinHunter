@@ -8,6 +8,8 @@ TagManager:
   - DecisionPoints
   - Floor
   - Lane
+  - LAVA
+  - Parry
   layers:
   - Default
   - TransparentFX
