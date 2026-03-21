@@ -251,6 +251,10 @@ PrefabInstance:
       value: LAVA
       objectReference: {fileID: 0}
     - target: {fileID: 6531718966432663924, guid: 392bc017eb36638469289ecf3ddedfa3, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6531718966432663924, guid: 392bc017eb36638469289ecf3ddedfa3, type: 3}
       propertyPath: m_TagString
       value: LAVA
       objectReference: {fileID: 0}

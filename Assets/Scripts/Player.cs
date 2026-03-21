@@ -45,6 +45,9 @@ public class Player : MonoBehaviour
     public Animator mAnimator;
     private Vector3 V3Move;
 
+    //variavel para poder parar o movimento do player quando quiser
+    private bool canMove = true;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -67,6 +70,8 @@ public class Player : MonoBehaviour
         {
             currentGravityScale = fallingGravityScale;
         }
+
+        canMove = true;
     }
 
     void FixedUpdate()
@@ -118,17 +123,24 @@ public class Player : MonoBehaviour
     }
     void Mover() // Sistema de Corrida infinita
     {
-        float MoveX = 1;
-
-        V3Move = new Vector3(MoveX, 0, 0);
-
-        if (Colidiu == false)
+        if (canMove)
         {
-            rb.MovePosition(rb.position + V3Move * speedcrescente * Time.deltaTime);
+            float MoveX = 1;
+
+            V3Move = new Vector3(MoveX, 0, 0);
+
+            if (Colidiu == false)
+            {
+                rb.MovePosition(rb.position + V3Move * speedcrescente * Time.deltaTime);
+            }
+            else if (Colidiu)
+            {
+                rb.MovePosition(rb.position - V3Move * KnockBack * Time.deltaTime);
+            }  
         }
-        else if (Colidiu)
+        else
         {
-            rb.MovePosition(rb.position - V3Move * KnockBack * Time.deltaTime);
+            //nada
         }
     }
 
@@ -172,6 +184,19 @@ public class Player : MonoBehaviour
         {
             CanJump = true;
             IsOnALane = true;
+        }
+
+        //Parte da Lava
+        if (collisionInfo.gameObject.CompareTag("LAVA"))
+        {
+            //player para
+            canMove = false;
+
+            //player começa a descer
+            Invoke("DisableLayersCollision",0.3f);
+
+            GameController.controller.Invoke("GameOver", 0.8f);
+            //invoca depois de alguns segundos a tela de morte
         }
     }
 
@@ -230,4 +255,5 @@ public class Player : MonoBehaviour
     }
 
     //Troca de Lanes -> FINAL
+
 }
