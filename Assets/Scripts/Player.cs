@@ -51,6 +51,8 @@ public class Player : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+
+        GameController.controller.playerRef = this;
     }
 
     void Start()
