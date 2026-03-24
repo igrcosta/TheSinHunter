@@ -29,16 +29,16 @@ public class CameraFollowScript : MonoBehaviour
     {
         if(Pref.transform.position.y > 16)
         {
-            transform.position = Vector3.Lerp(transform.position, Upwards, 0.25f);
+            transform.position = Vector3.Lerp(transform.position, Upwards, 0.10f);
 
         }
         else if (Pref.transform.position.y < 16 && Pref.transform.position.y > 12)
         {
-            transform.position = Vector3.Lerp(transform.position, Middle, 0.25f);
+            transform.position = Vector3.Lerp(transform.position, Middle, 0.10f);
         }
-        else if (Pref.transform.position.y < 13)
+        else if (Pref.transform.position.y < 12)
         {
-            transform.position = Vector3.Lerp(transform.position, DownWards, 0.25f);
+            transform.position = Vector3.Lerp(transform.position, DownWards, 0.10f);
         }
     }
 
