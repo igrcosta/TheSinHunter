@@ -9,9 +9,11 @@ public class Player : MonoBehaviour
 
 
     [Header("Sistema De Corrida")]
-    [SerializeField] float speedcrescente = 1.5f;
-    [SerializeField] int KnockBack = 1;
-    [SerializeField] float Tempo_Voltaramover = 1.5f;
+    [SerializeField] float Speed = 1.5f;
+    [SerializeField] float SpeedPosColission = 15;
+    [SerializeField] float LimiteVelocidade = 1.5f;
+
+    [SerializeField] float MultiplicadorVelocidade = 0.1f;
 
     [Header("Postura")]
     [SerializeField] int Postura = 1;
@@ -78,11 +80,7 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        Mover();
-        StartCoroutine("SistemaSpeed");
-        QuebradePostura();
-        RecuperacaoPostura();
-
+       
         //lógica de física melhorada aqui, isso vai permitir uma queda irada pro player
         rb.AddForce(Physics.gravity * (gravityScale -1) * rb.mass);
         
@@ -91,40 +89,30 @@ public class Player : MonoBehaviour
     }
 
     void Update()
-    {
+    { 
+        Mover();
+        SistemaSpeed();
+        RecuperacaoPostura();
         Jumping();
-
         DescendingLanes();
     }
-
-    IEnumerator SistemaSpeed() // Sistema de aumento de velocidade
+    void SistemaSpeed() // Sistema de aumento de velocidade
     {
-        if (speedcrescente < 50)
+        if (Speed < LimiteVelocidade)
         {
-            speedcrescente += 0.3f;
+            Speed += MultiplicadorVelocidade * Time.deltaTime;     
         }
 
-        else if (speedcrescente >= 1)
+        else if (Colidiu)
         {
-            yield return new WaitForSecondsRealtime(Tempo_Voltaramover);
-
             Colidiu = false;
-            speedcrescente = 15;
-            speedcrescente += 0.1f;
+            Speed = SpeedPosColission;
+            Speed += MultiplicadorVelocidade * Time.deltaTime;
 
         }
     }
 
 
-
-    void QuebradePostura()
-    {
-        if (Colidiu)
-        {
-            speedcrescente = 0;
-        }
-
-    }
     void Mover() // Sistema de Corrida infinita
     {
         if (canMove)
@@ -133,14 +121,9 @@ public class Player : MonoBehaviour
 
             V3Move = new Vector3(MoveX, 0, 0);
 
-            if (Colidiu == false)
-            {
-                rb.MovePosition(rb.position + V3Move * speedcrescente * Time.deltaTime);
-            }
-            else if (Colidiu)
-            {
-                rb.MovePosition(rb.position - V3Move * KnockBack * Time.deltaTime);
-            }  
+            
+                rb.MovePosition(rb.position + V3Move * Speed * Time.deltaTime);
+            
         }
         else
         {
@@ -164,8 +147,7 @@ public class Player : MonoBehaviour
         if (Tagcolidida == "Enemy") // parar o movimento ao colidir
         {
             Colidiu = true;
-            QuebradePostura();
-            Destroy(other);
+            Destroy(other.gameObject);
         }
     }
 
