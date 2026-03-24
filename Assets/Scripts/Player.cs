@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
 
     [Header("Sistema De Corrida")]
     [SerializeField] float Speed = 1.5f;
-    [SerializeField] float SpeedPosColission = 15;
+    [SerializeField] float SpeedPostColission = 15;
     [SerializeField] float LimiteVelocidade = 1.5f;
 
     [SerializeField] float MultiplicadorVelocidade = 0.1f;
@@ -105,10 +105,9 @@ public class Player : MonoBehaviour
 
         else if (Colidiu)
         {
-            Colidiu = false;
-            Speed = SpeedPosColission;
+            Speed = SpeedPostColission;
             Speed += MultiplicadorVelocidade * Time.deltaTime;
-
+            Colidiu = false;
         }
     }
 
@@ -124,10 +123,6 @@ public class Player : MonoBehaviour
             
                 rb.MovePosition(rb.position + V3Move * Speed * Time.deltaTime);
             
-        }
-        else
-        {
-            //nada
         }
     }
 
