@@ -100,7 +100,9 @@ public class Player : MonoBehaviour
     IEnumerator SistemaSpeed() // Sistema de aumento de velocidade
     {
         if (speedcrescente < 50)
+        {
             speedcrescente += 0.3f;
+        }
 
         else if (speedcrescente >= 1)
         {

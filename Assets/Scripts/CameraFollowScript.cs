@@ -36,7 +36,7 @@ public class CameraFollowScript : MonoBehaviour
         {
             transform.position = Vector3.Lerp(transform.position, Middle, 0.10f);
         }
-        else if (Pref.transform.position.y < 12)
+        else if (Pref.transform.position.y < 10)
         {
             transform.position = Vector3.Lerp(transform.position, DownWards, 0.10f);
         }
