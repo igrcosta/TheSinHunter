@@ -23,6 +23,7 @@ public class Player : MonoBehaviour
     [SerializeField] float JumpForce = 10f;
     private Vector3 JumpVector;
     public bool CanJump = false;
+    private bool OnJump = false;
 
     private bool TESTE = false;
     private Vector3 Target;
@@ -101,7 +102,7 @@ public class Player : MonoBehaviour
         Jumping();
         DescendingLanes();
 
-        if (rb.position.y - JumpingBeginning >= 10f)
+        if (rb.position.y - JumpingBeginning >= 10f && OnJump)
         {
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
             rb.AddForce(Vector3.down * JumpForce / 55f, ForceMode.Impulse);
@@ -161,6 +162,7 @@ public class Player : MonoBehaviour
         //lembrar que com colisões, precisamos acessar o gameObject deles para pegar coisas como tags
         {
             CanJump = true;
+            OnJump = false;
         }
         else
         {
@@ -172,6 +174,7 @@ public class Player : MonoBehaviour
         {
             CanJump = true;
             IsOnALane = true;
+            OnJump = false;
         }
 
         //Parte da Lava
@@ -197,6 +200,8 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.UpArrow) && CanJump)
         {
+            OnJump = true;
+
             JumpingBeginning = rb.position.y;
             //pego a posição do pulo para limitar a altura do pulo
 
@@ -221,13 +226,13 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.DownArrow) && !IsOnALane && !CanJump)
         {
-            rb.AddForce(Vector3.down * JumpForce / 1.5f, ForceMode.VelocityChange);
+            rb.AddForce(Vector3.down * JumpForce / 2f, ForceMode.VelocityChange);
         }
         else
             if (Input.GetKeyDown(KeyCode.DownArrow) && IsOnALane)
             {
                 DisableLayersCollision();
-                rb.AddForce(Vector3.down * JumpForce / 1.5f, ForceMode.VelocityChange);
+                rb.AddForce(Vector3.down * JumpForce / 3f, ForceMode.VelocityChange);
             }
         //primeiro ao apertar seta pra baixo
 
