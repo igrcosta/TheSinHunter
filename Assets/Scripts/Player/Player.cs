@@ -27,9 +27,12 @@ public class Player : MonoBehaviour
     private Vector3 Target;
     private float y;
 
-    //variável para Dash
-
-    public bool isDashing = false;
+    [Header("Dashs")]
+    [SerializeField] bool isDashing = false;
+    [SerializeField] bool canDash = true;
+    [SerializeField] float dashingpower = 100;
+    [SerializeField] float dashingCD = 1f;
+    [SerializeField] float dashingtime = 1f;
 
     //variáveis para controlar gravidade
     [Header("GRAVIDADE")]
@@ -52,6 +55,7 @@ public class Player : MonoBehaviour
     float RegeneracaoPostura = 1;
     bool DamageInvulnerability = false;
     public Rigidbody rb;
+    public TrailRenderer tr;
     public Animator mAnimator;
     private Vector3 V3Move;
 
@@ -61,6 +65,7 @@ public class Player : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        tr = GetComponent<TrailRenderer>();
 
         GameController.controller.playerRef = this;
     }
@@ -98,9 +103,9 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        ChecagemDash();
         Mover();
         SistemaPostura();
-        DeathCondition();
         Jumping();
         DescendingLanes();
 
@@ -120,7 +125,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    //função para detectar danos
+    //função para espinhos detectarem colisão
     public void Hit(float damage)
     {
         DamageInvulnerability = true;
@@ -129,23 +134,11 @@ public class Player : MonoBehaviour
         Speed -= damage;
         //reduz a speed com base na vida
 
-        MultiplicadorVelocidade /= 2f;
+        MultiplicadorVelocidade /= 5f;
         //reduz a taxa de regeneração
 
         DamageInvulnerability = false;
         //volta a incrementar velocidade
-    }
-
-    void DeathCondition()
-    {
-        if (GameController.controller.Cheating)
-        {
-            //nada
-        }
-        else if (Speed <= 0 && GameController.controller.Cheating == false)
-        {
-            GameController.controller.GameOver();
-        }
     }
 
 
@@ -258,4 +251,38 @@ public class Player : MonoBehaviour
 
     //Troca de Lanes -> FINAL
 
+
+    IEnumerator Dash()
+    {
+        isDashing = true;
+        tr.emitting = true;
+
+
+
+        rb.linearVelocity = new Vector2(1f * dashingpower, rb.linearVelocity.y);
+
+        yield return new WaitForSeconds(dashingtime);
+
+        isDashing = false;
+        tr.emitting = false;
+        canDash = false;
+
+        yield return new WaitForSeconds(dashingCD);
+
+        canDash = true;
+
+    }
+
+    void ChecagemDash() // Checa se pode dar dash, e roda se possivel
+    {
+        if (canDash == false)
+        {
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            StartCoroutine(Dash());
+        }
+    }
 }
