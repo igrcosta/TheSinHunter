@@ -34,11 +34,14 @@ public class Player : MonoBehaviour
     [SerializeField] float dashingCD = 1f;
     [SerializeField] float dashingtime = 1f;
 
+    private float DashingBeginning;
+
     //variáveis para controlar gravidade
     [Header("GRAVIDADE")]
     [SerializeField] float gravityScale = 5f;
     [SerializeField] float fallingGravityScale = 30f;
     private float currentGravityScale;
+
 
 
     //variáveis para lanes
@@ -93,11 +96,16 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-
+        if (isDashing)
+        {
+            rb.useGravity = false;
+            return;
+        }
         //lógica de física melhorada aqui, isso vai permitir uma queda irada pro player
         rb.AddForce(Physics.gravity * (gravityScale - 1) * rb.mass);
+        rb.useGravity = true;
 
-        //(pelamor de Deus, rigidbody pra player é quase tentar ganhar uma triatlo sem saber nadar, tudo começa bem, mas no final...)
+        //(pelamor de Deus, rigidbody pra player é quase tentar ganhar uma triatlo sem saber nadar, tudo começa bem, mas no final...) 
 
     }
 
@@ -113,6 +121,12 @@ public class Player : MonoBehaviour
         {
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
             rb.AddForce(Vector3.down * JumpForce / 55f, ForceMode.Impulse);
+        }
+
+        if (rb.position.x - DashingBeginning >= 30f && isDashing)
+        {
+            rb.linearVelocity = new Vector3(0, 0, rb.linearVelocity.z);
+            //rb.AddForce(Vector3.down * JumpForce / 55f, ForceMode.Impulse);
         }
     }
 
@@ -256,10 +270,13 @@ public class Player : MonoBehaviour
     {
         isDashing = true;
         tr.emitting = true;
+        DashingBeginning = rb.position.x;
 
+        rb.linearVelocity = Vector3.zero;
 
+        rb.AddForce(Vector3.right * dashingpower, ForceMode.Impulse);
 
-        rb.linearVelocity = new Vector2(1f * dashingpower, rb.linearVelocity.y);
+        //rb.MovePosition(rb.position + Vector3.right * dashingpower);
 
         yield return new WaitForSeconds(dashingtime);
 
