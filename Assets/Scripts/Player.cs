@@ -1,7 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using System.Collections;
-using Unity.Android.Gradle.Manifest;
 using System;
 
 public class Player : MonoBehaviour
@@ -27,6 +26,10 @@ public class Player : MonoBehaviour
     private bool TESTE = false;
     private Vector3 Target;
     private float y;
+
+    //variável para Dash
+
+    public bool isDashing = false;
 
     //variáveis para controlar gravidade
     [Header("GRAVIDADE")]
