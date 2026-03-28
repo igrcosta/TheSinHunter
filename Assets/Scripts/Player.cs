@@ -125,6 +125,16 @@ public class Player : MonoBehaviour
         }
     }
 
+    //função para espinhos detectarem colisão
+    public void SpikeHit(float damage)
+    {
+        Colidiu = true;
+        Speed -= damage;
+        Speed += MultiplicadorVelocidade * Time.deltaTime;
+
+        Colidiu = false;
+    }
+
 
     void Mover() // Sistema de Corrida infinita
     {

@@ -19,7 +19,7 @@ public class ChunkGeneration : MonoBehaviour
     //spawnar chunks de 70 em 70 no X
     //lembrar que a ideia é trabalhar com grupos de chunks, vamos começar com chunks individuais e aí vamos melhorar para grupos de chunks
 
-    public void ChunkSpawning()
+    public void ChunkSpawning(bool needToSpawn)
     {
         //marcar onde a chunk será spawnada
         //selecionar item aleatório do array de chunks
@@ -28,7 +28,7 @@ public class ChunkGeneration : MonoBehaviour
         ActualDistance++;
         float XcoordinatesToSpawn = ActualDistance * 70;
 
-        if (PrefabsToSpawn != null && PrefabsToSpawn.Length > 0)
+        if (PrefabsToSpawn != null && PrefabsToSpawn.Length > 0 && needToSpawn)
         {
             int randomIndex = Random.Range(0, PrefabsToSpawn.Length);
             GameObject ChunkSelected = PrefabsToSpawn[randomIndex];

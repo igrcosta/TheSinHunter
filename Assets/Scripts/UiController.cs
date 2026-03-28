@@ -19,7 +19,7 @@ public class UIController : MonoBehaviour
     public void BotaoJogar() 
     {
 
-        SceneManager.LoadScene("Jogo");
+        SceneManager.LoadScene(1);
     }
 
     public void BotaoSair()
