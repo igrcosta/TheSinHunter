@@ -1,7 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using System.Collections;
-using Unity.Android.Gradle.Manifest;
 using System;
 
 public class Player : MonoBehaviour
@@ -28,6 +27,13 @@ public class Player : MonoBehaviour
     private Vector3 Target;
     private float y;
 
+    [Header("Dashs")]
+    [SerializeField] bool isDashing = false;
+    [SerializeField] bool canDash = true;
+    [SerializeField] float dashingpower = 100;
+    [SerializeField] float dashingCD = 1f;
+    [SerializeField] float dashingtime = 1f;
+
     //variáveis para controlar gravidade
     [Header("GRAVIDADE")]
     [SerializeField] float gravityScale = 5f;
@@ -49,6 +55,7 @@ public class Player : MonoBehaviour
     float RegeneracaoPostura = 1;
     bool DamageInvulnerability = false;
     public Rigidbody rb;
+    public TrailRenderer tr;
     public Animator mAnimator;
     private Vector3 V3Move;
 
@@ -58,6 +65,7 @@ public class Player : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        tr = GetComponent<TrailRenderer>();
 
         GameController.controller.playerRef = this;
     }
@@ -95,6 +103,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        ChecagemDash();
         Mover();
         SistemaPostura();
         Jumping();
@@ -242,4 +251,38 @@ public class Player : MonoBehaviour
 
     //Troca de Lanes -> FINAL
 
+
+    IEnumerator Dash()
+    {
+        isDashing = true;
+        tr.emitting = true;
+
+
+
+        rb.linearVelocity = new Vector2(1f * dashingpower, rb.linearVelocity.y);
+
+        yield return new WaitForSeconds(dashingtime);
+
+        isDashing = false;
+        tr.emitting = false;
+        canDash = false;
+
+        yield return new WaitForSeconds(dashingCD);
+
+        canDash = true;
+
+    }
+
+    void ChecagemDash() // Checa se pode dar dash, e roda se possivel
+    {
+        if (canDash == false)
+        {
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            StartCoroutine(Dash());
+        }
+    }
 }

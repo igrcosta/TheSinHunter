@@ -7,6 +7,7 @@ public class GameController : MonoBehaviour
     [Header("CHEATS")]
     [SerializeField] bool Cheating = false;
 
+    public int points = 0;
     public Player playerRef;
 
     //coisas importantes para singleton -> INÍCIO
