@@ -8,21 +8,32 @@ public class Player : MonoBehaviour
 {
 
 
-    [Header ("Sistema De Corrida")]
-    [SerializeField] float speedcrescente = 1.5f;
-    [SerializeField] int KnockBack = 1;
-    [SerializeField] float Tempo_Voltaramover = 1.5f;
+    [Header("Sistema De Corrida")]
+    [SerializeField] float Speed = 1.5f;
+    [SerializeField] float LimiteVelocidade = 1.5f;
+
+    [SerializeField] float MultiplicadorVelocidade = 20f;
 
     [Header("Postura")]
     [SerializeField] int Postura = 1;
     [SerializeField] float Taxaderegeneracao = 1;
 
     [Header("Infos para Pulo")]
-    [SerializeField] float JumpForce = 100f;
+    [SerializeField] float JumpForce = 10f;
     private Vector3 JumpVector;
-    private float gravity = -9.81f;
-    private Vector3 GravityFactor;
     public bool CanJump = false;
+    private bool OnJump = false;
+
+    private bool TESTE = false;
+    private Vector3 Target;
+    private float y;
+
+    //variáveis para controlar gravidade
+    [Header("GRAVIDADE")]
+    [SerializeField] float gravityScale = 5f;
+    [SerializeField] float fallingGravityScale = 30f;
+    private float currentGravityScale;
+
 
     //variáveis para lanes
     private BoxCollider LaneCollider;
@@ -30,19 +41,25 @@ public class Player : MonoBehaviour
 
     private int LanesLayer;
     private int PlayerLayer;
+    private float JumpingBeginning;
 
 
 
     //Variaveis privadas
     float RegeneracaoPostura = 1;
-    bool Colidiu = false;
+    bool DamageInvulnerability = false;
     public Rigidbody rb;
     public Animator mAnimator;
     private Vector3 V3Move;
 
+    //variavel para poder parar o movimento do player quando quiser
+    private bool canMove = true;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+
+        GameController.controller.playerRef = this;
     }
 
     void Start()
@@ -50,86 +67,77 @@ public class Player : MonoBehaviour
         //identificar qual camada de colisão é qual para permitir atravessar as lanes
         LanesLayer = LayerMask.NameToLayer("Lanes");
         PlayerLayer = LayerMask.NameToLayer("Player");
+
+        //gravidadezinha marota e lógica pra permitir o player cair mais rápido, tipo no mário
+        currentGravityScale = gravityScale;
+
+        if (rb.linearVelocity.y > 0)
+        {
+            currentGravityScale = gravityScale;
+        }
+        else if (rb.linearVelocity.y < 0)
+        {
+            currentGravityScale = fallingGravityScale;
+        }
+
+        canMove = true;
     }
 
     void FixedUpdate()
     {
-       Mover();
-       StartCoroutine("SistemaSpeed");
-       QuebradePostura();
-       RecuperacaoPostura();
+
+        //lógica de física melhorada aqui, isso vai permitir uma queda irada pro player
+        rb.AddForce(Physics.gravity * (gravityScale - 1) * rb.mass);
+
+        //(pelamor de Deus, rigidbody pra player é quase tentar ganhar uma triatlo sem saber nadar, tudo começa bem, mas no final...)
 
     }
 
     void Update()
     {
+        Mover();
+        SistemaPostura();
         Jumping();
-
-        GravityAction();
-
         DescendingLanes();
-    }
 
-     IEnumerator SistemaSpeed() // Sistema de aumento de velocidade
-    {
-        if (speedcrescente < 50)
-        speedcrescente += 0.3f;
-
-        else if (speedcrescente >= 1)
+        if (rb.position.y - JumpingBeginning >= 10f && OnJump)
         {
-            yield return new WaitForSecondsRealtime(Tempo_Voltaramover);
-
-            Colidiu = false;
-            speedcrescente = 15;
-            speedcrescente += 0.1f;
-            
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
+            rb.AddForce(Vector3.down * JumpForce / 55f, ForceMode.Impulse);
         }
     }
 
 
-
-    void QuebradePostura()
+    void SistemaPostura() // Sistema de aumento de velocidade
     {
-        if (Colidiu)
+        if (!DamageInvulnerability)
         {
-            speedcrescente = 0;
+            Speed += MultiplicadorVelocidade * Time.deltaTime / 5f;
         }
-
     }
+
+    //função para espinhos detectarem colisão
+    public void Hit(float damage)
+    {
+        DamageInvulnerability = true;
+        //detecta colisão para parar de incrementar a velocidade
+
+        Speed -= damage;
+        //reduz a speed com base na vida
+
+        MultiplicadorVelocidade /= 5f;
+        //reduz a taxa de regeneração
+
+        DamageInvulnerability = false;
+        //volta a incrementar velocidade
+    }
+
+
     void Mover() // Sistema de Corrida infinita
     {
-        float MoveX = 1;
-
-        V3Move = new Vector3(MoveX, 0, 0);
-
-        if (Colidiu == false)
+        if (canMove)
         {
-            rb.MovePosition(rb.position + V3Move * speedcrescente * Time.deltaTime);
-        }
-        else if (Colidiu)
-        {
-            rb.MovePosition(rb.position - V3Move * KnockBack * Time.deltaTime);
-        }
-    }
-
-
-    void RecuperacaoPostura()
-    {
-        if (Postura <= 1)
-        {
-            RegeneracaoPostura += Taxaderegeneracao;
-        }
-    }
-
-    void OnTriggerEnter(Collider other) 
-    {
-        string Tagcolidida = other.tag;
-
-        if (Tagcolidida == "Enemy") // parar o movimento ao colidir
-        {
-            Colidiu = true;
-            QuebradePostura();
-            Destroy(other);
+            rb.position += Vector3.right * Speed * Time.deltaTime;
         }
     }
 
@@ -141,6 +149,7 @@ public class Player : MonoBehaviour
         //lembrar que com colisões, precisamos acessar o gameObject deles para pegar coisas como tags
         {
             CanJump = true;
+            OnJump = false;
         }
         else
         {
@@ -148,11 +157,24 @@ public class Player : MonoBehaviour
         }
 
         //PARTE PARA DESCER DE LANES
-        if(collisionInfo.gameObject.CompareTag("Lane"))
+        if (collisionInfo.gameObject.CompareTag("Lane"))
         {
             CanJump = true;
-            /* LaneCollider = collisionInfo.gameObject.GetComponent<BoxCollider>(); */
             IsOnALane = true;
+            OnJump = false;
+        }
+
+        //Parte da Lava
+        if (collisionInfo.gameObject.CompareTag("LAVA"))
+        {
+            //player para
+            canMove = false;
+
+            //player começa a descer
+            Invoke("DisableLayersCollision", 0.3f);
+
+            GameController.controller.Invoke("GameOver", 0.8f);
+            //invoca depois de alguns segundos a tela de morte
         }
     }
 
@@ -165,22 +187,23 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.UpArrow) && CanJump)
         {
-            JumpVector = new Vector3(0f,JumpForce, 0f);
-            //definimos um vetor com a força que queremos que o jogador pule
+            OnJump = true;
 
-            rb.AddForce(JumpVector, ForceMode.Impulse);
-            //aplicamos a força em Y como impulso, de forma que mantenha a velocidade de X
+            JumpingBeginning = rb.position.y;
+            //pego a posição do pulo para limitar a altura do pulo
+
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
+            //zero a velocidade em y 
+
+            rb.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
+            //aplicamos a força em Y como impulso, de forma que mantenha a velocidade de X */
 
             DisableLayersCollision();
 
             CanJump = false;
-        }
-    }
 
-    void GravityAction()
-    {
-        GravityFactor = new Vector3(0f, gravity, 0f);
-        rb.AddForce(GravityFactor, ForceMode.Acceleration);
+            //vou ter que sair da posição dele atual e subir 10f mantendo X e Z
+        }
     }
 
     //Pulo do jogador -> FINAL
@@ -188,14 +211,19 @@ public class Player : MonoBehaviour
     //Troca de Lanes -> INÍCIO
     void DescendingLanes()
     {
-        if (Input.GetKey(KeyCode.DownArrow) && IsOnALane)
+        if (Input.GetKeyDown(KeyCode.DownArrow) && !IsOnALane && !CanJump)
         {
-            DisableLayersCollision();
-            rb.AddForce(GravityFactor*2, ForceMode.Acceleration);
+            rb.AddForce(Vector3.down * JumpForce / 2f, ForceMode.VelocityChange);
         }
+        else
+            if (Input.GetKeyDown(KeyCode.DownArrow) && IsOnALane)
+            {
+                DisableLayersCollision();
+                rb.AddForce(Vector3.down * JumpForce / 3f, ForceMode.VelocityChange);
+            }
         //primeiro ao apertar seta pra baixo
 
-        
+
 
         //depois pra quando pular e esbarrar em algo da tag Lane
     }
@@ -203,16 +231,15 @@ public class Player : MonoBehaviour
     void EnableLayersCollision()
     {
         Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, false);
+        rb.AddForce(Vector3.down * JumpForce / 35f, ForceMode.Impulse);
     }
 
     void DisableLayersCollision()
     {
         Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, true);
-        Invoke("EnableLayersCollision", 0.5f);
+        Invoke("EnableLayersCollision", 0.22f);
     }
 
-    
+    //Troca de Lanes -> FINAL
 
-
-        //Troca de Lanes -> FINAL
 }

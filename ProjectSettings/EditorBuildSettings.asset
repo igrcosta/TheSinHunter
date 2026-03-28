@@ -9,14 +9,11 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu.unity
     guid: beeab3884eef29844acc7c7f1a6a545a
   - enabled: 1
-    path: Assets/Scenes/Jogo.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/Scenes/GenerationTest.unity
+    guid: 50a493d299be5694e86b8140e70b6a58
   - enabled: 1
     path: Assets/Scenes/Morte.unity
     guid: 605b8f8257ad57f47a30729a0a2c2843
-  - enabled: 1
-    path: Assets/Scenes/GenerationTest.unity
-    guid: 1b50ec2e88fa5c04fbb864922d07ec39
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
