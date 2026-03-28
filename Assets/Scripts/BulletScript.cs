@@ -21,13 +21,13 @@ public class BulletScript : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing)
+        {
+            Destroy(gameObject);
+        }
         if (other.CompareTag("Player"))
         {
             GameController.controller.playerRef.Hit(BulletDamage);
-            Destroy(gameObject);
-        }
-        else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing)
-        {
             Destroy(gameObject);
         }
     }

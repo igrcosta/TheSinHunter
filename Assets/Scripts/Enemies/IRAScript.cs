@@ -29,7 +29,7 @@ public class IRAScript : MonoBehaviour
             GameController.controller.playerRef.Hit(Damage);
             Debug.Log("IRA DEU DANO");
         }
-        else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing)
+        if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing)
         {
             Destroy(gameObject);
         }

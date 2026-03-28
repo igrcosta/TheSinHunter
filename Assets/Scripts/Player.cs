@@ -5,6 +5,8 @@ using System;
 
 public class Player : MonoBehaviour
 {
+
+
     [Header("Sistema De Corrida")]
     [SerializeField] float Speed = 1.5f;
     [SerializeField] float LimiteVelocidade = 1.5f;
@@ -25,8 +27,6 @@ public class Player : MonoBehaviour
     private Vector3 Target;
     private float y;
 
-    //variável para Dash
-
     [Header("Dashs")]
     public bool isDashing = false;
     [SerializeField] bool canDash = true;
@@ -34,11 +34,7 @@ public class Player : MonoBehaviour
     [SerializeField] float dashingCD = 1f;
     [SerializeField] float dashingtime = 1f;
 
-    private TrailRenderer tr;
-
-
-
-    private float DashingBeginning;
+    public float DashingBeginning;
 
     //variáveis para controlar gravidade
     [Header("GRAVIDADE")]
@@ -62,6 +58,7 @@ public class Player : MonoBehaviour
     float RegeneracaoPostura = 1;
     bool DamageInvulnerability = false;
     public Rigidbody rb;
+    public TrailRenderer tr;
     public Animator mAnimator;
     private Vector3 V3Move;
 
@@ -71,7 +68,6 @@ public class Player : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-
         tr = GetComponent<TrailRenderer>();
 
         GameController.controller.playerRef = this;
@@ -115,12 +111,12 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        ChecagemDash();
         Mover();
         SistemaPostura();
-        DeathCondition();
         Jumping();
         DescendingLanes();
-        ChecagemDash();
+        DeathCondition();
 
         if (rb.position.y - JumpingBeginning >= 10f && OnJump)
         {
@@ -131,6 +127,7 @@ public class Player : MonoBehaviour
         if (rb.position.x - DashingBeginning >= 30f && isDashing)
         {
             rb.linearVelocity = new Vector3(0, 0, rb.linearVelocity.z);
+            //rb.AddForce(Vector3.down * JumpForce / 55f, ForceMode.Impulse);
         }
     }
 
@@ -139,11 +136,11 @@ public class Player : MonoBehaviour
     {
         if (!DamageInvulnerability)
         {
-            Speed += MultiplicadorVelocidade * Time.deltaTime / 5f;
+            Speed += MultiplicadorVelocidade * Time.deltaTime;
         }
     }
 
-    //função para detectar danos
+    //função para espinhos detectarem colisão
     public void Hit(float damage)
     {
         DamageInvulnerability = true;
@@ -152,7 +149,7 @@ public class Player : MonoBehaviour
         Speed -= damage;
         //reduz a speed com base na vida
 
-        MultiplicadorVelocidade /= 2f;
+        MultiplicadorVelocidade *= 2f;
         //reduz a taxa de regeneração
 
         DamageInvulnerability = false;
@@ -261,6 +258,9 @@ public class Player : MonoBehaviour
                 rb.AddForce(Vector3.down * JumpForce / 3f, ForceMode.VelocityChange);
             }
         //primeiro ao apertar seta pra baixo
+
+
+
         //depois pra quando pular e esbarrar em algo da tag Lane
     }
 
@@ -282,9 +282,8 @@ public class Player : MonoBehaviour
     IEnumerator Dash()
     {
         isDashing = true;
-        DashingBeginning = rb.position.x;
-
         tr.enabled = true;
+        DashingBeginning = rb.position.x;
 
         rb.linearVelocity = Vector3.zero;
 
@@ -295,8 +294,8 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(dashingtime);
 
         isDashing = false;
-        canDash = false;
         tr.enabled = false;
+        canDash = false;
 
         yield return new WaitForSeconds(dashingCD);
 
