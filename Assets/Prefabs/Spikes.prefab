@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 4490436748281358215}
   - component: {fileID: 3805368294043749443}
   - component: {fileID: 5104811924912953294}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Spikes
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 3502998207314008937}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 11.4, z: -4}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -125,3 +125,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c61759d9144b4f94abbdf3fd93942382, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpikeScript
+  SpikeDamage: 10

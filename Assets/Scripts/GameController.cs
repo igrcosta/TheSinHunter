@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
     [Header("CHEATS")]
-    [SerializeField] bool Cheating = false;
+    public bool Cheating = false;
 
     public Player playerRef;
 
@@ -15,7 +15,7 @@ public class GameController : MonoBehaviour
     private void Awake()
     {
         Singleton();
-    } 
+    }
 
     private void Singleton()
     {
@@ -35,5 +35,13 @@ public class GameController : MonoBehaviour
     {
         SceneManager.LoadScene(2);
         //talvez seja melhor no futuro colocar um canvas pra ativar na cena do jogo mesmo
+    }
+
+    private void CheatMode()
+    {
+        if (Cheating)
+        {
+
+        }
     }
 }

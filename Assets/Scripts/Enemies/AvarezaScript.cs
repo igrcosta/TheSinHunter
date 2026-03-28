@@ -3,7 +3,7 @@ using UnityEngine;
 public class AvarezaScripot : MonoBehaviour
 {
     private Rigidbody rb;
-    private float WalkSpeed = 20f;
+    //private float WalkSpeed = 6f;
     [SerializeField] float Damage = 20f;
     void Start()
     {
@@ -11,17 +11,19 @@ public class AvarezaScripot : MonoBehaviour
     }
     void Update()
     {
-        Movement();
+        //Movement();
     }
 
-    void Movement()
+    /* void Movement()
     {
         transform.position += Vector3.left * WalkSpeed * Time.deltaTime;
-    }
+    } */
+
+    //IMPLEMENTAR MOVIMENTAÇÃO FUTURAMENTE
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing == false) 
+        if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing == false)
         {
             GameController.controller.playerRef.Hit(Damage);
             Debug.Log("AVAREZA DEU DANO");

@@ -129,7 +129,7 @@ public class Player : MonoBehaviour
         Speed -= damage;
         //reduz a speed com base na vida
 
-        MultiplicadorVelocidade /= 5f;
+        MultiplicadorVelocidade /= 2f;
         //reduz a taxa de regeneração
 
         DamageInvulnerability = false;
@@ -138,7 +138,11 @@ public class Player : MonoBehaviour
 
     void DeathCondition()
     {
-        if (Speed <= 0)
+        if (GameController.controller.Cheating)
+        {
+            //nada
+        }
+        else if (Speed <= 0 && GameController.controller.Cheating == false)
         {
             GameController.controller.GameOver();
         }
