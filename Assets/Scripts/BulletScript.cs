@@ -26,5 +26,9 @@ public class BulletScript : MonoBehaviour
             GameController.controller.playerRef.Hit(BulletDamage);
             Destroy(gameObject);
         }
+        else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing)
+        {
+            Destroy(gameObject);
+        }
     }
 }

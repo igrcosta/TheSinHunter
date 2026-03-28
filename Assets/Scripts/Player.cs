@@ -5,8 +5,6 @@ using System;
 
 public class Player : MonoBehaviour
 {
-
-
     [Header("Sistema De Corrida")]
     [SerializeField] float Speed = 1.5f;
     [SerializeField] float LimiteVelocidade = 1.5f;
@@ -29,7 +27,16 @@ public class Player : MonoBehaviour
 
     //variável para Dash
 
+    [Header("Dashs")]
     public bool isDashing = false;
+    [SerializeField] bool canDash = true;
+    [SerializeField] float dashingpower = 100;
+    [SerializeField] float dashingCD = 1f;
+    [SerializeField] float dashingtime = 1f;
+
+    private TrailRenderer tr;
+
+
 
     private float DashingBeginning;
 
@@ -64,6 +71,8 @@ public class Player : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+
+        tr = GetComponent<TrailRenderer>();
 
         GameController.controller.playerRef = this;
     }
@@ -111,6 +120,7 @@ public class Player : MonoBehaviour
         DeathCondition();
         Jumping();
         DescendingLanes();
+        ChecagemDash();
 
         if (rb.position.y - JumpingBeginning >= 10f && OnJump)
         {
@@ -121,7 +131,6 @@ public class Player : MonoBehaviour
         if (rb.position.x - DashingBeginning >= 30f && isDashing)
         {
             rb.linearVelocity = new Vector3(0, 0, rb.linearVelocity.z);
-            //rb.AddForce(Vector3.down * JumpForce / 55f, ForceMode.Impulse);
         }
     }
 
@@ -252,9 +261,6 @@ public class Player : MonoBehaviour
                 rb.AddForce(Vector3.down * JumpForce / 3f, ForceMode.VelocityChange);
             }
         //primeiro ao apertar seta pra baixo
-
-
-
         //depois pra quando pular e esbarrar em algo da tag Lane
     }
 
@@ -276,8 +282,9 @@ public class Player : MonoBehaviour
     IEnumerator Dash()
     {
         isDashing = true;
-        tr.emitting = true;
         DashingBeginning = rb.position.x;
+
+        tr.enabled = true;
 
         rb.linearVelocity = Vector3.zero;
 
@@ -288,8 +295,8 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(dashingtime);
 
         isDashing = false;
-        tr.emitting = false;
         canDash = false;
+        tr.enabled = false;
 
         yield return new WaitForSeconds(dashingCD);
 

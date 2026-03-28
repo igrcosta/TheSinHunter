@@ -138,14 +138,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87b5266e227e0c841b1e2d4706f77282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
-  speedcrescente: 1.5
-  KnockBack: 1
-  Tempo_Voltaramover: 1.5
+  Speed: 35
+  LimiteVelocidade: 50
+  MultiplicadorVelocidade: 1
   Postura: 1
   Taxaderegeneracao: 1
-  JumpForce: 40
+  JumpForce: 70
   CanJump: 0
-  gravityScale: 10
+  isDashing: 0
+  canDash: 1
+  dashingpower: 100
+  dashingCD: 1
+  dashingtime: 1
+  gravityScale: 20
   fallingGravityScale: 50
   rb: {fileID: 0}
   mAnimator: {fileID: 0}
