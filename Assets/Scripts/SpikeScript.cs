@@ -7,7 +7,7 @@ public class SpikeScript : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            GameController.controller.playerRef.SpikeHit(SpikeDamage);
+            GameController.controller.playerRef.Hit(SpikeDamage);
             Debug.Log("Encostei no player e mandei a mensagem");
         }
     }

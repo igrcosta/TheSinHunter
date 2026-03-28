@@ -517,6 +517,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ece55d1b41b4871498e921742fab31d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChunkSpawner
+  SpawnNecessity: 1
 --- !u!1001 &3122254631259206259
 PrefabInstance:
   m_ObjectHideFlags: 0

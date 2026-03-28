@@ -10,10 +10,9 @@ public class Player : MonoBehaviour
 
     [Header("Sistema De Corrida")]
     [SerializeField] float Speed = 1.5f;
-    [SerializeField] float SpeedPostColission = 15;
     [SerializeField] float LimiteVelocidade = 1.5f;
 
-    [SerializeField] float MultiplicadorVelocidade = 0.1f;
+    [SerializeField] float MultiplicadorVelocidade = 20f;
 
     [Header("Postura")]
     [SerializeField] int Postura = 1;
@@ -48,7 +47,7 @@ public class Player : MonoBehaviour
 
     //Variaveis privadas
     float RegeneracaoPostura = 1;
-    bool Colidiu = false;
+    bool DamageInvulnerability = false;
     public Rigidbody rb;
     public Animator mAnimator;
     private Vector3 V3Move;
@@ -97,8 +96,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         Mover();
-        SistemaSpeed();
-        RecuperacaoPostura();
+        SistemaPostura();
         Jumping();
         DescendingLanes();
 
@@ -110,29 +108,28 @@ public class Player : MonoBehaviour
     }
 
 
-    void SistemaSpeed() // Sistema de aumento de velocidade
+    void SistemaPostura() // Sistema de aumento de velocidade
     {
-        if (Speed < LimiteVelocidade)
+        if (!DamageInvulnerability)
         {
-            Speed += MultiplicadorVelocidade * Time.deltaTime;
-        }
-
-        else if (Colidiu)
-        {
-            Speed = SpeedPostColission;
-            Speed += MultiplicadorVelocidade * Time.deltaTime;
-            Colidiu = false;
+            Speed += MultiplicadorVelocidade * Time.deltaTime / 5f;
         }
     }
 
     //função para espinhos detectarem colisão
-    public void SpikeHit(float damage)
+    public void Hit(float damage)
     {
-        Colidiu = true;
-        Speed -= damage;
-        Speed += MultiplicadorVelocidade * Time.deltaTime;
+        DamageInvulnerability = true;
+        //detecta colisão para parar de incrementar a velocidade
 
-        Colidiu = false;
+        Speed -= damage;
+        //reduz a speed com base na vida
+
+        MultiplicadorVelocidade /= 5f;
+        //reduz a taxa de regeneração
+
+        DamageInvulnerability = false;
+        //volta a incrementar velocidade
     }
 
 
@@ -141,26 +138,6 @@ public class Player : MonoBehaviour
         if (canMove)
         {
             rb.position += Vector3.right * Speed * Time.deltaTime;
-        }
-    }
-
-
-    void RecuperacaoPostura()
-    {
-        if (Postura <= 1)
-        {
-            RegeneracaoPostura += Taxaderegeneracao;
-        }
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        string Tagcolidida = other.tag;
-
-        if (Tagcolidida == "Enemy") // parar o movimento ao colidir
-        {
-            Colidiu = true;
-            Destroy(other.gameObject);
         }
     }
 
