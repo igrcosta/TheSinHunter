@@ -100,6 +100,7 @@ public class Player : MonoBehaviour
     {
         Mover();
         SistemaPostura();
+        DeathCondition();
         Jumping();
         DescendingLanes();
 
@@ -119,7 +120,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    //função para espinhos detectarem colisão
+    //função para detectar danos
     public void Hit(float damage)
     {
         DamageInvulnerability = true;
@@ -133,6 +134,14 @@ public class Player : MonoBehaviour
 
         DamageInvulnerability = false;
         //volta a incrementar velocidade
+    }
+
+    void DeathCondition()
+    {
+        if (Speed <= 0)
+        {
+            GameController.controller.GameOver();
+        }
     }
 
 
