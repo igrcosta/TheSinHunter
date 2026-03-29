@@ -46,6 +46,9 @@ public class Player : MonoBehaviour
     private int PlayerLayer;
     private float JumpingBeginning;
 
+    //variável pra celular
+    private Vector2 startTouch;
+
 
 
     //Variaveis privadas
@@ -104,10 +107,13 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        DetectSlides();
+
         ChecagemDash();
         Mover();
-        SistemaPostura();
         Jumping();
+
+        SistemaPostura();
         DescendingLanes();
         DeathCondition();
 
@@ -123,7 +129,6 @@ public class Player : MonoBehaviour
             //rb.AddForce(Vector3.down * JumpForce / 55f, ForceMode.Impulse);
         }
     }
-
 
     void SistemaPostura() // Sistema de aumento de velocidade
     {
@@ -169,6 +174,115 @@ public class Player : MonoBehaviour
             rb.position += Vector3.right * Speed * Time.deltaTime;
         }
     }
+
+    //INPUT MOBILE INÍCIO
+    void DetectSlides()
+    {
+        if (Input.touchCount == 1)
+        {
+            Touch t = Input.GetTouch(0);
+
+            if (t.phase == TouchPhase.Began)
+            {
+                startTouch = t.position;
+            }
+            else if (t.phase == TouchPhase.Ended)
+            {
+                Vector2 delta = t.position - startTouch;
+
+                if (delta.magnitude > 100)
+                {
+                    if (Mathf.Abs(delta.x) > Mathf.Abs(delta.y))
+                    {
+                        if (delta.x > 0)
+                        {
+                            StartCoroutine(Dash());
+                        }
+                        else
+                        {
+                            //Debug.Log("Swipe Left");
+                        }
+
+                    }
+                    else
+                    {
+                        if (delta.y > 0 && CanJump)
+                        {
+                            OnJump = true;
+
+                            JumpingBeginning = rb.position.y;
+                            //pego a posição do pulo para limitar a altura do pulo
+
+                            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
+                            //zero a velocidade em y 
+
+                            rb.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
+                            //aplicamos a força em Y como impulso, de forma que mantenha a velocidade de X */
+
+                            DisableLayersCollision();
+
+                            CanJump = false;
+
+                            //vou ter que sair da posição dele atual e subir 10f mantendo X e Z
+                        }
+
+                        else
+                        {
+                            if (!IsOnALane && !CanJump)
+                            {
+                                rb.AddForce(Vector3.down * JumpForce / 2f, ForceMode.VelocityChange);
+                            }
+                            else
+                                if (IsOnALane)
+                                {
+                                    DisableLayersCollision();
+                                    rb.AddForce(Vector3.down * JumpForce / 3f, ForceMode.VelocityChange);
+                                }
+                        }
+                    }
+
+                }
+
+
+
+
+            }
+
+
+
+        }
+
+
+
+
+    }
+
+    /* oid DetectSwipes()
+    {
+        if (Input.touchCount == 1)
+        {
+            Touch t = Input.GetTouch(0);
+
+            if (t.phase == TouchPhase.Began)
+                startTouch = t.position;
+
+            else if (t.phase == TouchPhase.Ended)
+            {
+                Vector2 delta = t.position - startTouch;
+
+                if (delta.magnitude > 100)
+                {
+                    if (Mathf.Abs(delta.x) > Mathf.Abs(delta.y))
+                    {
+                        if (delta.y > 0) Debug.Log("PULA");
+                        else Debug.Log("Desce");
+                    }
+                }
+            }
+        }
+    } */
+    //INPUT MOBILE FIM
+
 
     //Pulo do jogador -> INÍCIO
 
@@ -307,5 +421,10 @@ public class Player : MonoBehaviour
         {
             StartCoroutine(Dash());
         }
+    }
+    public void ExecutarDashMobile()
+    {
+        StartCoroutine(Dash());
+        Debug.Log("SOCOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOORRO");
     }
 }

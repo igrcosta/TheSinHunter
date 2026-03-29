@@ -44,4 +44,9 @@ public class GameController : MonoBehaviour
 
         }
     }
+
+    public void Dash()
+    {
+        GameController.controller.playerRef.ExecutarDashMobile();
+    }
 }

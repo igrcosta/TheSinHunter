@@ -5,21 +5,23 @@ public class UIController : MonoBehaviour
 {
 
     [SerializeField] GameObject Options;
+    private Transform DashButton;
 
     void Start()
     {
-        
+        DashButton = gameObject.transform.GetChild(2);
     }
 
     void Update()
     {
-        
+
     }
 
-    public void BotaoJogar() 
+    public void BotaoJogar()
     {
 
         SceneManager.LoadScene(1);
+
     }
 
     public void BotaoSair()
@@ -42,5 +44,10 @@ public class UIController : MonoBehaviour
     public void VoltarMenu()
     {
         SceneManager.LoadScene("Menu");
+    }
+
+    public void Dash()
+    {
+        GameController.controller.playerRef.ExecutarDashMobile();
     }
 }
