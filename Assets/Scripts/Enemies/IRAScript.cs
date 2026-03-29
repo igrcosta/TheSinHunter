@@ -4,7 +4,6 @@ public class IRAScript : MonoBehaviour
 {
     private Rigidbody rb;
     private Transform ShootPoint;
-    private float WalkSpeed = 10f;
     private bool CanShoot = false;
     [SerializeField] float Damage = 5f;
 

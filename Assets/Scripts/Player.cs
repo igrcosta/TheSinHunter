@@ -9,13 +9,8 @@ public class Player : MonoBehaviour
 
     [Header("Sistema De Corrida")]
     [SerializeField] float Speed = 1.5f;
-    [SerializeField] float LimiteVelocidade = 1.5f;
-
     [SerializeField] float MultiplicadorVelocidade = 20f;
 
-    [Header("Postura")]
-    [SerializeField] int Postura = 1;
-    [SerializeField] float Taxaderegeneracao = 1;
 
     [Header("Infos para Pulo")]
     [SerializeField] float JumpForce = 10f;
@@ -23,7 +18,6 @@ public class Player : MonoBehaviour
     public bool CanJump = false;
     private bool OnJump = false;
 
-    private bool TESTE = false;
     private Vector3 Target;
     private float y;
 
@@ -55,7 +49,6 @@ public class Player : MonoBehaviour
 
 
     //Variaveis privadas
-    float RegeneracaoPostura = 1;
     bool DamageInvulnerability = false;
     public Rigidbody rb;
     public TrailRenderer tr;
