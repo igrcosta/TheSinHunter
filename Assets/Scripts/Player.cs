@@ -62,6 +62,13 @@ public class Player : MonoBehaviour
     public Animator mAnimator;
     private Vector3 V3Move;
 
+    //MOBILE VARS
+    float timeNow, LastTapTime ;
+
+    int TapCount;
+
+    Vector2 startTouch;
+
     //variavel para poder parar o movimento do player quando quiser
     private bool canMove = true;
 
@@ -117,6 +124,7 @@ public class Player : MonoBehaviour
         Jumping();
         DescendingLanes();
         DeathCondition();
+        DetectSlides();
 
         if (rb.position.y - JumpingBeginning >= 10f && OnJump)
         {
@@ -214,6 +222,63 @@ public class Player : MonoBehaviour
         }
     }
 
+    void DetectSlides()
+    {
+        if (Input.touchCount == 1)
+        {
+            Touch t = Input.GetTouch(0);
+
+            if (t.phase == TouchPhase.Began)
+            {
+                startTouch = t.position;
+            }
+            else if (t.phase == TouchPhase.Ended)
+            {
+                Vector2 delta = t.position - startTouch;
+
+                if (delta.magnitude > 100)
+                {
+                    if (Mathf.Abs(delta.x) > Mathf.Abs(delta.y))
+                    {
+                        if (delta.x > 0)
+                        {
+                            StartCoroutine(Dash());
+                        }
+                        else
+                        {
+                            //nada;
+                        }
+
+                    }
+                    else
+                    {
+                        if (delta.y > 0)
+                        {
+                            MobileJumping();
+                        }
+
+                        else
+                        {
+                            MobileDescendingLanes();
+                        }
+                    }
+
+                }
+
+
+
+
+            }
+
+
+
+        }
+
+
+
+
+    }
+
     void Jumping()
     {
         //script para o player poder pular
@@ -222,6 +287,29 @@ public class Player : MonoBehaviour
         //JÁ FUNCIONA ATÉ PARA PULO DUPLO
 
         if (Input.GetKeyDown(KeyCode.UpArrow) && CanJump)
+        {
+            OnJump = true;
+
+            JumpingBeginning = rb.position.y;
+            //pego a posição do pulo para limitar a altura do pulo
+
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
+            //zero a velocidade em y 
+
+            rb.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
+            //aplicamos a força em Y como impulso, de forma que mantenha a velocidade de X */
+
+            DisableLayersCollision();
+
+            CanJump = false;
+
+            //vou ter que sair da posição dele atual e subir 10f mantendo X e Z
+        }
+    }
+
+    void MobileJumping()
+    {
+        if (CanJump)
         {
             OnJump = true;
 
@@ -274,6 +362,25 @@ public class Player : MonoBehaviour
     {
         Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, true);
         Invoke("EnableLayersCollision", 0.22f);
+    }
+
+    void MobileDescendingLanes()
+    {
+        if (!IsOnALane && !CanJump)
+        {
+            rb.AddForce(Vector3.down * JumpForce / 2f, ForceMode.VelocityChange);
+        }
+        else
+            if (IsOnALane)
+            {
+                DisableLayersCollision();
+                rb.AddForce(Vector3.down * JumpForce / 3f, ForceMode.VelocityChange);
+            }
+        //primeiro ao apertar seta pra baixo
+
+
+
+        //depois pra quando pular e esbarrar em algo da tag Lane
     }
 
     //Troca de Lanes -> FINAL
