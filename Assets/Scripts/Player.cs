@@ -63,7 +63,7 @@ public class Player : MonoBehaviour
     private Vector3 V3Move;
 
     //MOBILE VARS
-    float timeNow, LastTapTime ;
+    float timeNow, LastTapTime;
 
     int TapCount;
 
@@ -142,9 +142,13 @@ public class Player : MonoBehaviour
 
     void SistemaPostura() // Sistema de aumento de velocidade
     {
-        if (!DamageInvulnerability)
+        if (Speed <= 50)
         {
-            Speed += MultiplicadorVelocidade * Time.deltaTime;
+            if (!DamageInvulnerability)
+            {
+                Speed += MultiplicadorVelocidade * Time.deltaTime;
+            }
+
         }
     }
 
@@ -157,7 +161,7 @@ public class Player : MonoBehaviour
         Speed -= damage;
         //reduz a speed com base na vida
 
-        MultiplicadorVelocidade *= 2f;
+        //MultiplicadorVelocidade -= 2f;
         //reduz a taxa de regeneração
 
         DamageInvulnerability = false;
@@ -396,6 +400,8 @@ public class Player : MonoBehaviour
 
         rb.AddForce(Vector3.right * dashingpower, ForceMode.Impulse);
 
+        //Speed -= Speed/10;
+
         //rb.MovePosition(rb.position + Vector3.right * dashingpower);
 
         yield return new WaitForSeconds(dashingtime);
@@ -412,7 +418,7 @@ public class Player : MonoBehaviour
 
     void ChecagemDash() // Checa se pode dar dash, e roda se possivel
     {
-        if (canDash == false)
+        if (!canDash)
         {
             return;
         }
@@ -420,6 +426,7 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             StartCoroutine(Dash());
+            return;
         }
     }
 }

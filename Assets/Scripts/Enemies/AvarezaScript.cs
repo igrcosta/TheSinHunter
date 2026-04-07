@@ -23,14 +23,14 @@ public class AvarezaScripot : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing == false)
+        if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing)
+        {
+            Destroy(gameObject);
+        }
+        else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing == false)
         {
             GameController.controller.playerRef.Hit(Damage);
             Debug.Log("AVAREZA DEU DANO");
-        }
-        else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing)
-        {
-            Destroy(gameObject);
         }
     }
 }

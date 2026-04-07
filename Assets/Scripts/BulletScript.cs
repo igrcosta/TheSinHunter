@@ -25,7 +25,7 @@ public class BulletScript : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        if (other.CompareTag("Player"))
+        else if (other.CompareTag("Player"))
         {
             GameController.controller.playerRef.Hit(BulletDamage);
             Destroy(gameObject);

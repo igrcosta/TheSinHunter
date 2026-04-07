@@ -24,14 +24,14 @@ public class IRAScript : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing)
+        {
+            Destroy(gameObject);
+        }
         if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing == false)
         {
             GameController.controller.playerRef.Hit(Damage);
             Debug.Log("IRA DEU DANO");
-        }
-        if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing)
-        {
-            Destroy(gameObject);
         }
     }
 
