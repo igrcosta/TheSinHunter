@@ -219,7 +219,7 @@ public class Player : MonoBehaviour
             canMove = false;
 
             //player começa a descer
-            Invoke("DisableLayersCollision", 0.3f);
+            Invoke("DisableLayersCollision", 0.25f);
 
             GameController.controller.Invoke("GameOver", 0.8f);
             //invoca depois de alguns segundos a tela de morte
