@@ -23,6 +23,8 @@ public class Player : MonoBehaviour
     public bool CanJump = false;
     private bool OnJump = false;
 
+    private bool isparrying = false;
+
     private bool TESTE = false;
     private Vector3 Target;
     private float y;
@@ -410,9 +412,16 @@ public class Player : MonoBehaviour
         tr.enabled = false;
         canDash = false;
 
-        yield return new WaitForSeconds(dashingCD);
+        if (!isparrying)
+        {
+            yield return new WaitForSeconds(dashingCD);
 
-        canDash = true;
+            canDash = true;
+        }
+        else
+        {
+            canDash = true;
+        }
 
     }
 
@@ -426,7 +435,19 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             StartCoroutine(Dash());
-            return;
+            //return;
         }
+    }
+
+    public void EnableDash()
+    {
+        //método para permitir o parry poder habilitar mais dashes ao jogador
+        canDash= true;
+    }
+
+    public void ParryLogicEnable()
+    {
+        //a ideia é ignorar o dash da sua lógica padrão ao dar parry
+        isparrying = true;
     }
 }
