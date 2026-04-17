@@ -2,7 +2,9 @@ using UnityEngine;
 
 public class ParryScript : MonoBehaviour
 {
-    private Vector3 ParryEffect = new Vector3 (0f, 9.81f, 0f);
+    private Vector3 ParryEffect = new Vector3(0f, 9.81f, 0f);
+
+    [SerializeField] float parryforce = 8f;
 
     void OnTriggerEnter(Collider other)
     {
@@ -14,9 +16,9 @@ public class ParryScript : MonoBehaviour
             scriptPlayer.ParryLogicEnable();
             //indico que isParry é true
 
-            if(scriptPlayer.isDashing)
+            if (scriptPlayer.isDashing)
             {
-                scriptPlayer.rb.AddForce(ParryEffect *8f, ForceMode.Impulse);
+                scriptPlayer.rb.AddForce(ParryEffect * parryforce, ForceMode.Impulse);
                 //scriptPlayer.IgnoreDashLogic();
                 scriptPlayer.EnableDash();
                 //permito ele pular

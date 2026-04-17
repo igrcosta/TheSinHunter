@@ -10,6 +10,7 @@ TagManager:
   - Lane
   - LAVA
   - Parry
+  - Shield
   layers:
   - Default
   - TransparentFX

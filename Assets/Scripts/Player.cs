@@ -34,6 +34,7 @@ public class Player : MonoBehaviour
     [SerializeField] bool canDash = true;
     [SerializeField] float dashingpower = 100;
     [SerializeField] float dashingCD = 1f;
+    private float DefaultdashCD;
     [SerializeField] float dashingtime = 1f;
 
     public float DashingBeginning;
@@ -101,6 +102,8 @@ public class Player : MonoBehaviour
         }
 
         canMove = true;
+
+        DefaultdashCD = dashingCD;
     }
 
     void FixedUpdate()
@@ -127,6 +130,16 @@ public class Player : MonoBehaviour
         DescendingLanes();
         DeathCondition();
         DetectSlides();
+
+        if (!canDash)
+        {
+            dashingCD -= Time.deltaTime;
+            if (dashingCD <= 0)
+            {
+                canDash = true;
+                dashingCD = DefaultdashCD;
+            }
+        }
 
         if (rb.position.y - JumpingBeginning >= 10f && OnJump)
         {
@@ -248,7 +261,7 @@ public class Player : MonoBehaviour
                     {
                         if (delta.x > 0)
                         {
-                            StartCoroutine(Dash());
+                            BeginDash();
                         }
                         else
                         {
@@ -392,12 +405,12 @@ public class Player : MonoBehaviour
     //Troca de Lanes -> FINAL
 
 
-    IEnumerator Dash()
+    void BeginDash()
     {
         isDashing = true;
         tr.enabled = true;
-        DashingBeginning = rb.position.x;
 
+        DashingBeginning = rb.position.x;
         rb.linearVelocity = Vector3.zero;
 
         rb.AddForce(Vector3.right * dashingpower, ForceMode.Impulse);
@@ -406,23 +419,14 @@ public class Player : MonoBehaviour
 
         //rb.MovePosition(rb.position + Vector3.right * dashingpower);
 
-        yield return new WaitForSeconds(dashingtime);
+        Invoke("FinishDash", dashingtime);
+    }
 
+    void FinishDash()
+    {
         isDashing = false;
         tr.enabled = false;
         canDash = false;
-
-        if (!isparrying)
-        {
-            yield return new WaitForSeconds(dashingCD);
-
-            canDash = true;
-        }
-        else
-        {
-            canDash = true;
-        }
-
     }
 
     void ChecagemDash() // Checa se pode dar dash, e roda se possivel
@@ -434,15 +438,17 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            StartCoroutine(Dash());
-            //return;
+            BeginDash();
         }
     }
 
     public void EnableDash()
     {
         //método para permitir o parry poder habilitar mais dashes ao jogador
-        canDash= true;
+        CancelInvoke("FinishDash");
+        isDashing = false;
+        tr.enabled = false;
+        canDash = true;
     }
 
     public void ParryLogicEnable()

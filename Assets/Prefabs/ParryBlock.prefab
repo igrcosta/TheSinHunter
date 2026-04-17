@@ -125,3 +125,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19a97c93468f5274ab19f8a40066e53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParryScript
+  parryforce: 5
