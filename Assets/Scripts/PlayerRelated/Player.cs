@@ -45,6 +45,9 @@ public class Player : MonoBehaviour
     [SerializeField] float fallingGravityScale = 30f;
     private float currentGravityScale;
 
+    [Header("Armas/Mecânicas")]
+    [SerializeField] string[] ActualWeapon;
+
 
 
     //variáveis para lanes

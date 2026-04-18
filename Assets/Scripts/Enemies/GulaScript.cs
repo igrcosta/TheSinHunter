@@ -1,45 +1,48 @@
+using NUnit.Framework;
 using UnityEngine;
 
 public class GulaScript : MonoBehaviour
 {
-    public Rigidbody rb;
     private Player pRef;
-    [SerializeField] float JumpSpeed = 2f;
+    [SerializeField] float JumpHeight = 2f;
+    [SerializeField] float JumpTime = 2f;
 
     [SerializeField] GameObject attackTrigger;
-    [SerializeField] GulaScript GulaEnemy;
+    [SerializeField] GameObject GulaEnemy;
+
+    private bool isAttacking = false;
+    private bool HasAttacked = false;
+    private float startHeight;
 
     //private float WalkSpeed = 6f;
     [SerializeField] float Damage = 20f;
     void Start()
     {
-        if (gameObject.CompareTag("Enemy"))
-        {
-            rb = GetComponent<Rigidbody>();
-        }
-
         pRef = GameController.controller.playerRef;
+        startHeight = transform.position.y;
     }
     void Update()
     {
-        //Movement();
+        if (!isAttacking && !HasAttacked) return;
+
+        transform.position += Vector3.up * JumpHeight * Time.deltaTime;
+
+        if (transform.position.y > startHeight + 20f)
+        {
+            isAttacking = false;
+            HasAttacked = true;
+            JumpHeight *= -1f;
+        }
+        if (transform.position.y <= startHeight - 0.2f)
+        {
+            JumpHeight = 0f;
+            //Destroy(gameObject);
+        }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (gameObject.CompareTag("GulaTrigger") && other.CompareTag("Player"))
-        {
-            //se o trigger da gula, encostar com o player
-
-            //chamar gula pra fazer seu ataque
-
-            Destroy(attackTrigger);
-            //destruir trigger para evitar bugs
-
-            Attack();
-
-        }
-        else if (gameObject.CompareTag("Enemy") && other.CompareTag("Player") && !pRef.isDashing)
+        if (gameObject.CompareTag("Enemy") && other.CompareTag("Player") && !pRef.isDashing)
         {
             //se o player bateu na gula sem dar dash...
 
@@ -58,20 +61,8 @@ public class GulaScript : MonoBehaviour
         }
     }
 
-    void Attack()
+    public void CallAttack()
     {
-        //gula vai pular para a lane superior e cair logo depois devolta para sua lane de origem
-
-
-        GulaEnemy.rb.position = Vector3.Lerp(rb.position, Vector3.up * JumpSpeed, 0.10f);
-        Debug.Log("eu vou pular!");
-        Invoke("EndAttack", 2f);
-
-        //exemplo:
-        //transform.position = Vector3.Lerp(transform.position, Upwards, 0.10f);
-    }
-    void EndAttack()
-    {
-        GulaEnemy.rb.position = Vector3.Lerp(rb.position, Vector3.down * JumpSpeed, 0.10f);
+        isAttacking = true;
     }
 }
