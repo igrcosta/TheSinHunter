@@ -424,6 +424,7 @@ public class Player : MonoBehaviour
 
     void FinishDash()
     {
+        rb.linearVelocity = Vector3.zero;
         isDashing = false;
         tr.enabled = false;
         canDash = false;
@@ -446,6 +447,8 @@ public class Player : MonoBehaviour
     {
         //método para permitir o parry poder habilitar mais dashes ao jogador
         CancelInvoke("FinishDash");
+        rb.linearVelocity = Vector3.zero;
+
         isDashing = false;
         tr.enabled = false;
         canDash = true;
