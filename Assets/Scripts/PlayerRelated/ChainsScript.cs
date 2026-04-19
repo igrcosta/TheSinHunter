@@ -23,7 +23,7 @@ public class ChainsScript : MonoBehaviour
     {
         if (other.CompareTag("Enemy") || other.CompareTag("Parry"))
         {
-            Debug.Log("Detectei alvos!");
+            //Debug.Log("Detectei alvos!");
 
             PossibleTargets.Add(other.gameObject);
 
@@ -34,7 +34,7 @@ public class ChainsScript : MonoBehaviour
                 //o primeiro inimigo que aparecer vai estar sendo rastreado
             }
 
-            Debug.Log(PossibleTargets[0].name + " foi adicionado!");
+            //Debug.Log(PossibleTargets[0].name + " foi adicionado!");
         }
     }
 
@@ -65,6 +65,7 @@ public class ChainsScript : MonoBehaviour
                 if (ActualTarget == PossibleTargets[i])
                 {
                     ActualTarget = null;
+                    GameController.controller.playerRef.TargetObject = ActualTarget;
                     PossibleTargets.Remove(PossibleTargets[i]);
 
                     //já que removemos o alvo atual, procure outro
@@ -72,7 +73,7 @@ public class ChainsScript : MonoBehaviour
                 else
                 {
                     PossibleTargets.Remove(PossibleTargets[i]);
-                    Debug.Log(PossibleTargets[i].name + " foi deletado da lista");
+                    //Debug.Log(PossibleTargets[i].name + " foi deletado da lista");
                 }
             }
 
@@ -99,6 +100,7 @@ public class ChainsScript : MonoBehaviour
                 //eita
             }
             ActualTarget = BestTarget;
+            GameController.controller.playerRef.TargetObject = ActualTarget;
             isTracking = true;
             //se definimos o alvo, devemos rastreá-lo
         }
@@ -116,13 +118,16 @@ public class ChainsScript : MonoBehaviour
         {
             if (ActualTarget == null) return;
             TargetPosition = ActualTarget.transform.position;
+            Debug.Log("POSIÇÃO DE " + TargetPosition.y);
             //posição do alvo armazenada e atualizada em tempo real
 
-            Debug.Log(ActualTarget.name + "está no " + ActualTarget.transform.position.x + "em X");
+            //Debug.Log(ActualTarget.name + "está no " + ActualTarget.transform.position.x + "em X");
 
             UIController.UIcontroller.EnableAim();
             UIController.UIcontroller.SetAimPosition(TargetPosition);
+            GameController.controller.playerRef.TargetObject = ActualTarget;
             //ativar target sobre o inimigo
+            //enviar valor pro game controller, assim o player pode acessar
         }
         else if (ActualTarget == null && PossibleTargets == null)
         {

@@ -2,6 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using System.Collections;
 using System;
+using NUnit.Framework;
 
 public class Player : MonoBehaviour
 {
@@ -51,8 +52,7 @@ public class Player : MonoBehaviour
     [SerializeField] private WeaponTypes ActualWeapon;
     private GameObject ChainsTriggerRef;
 
-
-
+    public bool isPushing = false;
 
     //variáveis para lanes
     private BoxCollider LaneCollider;
@@ -71,6 +71,10 @@ public class Player : MonoBehaviour
     public TrailRenderer tr;
     public Animator mAnimator;
     private Vector3 V3Move;
+
+    private bool DummyMode = false;
+
+    public GameObject TargetObject;
 
     //MOBILE VARS
     float timeNow, LastTapTime;
@@ -172,17 +176,27 @@ public class Player : MonoBehaviour
             rb.AddForce(Vector3.down * JumpForce / 55f, ForceMode.Impulse);
         }
 
-        if (rb.position.x - DashingBeginning >= 30f && isDashing)
+        if (ActualWeapon == WeaponTypes.Default && rb.position.x - DashingBeginning >= 30f && isDashing)
         {
             rb.linearVelocity = new Vector3(0, 0, rb.linearVelocity.z);
             //rb.AddForce(Vector3.down * JumpForce / 55f, ForceMode.Impulse);
         }
+
+
+        //parte das correntes INÍCIO
+        if (ActualWeapon == WeaponTypes.LuxuryChains && isDashing && TargetObject != null)
+        {
+            Debug.Log("TO INDO TE PEGAR!");
+            rb.position = Vector3.MoveTowards(rb.position, TargetObject.transform.position, dashingpower * Time.deltaTime);
+            DisableChainsLayersCollision();
+        }
+        //parte das correntes FIM
     }
 
 
     void SistemaPostura() // Sistema de aumento de velocidade
     {
-        if (Speed <= 50)
+        if (Speed <= 50 && !DummyMode)
         {
             if (!DamageInvulnerability)
             {
@@ -411,6 +425,18 @@ public class Player : MonoBehaviour
         Invoke("EnableLayersCollision", 0.22f);
     }
 
+    void DisableChainsLayersCollision()
+    {
+        Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, true);
+        Debug.Log("IGNORADO");
+    }
+
+    void EnableChainsLayersCollision()
+    {
+        Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, false);
+        Debug.Log("LEMBREI DE VC HEHE");
+    }
+
     void MobileDescendingLanes()
     {
         if (!IsOnALane && !CanJump)
@@ -440,6 +466,7 @@ public class Player : MonoBehaviour
         //caso seja um dash default...
         if (ActualWeapon == WeaponTypes.Default)
         {
+            Debug.Log("ARMA DEFAULT EQUIPADA");
             isDashing = true;
             tr.enabled = true;
 
@@ -457,34 +484,63 @@ public class Player : MonoBehaviour
         //Se não, se a arma utilizada for as correntes...
         else if (ActualWeapon == WeaponTypes.LuxuryChains)
         {
-            //mechanica irada
+            Debug.Log("LUXURY CHAINS utilizada");
+            isDashing = true;
+            tr.enabled = true;
+
+            //lerp para a direção do alvo
+
         }
         //se não, se a arma atual for a lâmina da ira...
         else if (ActualWeapon == WeaponTypes.RageBlade)
         {
+            Debug.Log("RAGE BLADE EQUIPADA");
             //mecanica mais loka ainda
         }
 
     }
 
-    void FinishDash()
+    public void FinishDash()
     {
-        rb.linearVelocity = Vector3.zero;
+        if (ActualWeapon == WeaponTypes.LuxuryChains)
+        {
+            Vector3 ParryEffect = new Vector3(0f, 9.81f, 0f);
+
+            rb.AddForce(ParryEffect * 7f, ForceMode.Impulse);
+
+            EnableChainsLayersCollision();
+        }
+        //rb.linearVelocity = Vector3.zero;
         isDashing = false;
         tr.enabled = false;
-        canDash = false;
+        canDash = true;
     }
 
     void ChecagemDash() // Checa se pode dar dash, e roda se possivel
     {
-        if (!canDash)
+        if (ActualWeapon == WeaponTypes.Default) //depois colocar a lamina tbm
         {
-            return;
-        }
+            if (!canDash)
+            {
+                return;
+            }
 
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                BeginDash();
+            }
+
+        }
+        else if (ActualWeapon == WeaponTypes.LuxuryChains)
         {
-            BeginDash();
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                BeginDash();
+            }
+        }
+        else if (ActualWeapon == WeaponTypes.RageBlade)
+        {
+            //coisas de blade
         }
     }
 
@@ -505,4 +561,9 @@ public class Player : MonoBehaviour
         //a ideia é ignorar o dash da sua lógica padrão ao dar parry
         isparrying = true;
     }
+
+    #region ChainLogic
+
+
+    #endregion ChainLogic
 }

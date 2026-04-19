@@ -56,6 +56,7 @@ public class GulaScript : MonoBehaviour
             //se a gula bateu no player com ele dando dash...
 
             //matar gula e seu trigger
+            GameController.controller.playerRef.FinishDash();
             Destroy(attackTrigger);
             Destroy(gameObject);
         }

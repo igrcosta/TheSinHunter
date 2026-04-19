@@ -9,6 +9,8 @@ public class GameController : MonoBehaviour
 
     public Player playerRef;
 
+    public Vector3 PlayerTargetPosition;
+
     //coisas importantes para singleton -> INÍCIO
     public static GameController controller;
 

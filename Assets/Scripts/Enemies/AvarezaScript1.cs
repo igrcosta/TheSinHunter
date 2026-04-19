@@ -25,6 +25,8 @@ public class AvarezaScripot : MonoBehaviour
     {
         if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing)
         {
+            GameController.controller.playerRef.FinishDash();
+            Debug.Log("FUI COM GOD");
             Destroy(gameObject);
         }
         else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing == false)

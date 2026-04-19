@@ -26,6 +26,7 @@ public class IRAScript : MonoBehaviour
     {
         if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing)
         {
+            GameController.controller.playerRef.FinishDash();
             Destroy(gameObject);
         }
         if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing == false)

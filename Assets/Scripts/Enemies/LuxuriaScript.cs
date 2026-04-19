@@ -27,6 +27,7 @@ public class LuxuriaScript : MonoBehaviour
         {
             //quebrar escudo
             Destroy(shield);
+            GameController.controller.playerRef.EnableDash();
 
             //jogar luxúria para trás (knockback)
             rb.MovePosition(rb.position + Vector3.right * pushDistance);
@@ -37,6 +38,7 @@ public class LuxuriaScript : MonoBehaviour
         }
         else if (other.CompareTag("Player") && pRef.isDashing)
         {
+            GameController.controller.playerRef.FinishDash();
             Destroy(gameObject);
             //VASCO
         }
