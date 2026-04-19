@@ -9,15 +9,15 @@ public class ChainsScript : MonoBehaviour
     private bool isTracking = false;
     public GameObject ActualTarget;
 
+    private Vector3 TargetPosition;
+    //essa var vai ser usada para guardar as posições dos alvos e não ficar repetindo textos enormes
+
 
     private Player pRef;
 
     void Start()
     {
         pRef = GameController.controller.playerRef;
-
-        /* //para garantir o sistema de escolha dos alvos, colocamos um valor grande para começar as comparações
-        ActualTarget.transform.position = new Vector3(200f, 0f, 0f); */
     }
     void OnTriggerEnter(Collider other)
     {
@@ -30,6 +30,8 @@ public class ChainsScript : MonoBehaviour
             if (targetsListed <= 0)
             {
                 ActualTarget = other.gameObject;
+                isTracking = true;
+                //o primeiro inimigo que aparecer vai estar sendo rastreado
             }
 
             AnalysingTargets = true;
@@ -46,8 +48,10 @@ public class ChainsScript : MonoBehaviour
         if (ActualTarget == null)
         {
             SelectNewTarget();
-            TargetTracking();
         }
+
+        TargetTracking();
+        //esse aqui só funciona quando tem alvos pra rastrear
 
     }
     void RemoveBehindPlayer()
@@ -60,6 +64,9 @@ public class ChainsScript : MonoBehaviour
                 {
                     ActualTarget = null;
                     PossibleTargets.Remove(PossibleTargets[i]);
+
+                    isTracking = false;
+                    //se removeu aquele alvo, só quando achar outro que deve ser true
 
                     Debug.Log(PossibleTargets[i].name + " foi deletado do alvo atual e lista");
                     //já que removemos o alvo atual, procure outro
@@ -89,6 +96,8 @@ public class ChainsScript : MonoBehaviour
                 //eita
             }
             ActualTarget = BestTarget;
+            isTracking = true;
+            //se definimos o alvo, devemos rastreá-lo
         }
     }
 
@@ -96,7 +105,18 @@ public class ChainsScript : MonoBehaviour
     {
         if (isTracking)
         {
+            TargetPosition = ActualTarget.transform.position;
+            //posição do alvo armazenada e atualizada em tempo real
+
             Debug.Log(ActualTarget.name + "está no " + ActualTarget.transform.position.x + "em X");
+
+            UIController.UIcontroller.EnableAim();
+            UIController.UIcontroller.SetAimPosition(TargetPosition);
+            //ativar target sobre o inimigo
+        }
+        else
+        {
+            UIController.UIcontroller.DisableAim();
         }
     }
 }

@@ -473,3 +473,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dba4bfea4305c3844863ada218e878ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChainsScript
+  PossibleTargets: []
+  ActualTarget: {fileID: 0}
