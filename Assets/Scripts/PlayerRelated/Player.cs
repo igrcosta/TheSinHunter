@@ -187,8 +187,9 @@ public class Player : MonoBehaviour
         if (ActualWeapon == WeaponTypes.LuxuryChains && isDashing && TargetObject != null)
         {
             Debug.Log("TO INDO TE PEGAR!");
-            rb.position = Vector3.MoveTowards(rb.position, TargetObject.transform.position, dashingpower * Time.deltaTime);
             DisableChainsLayersCollision();
+            rb.position = Vector3.MoveTowards(rb.position, TargetObject.transform.position, dashingpower * Time.deltaTime);
+
         }
         //parte das correntes FIM
     }
