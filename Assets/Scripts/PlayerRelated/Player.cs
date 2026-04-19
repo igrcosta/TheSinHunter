@@ -45,8 +45,12 @@ public class Player : MonoBehaviour
     [SerializeField] float fallingGravityScale = 30f;
     private float currentGravityScale;
 
+    private enum WeaponTypes { Default, LuxuryChains, RageBlade };
+
     [Header("Armas/Mecânicas")]
-    [SerializeField] string[] ActualWeapon;
+    [SerializeField] private WeaponTypes ActualWeapon;
+    private GameObject ChainsTriggerRef;
+
 
 
 
@@ -88,6 +92,24 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        //Encontrar referência Do trigger das correntes
+        ChainsTriggerRef = transform.GetChild(1).gameObject;
+
+        //reset para caso começe o jogo com arma X, aparecer o que deveria para sua arma
+        if (ActualWeapon == WeaponTypes.Default)
+        {
+            //desligar tudo o que não for preciso para arma default
+            ChainsTriggerRef.SetActive(false);
+        }
+        else if (ActualWeapon == WeaponTypes.LuxuryChains)
+        {
+            ChainsTriggerRef.SetActive(true);
+        }
+        else if (ActualWeapon == WeaponTypes.RageBlade)
+        {
+            ChainsTriggerRef.SetActive(false);
+        }
+
         //identificar qual camada de colisão é qual para permitir atravessar as lanes
         LanesLayer = LayerMask.NameToLayer("Lanes");
         PlayerLayer = LayerMask.NameToLayer("Player");
@@ -207,6 +229,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    #region Jumping
     //Pulo do jogador -> INÍCIO
 
     void OnCollisionEnter(Collision collisionInfo)
@@ -300,7 +323,6 @@ public class Player : MonoBehaviour
 
 
     }
-
     void Jumping()
     {
         //script para o player poder pular
@@ -354,6 +376,9 @@ public class Player : MonoBehaviour
 
     //Pulo do jogador -> FINAL
 
+    #endregion Jumping
+
+    #region Lanes
     //Troca de Lanes -> INÍCIO
     void DescendingLanes()
     {
@@ -406,23 +431,40 @@ public class Player : MonoBehaviour
     }
 
     //Troca de Lanes -> FINAL
+    #endregion Lanes
 
-
+    #region Dashes
     void BeginDash()
     {
-        isDashing = true;
-        tr.enabled = true;
+        //O DASH MUDA CONFORME FOR A ARMA UTILIZADA, LOGO...
+        //caso seja um dash default...
+        if (ActualWeapon == WeaponTypes.Default)
+        {
+            isDashing = true;
+            tr.enabled = true;
 
-        DashingBeginning = rb.position.x;
-        rb.linearVelocity = Vector3.zero;
+            DashingBeginning = rb.position.x;
+            rb.linearVelocity = Vector3.zero;
 
-        rb.AddForce(Vector3.right * dashingpower, ForceMode.Impulse);
+            rb.AddForce(Vector3.right * dashingpower, ForceMode.Impulse);
 
-        //Speed -= Speed/10;
+            //Speed -= Speed/10;
 
-        //rb.MovePosition(rb.position + Vector3.right * dashingpower);
+            //rb.MovePosition(rb.position + Vector3.right * dashingpower);
 
-        Invoke("FinishDash", dashingtime);
+            Invoke("FinishDash", dashingtime);
+        }
+        //Se não, se a arma utilizada for as correntes...
+        else if (ActualWeapon == WeaponTypes.LuxuryChains)
+        {
+            //mechanica irada
+        }
+        //se não, se a arma atual for a lâmina da ira...
+        else if (ActualWeapon == WeaponTypes.RageBlade)
+        {
+            //mecanica mais loka ainda
+        }
+
     }
 
     void FinishDash()
@@ -456,6 +498,7 @@ public class Player : MonoBehaviour
         tr.enabled = false;
         canDash = true;
     }
+    #endregion Dashes
 
     public void ParryLogicEnable()
     {
