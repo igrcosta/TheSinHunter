@@ -2,7 +2,10 @@ using UnityEngine;
 
 public class ParryScript : MonoBehaviour
 {
-    private Vector3 ParryEffect = new Vector3 (0f, 9.81f*3, 0f);
+    private Vector3 ParryEffect = new Vector3(0f, 9.81f, 0f);
+
+    [SerializeField] float parryforce = 8f;
+
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -10,12 +13,20 @@ public class ParryScript : MonoBehaviour
             Player scriptPlayer = other.GetComponent<Player>();
             //acesso player
 
-            scriptPlayer.CanJump = true;
-            //permito ele pular
+            scriptPlayer.ParryLogicEnable();
+            //indico que isParry é true
 
-            //aumento um POUCO sua velocidade
+            if (scriptPlayer.isDashing)
+            {
+                scriptPlayer.rb.AddForce(ParryEffect * parryforce, ForceMode.Impulse);
+                //scriptPlayer.IgnoreDashLogic();
+                scriptPlayer.EnableDash();
+                //permito ele pular
 
-            Invoke("Destroying", 0.1f);
+                //aumento um POUCO sua velocidade
+
+                Invoke("Destroying", 0.1f);
+            }
         }
     }
     void Destroying()

@@ -10,6 +10,8 @@ TagManager:
   - Lane
   - LAVA
   - Parry
+  - Shield
+  - GulaTrigger
   layers:
   - Default
   - TransparentFX

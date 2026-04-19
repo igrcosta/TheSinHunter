@@ -1,15 +1,41 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class UIController : MonoBehaviour
 {
-
     [SerializeField] GameObject Options;
-    private Transform DashButton;
+    public GameObject ChainsAim;
+
+    #region singleton
+
+    //coisas importantes para singleton -> INÍCIO
+    public static UIController UIcontroller;
+
+    private void Awake()
+    {
+        Singleton();
+    }
+
+    private void Singleton()
+    {
+        if (UIcontroller == null)
+        {
+            UIcontroller = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
+    }
+    //coisas importantes para singleton -> FIM
+
+    #endregion singleton
 
     void Start()
     {
-        DashButton = gameObject.transform.GetChild(2);
+
     }
 
     void Update()
@@ -21,7 +47,6 @@ public class UIController : MonoBehaviour
     {
 
         SceneManager.LoadScene(1);
-
     }
 
     public void BotaoSair()
@@ -46,8 +71,22 @@ public class UIController : MonoBehaviour
         SceneManager.LoadScene("Menu");
     }
 
-    public void Dash()
+    //lógica para mira das correntes conversar com outros scripts INÍCIO
+
+    public void EnableAim()
     {
-        GameController.controller.playerRef.ExecutarDashMobile();
+        ChainsAim.SetActive(true);
     }
+
+    public void DisableAim()
+    {
+        ChainsAim.SetActive(false);
+    }
+
+    public void SetAimPosition(Vector3 PositionToSet)
+    {
+        ChainsAim.transform.position = PositionToSet;
+    }
+
+    //lógica para mira das correntes conversar com outros scripts FIM
 }
