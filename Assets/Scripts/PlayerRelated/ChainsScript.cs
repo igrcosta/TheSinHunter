@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class ChainsScript : MonoBehaviour
 {
-    public List<GameObject> PossibleTargets = new List<GameObject>(5);
+    public List<GameObject> PossibleTargets = new List<GameObject>();
     private int targetsListed = 0;
     private bool AnalysingTargets = false;
     private bool isTracking = false;
@@ -21,9 +21,9 @@ public class ChainsScript : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy"))
+        if (other.CompareTag("Enemy") || other.CompareTag("Parry"))
         {
-            Debug.Log("Detectei inimigos!");
+            Debug.Log("Detectei alvos!");
 
             PossibleTargets.Add(other.gameObject);
 
@@ -34,8 +34,6 @@ public class ChainsScript : MonoBehaviour
                 //o primeiro inimigo que aparecer vai estar sendo rastreado
             }
 
-            AnalysingTargets = true;
-
             Debug.Log(PossibleTargets[0].name + " foi adicionado!");
         }
     }
@@ -45,9 +43,13 @@ public class ChainsScript : MonoBehaviour
         targetsListed = PossibleTargets.Count;
         RemoveBehindPlayer();
 
-        if (ActualTarget == null)
+        if (ActualTarget == null && PossibleTargets != null)
         {
             SelectNewTarget();
+        }
+        else
+        {
+            UIController.UIcontroller.DisableAim();
         }
 
         TargetTracking();
@@ -65,10 +67,6 @@ public class ChainsScript : MonoBehaviour
                     ActualTarget = null;
                     PossibleTargets.Remove(PossibleTargets[i]);
 
-                    isTracking = false;
-                    //se removeu aquele alvo, só quando achar outro que deve ser true
-
-                    Debug.Log(PossibleTargets[i].name + " foi deletado do alvo atual e lista");
                     //já que removemos o alvo atual, procure outro
                 }
                 else
@@ -79,14 +77,19 @@ public class ChainsScript : MonoBehaviour
             }
 
         }
+
     }
 
     void SelectNewTarget()
     {
-        if (ActualTarget == null && PossibleTargets != null)
+        if (PossibleTargets.Count != 0)
         {
-            GameObject BestTarget = PossibleTargets[0];
+            if (PossibleTargets[0] == null)
+            {
+                return;
+            }
 
+            GameObject BestTarget = PossibleTargets[0];
             for (int i = 0; i < targetsListed; i++)
             {
                 if (PossibleTargets[i].transform.position.x < BestTarget.transform.position.x)
@@ -103,8 +106,15 @@ public class ChainsScript : MonoBehaviour
 
     void TargetTracking()
     {
-        if (isTracking)
+        if (targetsListed == 0)
         {
+            UIController.UIcontroller.DisableAim();
+            return;
+
+        }
+        if (isTracking && targetsListed != 0)
+        {
+            if (ActualTarget == null) return;
             TargetPosition = ActualTarget.transform.position;
             //posição do alvo armazenada e atualizada em tempo real
 
@@ -114,7 +124,7 @@ public class ChainsScript : MonoBehaviour
             UIController.UIcontroller.SetAimPosition(TargetPosition);
             //ativar target sobre o inimigo
         }
-        else
+        else if (ActualTarget == null && PossibleTargets == null)
         {
             UIController.UIcontroller.DisableAim();
         }
