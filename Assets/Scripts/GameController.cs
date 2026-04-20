@@ -7,12 +7,25 @@ public class GameController : MonoBehaviour
     [Header("CHEATS")]
     public bool Cheating = false;
 
-    public Player playerRef;
-
     public Vector3 PlayerTargetPosition;
 
-    //coisas importantes para singleton -> INÍCIO
+    [Header("UI INFOS")]
+    public float Distancia;
+    public float Pontos;
+
+    [Header("Referencias")]
     public static GameController controller;
+    public UIController UIManager;
+    public Player playerRef;
+
+    private void Update()
+    {
+        if (playerRef.Speed == 0f)
+            return;
+        Distancia += (playerRef.Speed * Time.deltaTime) / 10;
+    }
+        
+    #region Singleton
 
     private void Awake()
     {
@@ -31,7 +44,7 @@ public class GameController : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
     }
-    //coisas importantes para singleton -> FIM
+    #endregion Singleton
 
     public void GameOver()
     {

@@ -49,7 +49,7 @@ public class ChainsScript : MonoBehaviour
         }
         else
         {
-            UIController.UIcontroller.DisableAim();
+            GameController.controller.UIManager.DisableAim();
         }
 
         TargetTracking();
@@ -110,7 +110,7 @@ public class ChainsScript : MonoBehaviour
     {
         if (targetsListed == 0)
         {
-            UIController.UIcontroller.DisableAim();
+            GameController.controller.UIManager.DisableAim();
             return;
 
         }
@@ -123,15 +123,15 @@ public class ChainsScript : MonoBehaviour
 
             //Debug.Log(ActualTarget.name + "está no " + ActualTarget.transform.position.x + "em X");
 
-            UIController.UIcontroller.EnableAim();
-            UIController.UIcontroller.SetAimPosition(TargetPosition);
+            GameController.controller.UIManager.EnableAim();
+            GameController.controller.UIManager.SetAimPosition(TargetPosition);
             GameController.controller.playerRef.TargetObject = ActualTarget;
             //ativar target sobre o inimigo
             //enviar valor pro game controller, assim o player pode acessar
         }
         else if (ActualTarget == null && PossibleTargets == null)
         {
-            UIController.UIcontroller.DisableAim();
+            GameController.controller.UIManager.DisableAim();
         }
     }
 }

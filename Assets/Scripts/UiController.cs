@@ -1,48 +1,28 @@
-using Unity.VisualScripting;
+    using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class UIController : MonoBehaviour
 {
     [SerializeField] GameObject Options;
+    
     public GameObject ChainsAim;
+    public TMPro.TextMeshProUGUI TextoDistancia;
+    public TMPro.TextMeshProUGUI TextoPontos;
 
-    #region singleton
 
-    //coisas importantes para singleton -> INÍCIO
-    public static UIController UIcontroller;
-
-    private void Awake()
+    private void Update()
     {
-        Singleton();
+        MostrarTextosUI();
+    }
+    public void MostrarTextosUI()
+    {
+        TextoDistancia.text = GameController.controller.Distancia.ToString("F0") + " M";
+        TextoPontos.text = GameController.controller.Pontos.ToString("F0");
     }
 
-    private void Singleton()
-    {
-        if (UIcontroller == null)
-        {
-            UIcontroller = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-        DontDestroyOnLoad(gameObject);
-    }
-    //coisas importantes para singleton -> FIM
-
-    #endregion singleton
-
-    void Start()
-    {
-
-    }
-
-    void Update()
-    {
-
-    }
-
+    #region BotoesUI
     public void BotaoJogar()
     {
 
@@ -54,6 +34,7 @@ public class UIController : MonoBehaviour
         Application.Quit();
     }
 
+    
     public void BotaoConfigON()
     {
         Options.SetActive(true);
@@ -70,8 +51,9 @@ public class UIController : MonoBehaviour
     {
         SceneManager.LoadScene("Menu");
     }
+    #endregion BotoesUI
 
-    //lógica para mira das correntes conversar com outros scripts INÍCIO
+    #region ChainsUI
 
     public void EnableAim()
     {
@@ -88,5 +70,5 @@ public class UIController : MonoBehaviour
         ChainsAim.transform.position = PositionToSet;
     }
 
-    //lógica para mira das correntes conversar com outros scripts FIM
+#endregion ChainsUI
 }

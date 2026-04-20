@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
 
 
     [Header("Sistema De Corrida")]
-    [SerializeField] float Speed = 1.5f;
+    public float Speed = 1.5f;
     [SerializeField] float LimiteVelocidade = 1.5f;
 
     [SerializeField] float MultiplicadorVelocidade = 20f;
