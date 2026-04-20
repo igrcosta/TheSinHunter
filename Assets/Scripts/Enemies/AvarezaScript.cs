@@ -1,25 +1,19 @@
 using UnityEngine;
 
-public class AvarezaScripot : MonoBehaviour
+public class AvarezaScript : MonoBehaviour
 {
-    private Rigidbody rb;
-    //private float WalkSpeed = 6f;
+    [Header("Death")]
+    [SerializeField] float PointsGuiven = 100;
+
+    [Header("Mechanics")]
     [SerializeField] float Damage = 20f;
-    void Start()
+
+    [Header("Referencias")]
+    private Rigidbody rb;
+    void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
-    void Update()
-    {
-        //Movement();
-    }
-
-    /* void Movement()
-    {
-        transform.position += Vector3.left * WalkSpeed * Time.deltaTime;
-    } */
-
-    //IMPLEMENTAR MOVIMENTAÇÃO FUTURAMENTE
 
     void OnTriggerEnter(Collider other)
     {
@@ -27,7 +21,9 @@ public class AvarezaScripot : MonoBehaviour
         {
             GameController.controller.playerRef.FinishDash();
             Debug.Log("FUI COM GOD");
+            GameController.controller.AddPoints(PointsGuiven);
             Destroy(gameObject);
+
         }
         else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing == false)
         {

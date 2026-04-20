@@ -3,38 +3,33 @@ using System.Collections.Generic;
 
 public class ChainsScript : MonoBehaviour
 {
+    [Header("M.I.R.A")]
     public List<GameObject> PossibleTargets = new List<GameObject>();
+    public GameObject ActualTarget;
+
+    //Referencias e Variaveis privadas
     private int targetsListed = 0;
     private bool AnalysingTargets = false;
     private bool isTracking = false;
-    public GameObject ActualTarget;
+    private Vector3 TargetPosition;  //Usada para guardar as posições dos alvos
+    private Player Pref;
 
-    private Vector3 TargetPosition;
-    //essa var vai ser usada para guardar as posições dos alvos e não ficar repetindo textos enormes
-
-
-    private Player pRef;
-
-    void Start()
+    private void Start()
     {
-        pRef = GameController.controller.playerRef;
+        Pref = GameController.controller.playerRef;
     }
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Enemy") || other.CompareTag("Parry"))
         {
-            //Debug.Log("Detectei alvos!");
-
             PossibleTargets.Add(other.gameObject);
 
             if (targetsListed <= 0)
             {
                 ActualTarget = other.gameObject;
                 isTracking = true;
-                //o primeiro inimigo que aparecer vai estar sendo rastreado
+                //Rastreia o primeiro inimigo que aparecer
             }
-
-            //Debug.Log(PossibleTargets[0].name + " foi adicionado!");
         }
     }
 
@@ -53,7 +48,7 @@ public class ChainsScript : MonoBehaviour
         }
 
         TargetTracking();
-        //esse aqui só funciona quando tem alvos pra rastrear
+        //Esse aqui só funciona quando tem alvos pra rastrear
 
     }
     void RemoveBehindPlayer()
@@ -64,7 +59,7 @@ public class ChainsScript : MonoBehaviour
             {
                 PossibleTargets.Remove(PossibleTargets[i]);
             }
-            if (PossibleTargets[i] != null && PossibleTargets[i].transform.position.x - pRef.transform.position.x <= 0.1f)
+            if (PossibleTargets[i] != null && PossibleTargets[i].transform.position.x - Pref.transform.position.x <= 0.1f)
             {
                 if (ActualTarget == PossibleTargets[i])
                 {
@@ -77,7 +72,6 @@ public class ChainsScript : MonoBehaviour
                 else
                 {
                     PossibleTargets.Remove(PossibleTargets[i]);
-                    //Debug.Log(PossibleTargets[i].name + " foi deletado da lista");
                 }
             }
 
@@ -101,7 +95,7 @@ public class ChainsScript : MonoBehaviour
                 {
                     BestTarget = PossibleTargets[i];
                 }
-                //eita
+                //eita //safado
             }
             ActualTarget = BestTarget;
             GameController.controller.playerRef.TargetObject = ActualTarget;
@@ -124,8 +118,6 @@ public class ChainsScript : MonoBehaviour
             TargetPosition = ActualTarget.transform.position;
             Debug.Log("POSIÇÃO DE " + TargetPosition.y);
             //posição do alvo armazenada e atualizada em tempo real
-
-            //Debug.Log(ActualTarget.name + "está no " + ActualTarget.transform.position.x + "em X");
 
             GameController.controller.UIManager.EnableAim();
             GameController.controller.UIManager.SetAimPosition(TargetPosition);

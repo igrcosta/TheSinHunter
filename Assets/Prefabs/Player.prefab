@@ -175,6 +175,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3093963864376607004}
   - component: {fileID: 2192477758075521896}
+  - component: {fileID: 1923090311807493414}
   - component: {fileID: 5300197224232969607}
   - component: {fileID: 4757912112406408952}
   - component: {fileID: 3287158712438512519}
@@ -217,10 +218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
   Speed: 35
-  LimiteVelocidade: 50
   MultiplicadorVelocidade: 5
-  Postura: 1
-  Taxaderegeneracao: 1
   JumpForce: 70
   CanJump: 0
   isDashing: 0
@@ -232,9 +230,23 @@ MonoBehaviour:
   gravityScale: 20
   fallingGravityScale: 50
   ActualWeapon: 1
+  ChainsActive: 0
+  DefaultActive: 0
+  RageActive: 0
+  TargetObject: {fileID: 0}
   rb: {fileID: 0}
-  tr: {fileID: 0}
-  mAnimator: {fileID: 0}
+--- !u!114 &1923090311807493414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7989825296693985490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e5606b364ea4aa42ae2e88bffda9da0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InputHandler
 --- !u!65 &5300197224232969607
 BoxCollider:
   m_ObjectHideFlags: 0

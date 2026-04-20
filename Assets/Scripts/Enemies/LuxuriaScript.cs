@@ -1,29 +1,30 @@
-using System;
 using UnityEngine;
 
 public class LuxuriaScript : MonoBehaviour
 {
-    private Rigidbody rb;
-    private GameObject shield;
-    //private float WalkSpeed = 6f;
-    private Player pRef;
+    [Header("Death")]
+    [SerializeField] float PointsGuiven = 250;
+
+    [Header("Mechanics")]
     [SerializeField] float Damage = 15f;
     [SerializeField] float pushDistance = 8f;
-    void Start()
+
+    [Header("Referencias")]
+    private Rigidbody rb;
+    private GameObject shield;
+
+    void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        shield = transform.GetChild(0).gameObject;
-
-        pRef = GameController.controller.playerRef;
     }
-    void Update()
+    void Start()
     {
-        //Movement();
+        shield = transform.GetChild(0).gameObject;
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && pRef.isDashing && shield != null)
+        if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing && shield != null)
         {
             //quebrar escudo
             Destroy(shield);
@@ -33,18 +34,19 @@ public class LuxuriaScript : MonoBehaviour
             rb.MovePosition(rb.position + Vector3.right * pushDistance);
 
             //dar mais um dash pro jogador
-            pRef.EnableDash();
+            GameController.controller.playerRef.EnableDash();
 
         }
-        else if (other.CompareTag("Player") && pRef.isDashing)
+        else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing)
         {
             GameController.controller.playerRef.FinishDash();
+            GameController.controller.AddPoints(PointsGuiven);
             Destroy(gameObject);
-            //VASCO
+            //VASCO //foda
         }
-        else if (other.CompareTag("Player") && pRef.isDashing == false)
+        else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing == false)
         {
-            pRef.Hit(Damage);
+            GameController.controller.playerRef.Hit(Damage);
             Debug.Log("LUXÚRIA DEU DANO");
         }
     }

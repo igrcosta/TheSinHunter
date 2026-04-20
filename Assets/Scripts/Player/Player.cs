@@ -10,34 +10,22 @@ public class Player : MonoBehaviour
 
     [Header("Sistema De Corrida")]
     public float Speed = 1.5f;
-    [SerializeField] float LimiteVelocidade = 1.5f;
-
     [SerializeField] float MultiplicadorVelocidade = 20f;
-
-    [Header("Postura")]
-    [SerializeField] int Postura = 1;
-    [SerializeField] float Taxaderegeneracao = 1;
+    private bool canMove = true;     //variavel para poder parar o movimento do player quando quiser
 
     [Header("Infos para Pulo")]
     [SerializeField] float JumpForce = 10f;
-    private Vector3 JumpVector;
     public bool CanJump = false;
     private bool OnJump = false;
-
     private bool isparrying = false;
-
-    private bool TESTE = false;
-    private Vector3 Target;
-    private float y;
 
     [Header("Dashs")]
     public bool isDashing = false;
     [SerializeField] bool canDash = true;
     [SerializeField] float dashingpower = 100;
     [SerializeField] float dashingCD = 1f;
-    private float DefaultdashCD;
     [SerializeField] float dashingtime = 1f;
-
+    private float DefaultdashCD;
     public float DashingBeginning;
 
     //variáveis para controlar gravidade
@@ -46,57 +34,40 @@ public class Player : MonoBehaviour
     [SerializeField] float fallingGravityScale = 30f;
     private float currentGravityScale;
 
-    public enum WeaponTypes { Default, LuxuryChains, RageBlade };
+
 
     [Header("Armas/Mecânicas")]
     public WeaponTypes ActualWeapon;
     private GameObject ChainsTriggerRef;
     private ChainsScript ChainsScript;
+    public enum WeaponTypes { Default, LuxuryChains, RageBlade };
 
-    public bool isPushing = false;
+    [Header("Referencias")] //Referencias e Variaveis
+    bool DamageInvulnerability = false;
+    private TrailRenderer tr; //Trilha Dash
+    private Vector3 V3Move;
+    private Vector3 JumpVector;
+    private Vector3 Target;
+    private bool DummyMode = false;
+    public bool ChainsActive = false; //MODO: Chains
+    public bool DefaultActive = false; //MODO: Default
+    public bool RageActive = false; //MODO: Rage
+    public GameObject TargetObject; // Target Chains
+    public Rigidbody rb;
 
     //variáveis para lanes
     private BoxCollider LaneCollider;
     private bool IsOnALane = false;
-
     private int LanesLayer;
     private int PlayerLayer;
     private float JumpingBeginning;
-
-
-
-    //Variaveis privadas
-    float RegeneracaoPostura = 1;
-    bool DamageInvulnerability = false;
-    public Rigidbody rb;
-    public TrailRenderer tr;
-    public Animator mAnimator;
-    private Vector3 V3Move;
-
-    private bool DummyMode = false;
-
-    public bool ChainsActive = false;
-    public bool DefaultActive = false;
-    public bool RageActive = false;
-
-    public GameObject TargetObject;
-
-    //MOBILE VARS
-    float timeNow, LastTapTime;
-
-    int TapCount;
-
-    Vector2 startTouch;
-
-    //variavel para poder parar o movimento do player quando quiser
-    private bool canMove = true;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         tr = GetComponent<TrailRenderer>();
 
-        GameController.controller.playerRef = this;
+        GameController.controller.playerRef = this; //Referencia Player
     }
 
     void Start()
@@ -162,13 +133,12 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        ChecagemDash();
-        Mover();
-        SistemaPostura();
+        CanDash();
+        Move();
+        SpeedSystem();
         Jumping();
         DescendingLanes();
         DeathCondition();
-        DetectSlides();
 
         if (!canDash)
         {
@@ -205,7 +175,7 @@ public class Player : MonoBehaviour
     }
 
 
-    void SistemaPostura() // Sistema de aumento de velocidade
+    void SpeedSystem() // Sistema de aumento de velocidade
     {
         if (Speed <= 50 && !DummyMode)
         {
@@ -246,7 +216,7 @@ public class Player : MonoBehaviour
     }
 
 
-    void Mover() // Sistema de Corrida infinita
+    void Move() // Sistema de Corrida infinita
     {
         if (canMove)
         {
@@ -291,63 +261,6 @@ public class Player : MonoBehaviour
             //invoca depois de alguns segundos a tela de morte
         }
     }
-
-    void DetectSlides()
-    {
-        if (Input.touchCount == 1)
-        {
-            Touch t = Input.GetTouch(0);
-
-            if (t.phase == TouchPhase.Began)
-            {
-                startTouch = t.position;
-            }
-            else if (t.phase == TouchPhase.Ended)
-            {
-                Vector2 delta = t.position - startTouch;
-
-                if (delta.magnitude > 100)
-                {
-                    if (Mathf.Abs(delta.x) > Mathf.Abs(delta.y))
-                    {
-                        if (delta.x > 0)
-                        {
-                            BeginDash();
-                        }
-                        else
-                        {
-                            //nada;
-                        }
-
-                    }
-                    else
-                    {
-                        if (delta.y > 0)
-                        {
-                            MobileJumping();
-                        }
-
-                        else
-                        {
-                            MobileDescendingLanes();
-                        }
-                    }
-
-                }
-
-
-
-
-            }
-
-
-
-        }
-
-
-
-
-    }
     void Jumping()
     {
         //script para o player poder pular
@@ -376,7 +289,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    void MobileJumping()
+    public void MobileJumping()
     {
         if (CanJump)
         {
@@ -448,7 +361,7 @@ public class Player : MonoBehaviour
         Debug.Log("LEMBREI DE VC HEHE");
     }
 
-    void MobileDescendingLanes()
+    public void MobileDescendingLanes()
     {
         if (!IsOnALane && !CanJump)
         {
@@ -471,7 +384,7 @@ public class Player : MonoBehaviour
     #endregion Lanes
 
     #region Dashes
-    void BeginDash()
+    public void BeginDash()
     {
         //O DASH MUDA CONFORME FOR A ARMA UTILIZADA, LOGO...
         //caso seja um dash default...
@@ -531,7 +444,7 @@ public class Player : MonoBehaviour
         canDash = true;
     }
 
-    void ChecagemDash() // Checa se pode dar dash, e roda se possivel
+    void CanDash() // Checa se pode dar dash, e roda se possivel
     {
         if (ActualWeapon == WeaponTypes.Default) //depois colocar a lamina tbm
         {

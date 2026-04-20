@@ -2,15 +2,18 @@ using UnityEngine;
 
 public class IRAScript : MonoBehaviour
 {
+    [Header("Death")]
+    [SerializeField] float pointsGuiven = 100;
+
+    [Header("Shoot System")]
+    [SerializeField] float Damage = 5f;
+    [SerializeField] float shootCooldown = 1.5f;
+    private bool CanShoot = false;
+
+    [Header("Referencias")]
+    [SerializeField] GameObject BulletPrefab;
     private Rigidbody rb;
     private Transform ShootPoint;
-    private float WalkSpeed = 10f;
-    private bool CanShoot = false;
-    [SerializeField] float Damage = 5f;
-
-    [SerializeField] GameObject BulletPrefab;
-
-    [SerializeField] float shootCooldown = 1.5f;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -27,6 +30,7 @@ public class IRAScript : MonoBehaviour
         if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing)
         {
             GameController.controller.playerRef.FinishDash();
+            GameController.controller.AddPoints(pointsGuiven);
             Destroy(gameObject);
         }
         if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing == false)
@@ -36,8 +40,7 @@ public class IRAScript : MonoBehaviour
         }
     }
 
-    //lógica para tiro
-
+    #region ShootingSystem
     void Shoot()
     {
         if (CanShoot)
@@ -59,4 +62,7 @@ public class IRAScript : MonoBehaviour
         CanShoot = false;
         Invoke("EnableShoot", shootCooldown);
     }
+
+    #endregion ShootingSystem
+
 }

@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,11 +6,12 @@ public class GameController : MonoBehaviour
     [Header("CHEATS")]
     public bool Cheating = false;
 
-    public Vector3 PlayerTargetPosition;
+    [Header("UI Infos")]
+    public float Distance;
+    public float Points;
 
-    [Header("UI INFOS")]
-    public float Distancia;
-    public float Pontos;
+    [Header("Mecanicas")]
+    public Vector3 PlayerTargetPosition;
 
     [Header("Referencias")]
     public static GameController controller;
@@ -20,9 +20,7 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        if (playerRef.Speed == 0f)
-            return;
-        Distancia += (playerRef.Speed * Time.deltaTime) / 10;
+        DistanceCalculator();
     }
         
     #region Singleton
@@ -45,11 +43,23 @@ public class GameController : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
     #endregion Singleton
+    
+    public void DistanceCalculator()
+    {
+        if (playerRef.Speed == 0f)
+            return;
+        Distance += (playerRef.Speed * Time.deltaTime) / 10;
+    }
+    public void AddPoints(float add)
+    {
+        Points += add;
+    }
 
     public void GameOver()
     {
         SceneManager.LoadScene(2);
-        //talvez seja melhor no futuro colocar um canvas pra ativar na cena do jogo mesmo
+        Distance = 0;
+        Points = 0;
     }
 
     private void CheatMode()

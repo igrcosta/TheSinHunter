@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class CameraFollowScript : MonoBehaviour
 {
+    //Referencias
     private Player Pref;
-
     private Vector3 Upwards;
     private Vector3 Middle;
     private Vector3 DownWards;

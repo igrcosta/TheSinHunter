@@ -1,25 +1,26 @@
-    using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 
 public class UIController : MonoBehaviour
 {
+    [Header("Referencias")]
     [SerializeField] GameObject Options;
-    
     public GameObject ChainsAim;
-    public TMPro.TextMeshProUGUI TextoDistancia;
-    public TMPro.TextMeshProUGUI TextoPontos;
+    public TMPro.TextMeshProUGUI DistanceText;
+    public TMPro.TextMeshProUGUI PointsText;
 
 
     private void Update()
     {
-        MostrarTextosUI();
+        ShowTextOnUI();
     }
-    public void MostrarTextosUI()
+    public void ShowTextOnUI()
     {
-        TextoDistancia.text = GameController.controller.Distancia.ToString("F0") + " M";
-        TextoPontos.text = GameController.controller.Pontos.ToString("F0");
+        if (DistanceText != null)
+            DistanceText.text = GameController.controller.Distance.ToString("F0") + " M";
+        if (PointsText != null)
+            PointsText.text = GameController.controller.Points.ToString("F0");
     }
 
     #region BotoesUI
