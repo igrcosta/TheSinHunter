@@ -46,11 +46,12 @@ public class Player : MonoBehaviour
     [SerializeField] float fallingGravityScale = 30f;
     private float currentGravityScale;
 
-    private enum WeaponTypes { Default, LuxuryChains, RageBlade };
+    public enum WeaponTypes { Default, LuxuryChains, RageBlade };
 
     [Header("Armas/Mecânicas")]
-    [SerializeField] private WeaponTypes ActualWeapon;
+    public WeaponTypes ActualWeapon;
     private GameObject ChainsTriggerRef;
+    private ChainsScript ChainsScript;
 
     public bool isPushing = false;
 
@@ -73,6 +74,10 @@ public class Player : MonoBehaviour
     private Vector3 V3Move;
 
     private bool DummyMode = false;
+
+    public bool ChainsActive = false;
+    public bool DefaultActive = false;
+    public bool RageActive = false;
 
     public GameObject TargetObject;
 
@@ -99,19 +104,24 @@ public class Player : MonoBehaviour
         //Encontrar referência Do trigger das correntes
         ChainsTriggerRef = transform.GetChild(1).gameObject;
 
+        ChainsScript = ChainsTriggerRef.GetComponent<ChainsScript>();
+
         //reset para caso começe o jogo com arma X, aparecer o que deveria para sua arma
         if (ActualWeapon == WeaponTypes.Default)
         {
             //desligar tudo o que não for preciso para arma default
             ChainsTriggerRef.SetActive(false);
+            DefaultActive = true;
         }
         else if (ActualWeapon == WeaponTypes.LuxuryChains)
         {
             ChainsTriggerRef.SetActive(true);
+            ChainsActive = true;
         }
         else if (ActualWeapon == WeaponTypes.RageBlade)
         {
             ChainsTriggerRef.SetActive(false);
+            RageActive = true;
         }
 
         //identificar qual camada de colisão é qual para permitir atravessar as lanes
@@ -187,8 +197,9 @@ public class Player : MonoBehaviour
         if (ActualWeapon == WeaponTypes.LuxuryChains && isDashing && TargetObject != null)
         {
             Debug.Log("TO INDO TE PEGAR!");
-            rb.position = Vector3.MoveTowards(rb.position, TargetObject.transform.position, dashingpower * Time.deltaTime);
             DisableChainsLayersCollision();
+            rb.position = Vector3.MoveTowards(rb.position, TargetObject.transform.position, dashingpower * Time.deltaTime);
+
         }
         //parte das correntes FIM
     }
@@ -509,6 +520,10 @@ public class Player : MonoBehaviour
             rb.AddForce(ParryEffect * 7f, ForceMode.Impulse);
 
             EnableChainsLayersCollision();
+
+            ChainsScript.SelectNewTarget();
+
+            //procurar outro
         }
         //rb.linearVelocity = Vector3.zero;
         isDashing = false;
@@ -533,7 +548,7 @@ public class Player : MonoBehaviour
         }
         else if (ActualWeapon == WeaponTypes.LuxuryChains)
         {
-            if (Input.GetKeyDown(KeyCode.RightArrow))
+            if (Input.GetKeyDown(KeyCode.RightArrow) && ChainsScript.ActualTarget != null)
             {
                 BeginDash();
             }
@@ -563,7 +578,5 @@ public class Player : MonoBehaviour
     }
 
     #region ChainLogic
-
-
     #endregion ChainLogic
 }

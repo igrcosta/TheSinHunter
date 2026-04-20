@@ -16,10 +16,21 @@ public class ParryScript : MonoBehaviour
             scriptPlayer.ParryLogicEnable();
             //indico que isParry é true
 
-            if (scriptPlayer.isDashing)
+            if (scriptPlayer.isDashing && scriptPlayer.DefaultActive)
             {
                 scriptPlayer.rb.AddForce(ParryEffect * parryforce, ForceMode.Impulse);
                 //scriptPlayer.IgnoreDashLogic();
+                scriptPlayer.EnableDash();
+                //permito ele pular
+
+                //aumento um POUCO sua velocidade
+
+                GameController.controller.playerRef.FinishDash();
+
+                Invoke("Destroying", 0.1f);
+            }
+            else if (scriptPlayer.isDashing && scriptPlayer.ChainsActive)
+            {
                 scriptPlayer.EnableDash();
                 //permito ele pular
 

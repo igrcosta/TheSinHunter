@@ -60,7 +60,11 @@ public class ChainsScript : MonoBehaviour
     {
         for (int i = targetsListed - 1; i >= 0; i--)
         {
-            if (PossibleTargets[i].transform.position.x - pRef.transform.position.x <= 5f)
+            if (PossibleTargets[i] == null)
+            {
+                PossibleTargets.Remove(PossibleTargets[i]);
+            }
+            if (PossibleTargets[i] != null && PossibleTargets[i].transform.position.x - pRef.transform.position.x <= 0.1f)
             {
                 if (ActualTarget == PossibleTargets[i])
                 {
@@ -81,7 +85,7 @@ public class ChainsScript : MonoBehaviour
 
     }
 
-    void SelectNewTarget()
+    public void SelectNewTarget()
     {
         if (PossibleTargets.Count != 0)
         {

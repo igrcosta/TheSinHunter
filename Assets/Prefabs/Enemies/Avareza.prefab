@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 4685801190227379866}
   - component: {fileID: 4490436748281358215}
   - component: {fileID: 3805368294043749443}
+  - component: {fileID: 8744391683510453128}
   - component: {fileID: 6893348948132035445}
-  - component: {fileID: 8936371261902451422}
   m_Layer: 8
   m_Name: Avareza
   m_TagString: Enemy
@@ -114,6 +114,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8744391683510453128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3502998207314008937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6543367ef85b71648b7c19492ebc8868, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AvarezaScripot
+  Damage: 20
 --- !u!54 &6893348948132035445
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -141,16 +154,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 124
   m_CollisionDetection: 0
---- !u!114 &8936371261902451422
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3502998207314008937}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec7d011a7fc8966488bae53a5ddef597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AvarezaScripot
-  Damage: 20
