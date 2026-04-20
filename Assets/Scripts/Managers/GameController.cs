@@ -22,7 +22,7 @@ public class GameController : MonoBehaviour
     {
         DistanceCalculator();
     }
-        
+
     #region Singleton
 
     private void Awake()
@@ -43,12 +43,17 @@ public class GameController : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
     #endregion Singleton
-    
+
     public void DistanceCalculator()
     {
-        if (playerRef.Speed == 0f)
-            return;
-        Distance += (playerRef.Speed * Time.deltaTime) / 10;
+        if (playerRef != null)
+        {
+            if (playerRef.Speed == 0f)
+            {
+                return;
+            }
+            Distance += (playerRef.Speed * Time.deltaTime) / 10;
+        }
     }
     public void AddPoints(float add)
     {

@@ -10,6 +10,11 @@ public class UIController : MonoBehaviour
     public TMPro.TextMeshProUGUI DistanceText;
     public TMPro.TextMeshProUGUI PointsText;
 
+    void Start()
+    {
+        GameController.controller.UIManager = this;
+    }
+
 
     private void Update()
     {
@@ -35,7 +40,7 @@ public class UIController : MonoBehaviour
         Application.Quit();
     }
 
-    
+
     public void BotaoConfigON()
     {
         Options.SetActive(true);
@@ -71,5 +76,5 @@ public class UIController : MonoBehaviour
         ChainsAim.transform.position = PositionToSet;
     }
 
-#endregion ChainsUI
+    #endregion ChainsUI
 }
