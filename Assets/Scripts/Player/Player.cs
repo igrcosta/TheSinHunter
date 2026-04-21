@@ -184,6 +184,25 @@ public class Player : MonoBehaviour
 
         }
         //parte das correntes FIM
+
+        //limitar de vel para explosões INÍCIO
+
+        if (ActualWeapon == WeaponTypes.RageBlade)
+        {
+            if (rb.position.y >= 39f)
+            {
+                rb.MovePosition(new Vector3(rb.position.x, rb.position.y - 10f, rb.position.z));
+            }
+            if (rb.linearVelocity.x >= 120)
+            {
+                rb.linearVelocity = new Vector3(rb.linearVelocity.x - 10f, rb.linearVelocity.y, rb.linearVelocity.z);
+            }
+            if (rb.linearVelocity.y >= 80)
+            {
+                rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y - 10f, rb.linearVelocity.z);
+            }
+        }
+        //limitar de vel para explosões FIM
     }
 
 

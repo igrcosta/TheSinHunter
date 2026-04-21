@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class LuxuriaScript : MonoBehaviour
 {
@@ -24,6 +25,16 @@ public class LuxuriaScript : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("Player") && GameController.controller.playerRef.ExplosionState && shield != null)
+        {
+            //quebrar escudo
+            Destroy(shield);
+
+            //joga o player pra esquerda
+            GameController.controller.playerRef.rb.linearVelocity = Vector3.zero;
+
+            GameController.controller.playerRef.rb.MovePosition(rb.position + Vector3.left * pushDistance);
+        }
         if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing && shield != null)
         {
             //quebrar escudo
@@ -40,6 +51,13 @@ public class LuxuriaScript : MonoBehaviour
         else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing)
         {
             GameController.controller.playerRef.FinishDash();
+            GameController.controller.AddPoints(PointsGuiven);
+            Destroy(gameObject);
+            //VASCO //foda
+        }
+        else if (other.CompareTag("Player") && GameController.controller.playerRef.ExplosionState)
+        {
+            GameController.controller.playerRef.ContinuousRageExplosion();
             GameController.controller.AddPoints(PointsGuiven);
             Destroy(gameObject);
             //VASCO //foda
