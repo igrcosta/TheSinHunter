@@ -25,6 +25,12 @@ public class AvarezaScript : MonoBehaviour
             Destroy(gameObject);
 
         }
+        else if (other.CompareTag("Player") && GameController.controller.playerRef.ExplosionState)
+        {
+            GameController.controller.playerRef.ContinuousRageExplosion();
+            GameController.controller.AddPoints(PointsGuiven);
+            Destroy(gameObject);
+        }
         else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing == false)
         {
             GameController.controller.playerRef.Hit(Damage);

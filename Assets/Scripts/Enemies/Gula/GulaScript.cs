@@ -43,7 +43,14 @@ public class GulaScript : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (gameObject.CompareTag("Enemy") && other.CompareTag("Player") && !GameController.controller.playerRef.isDashing)
+        if (gameObject.CompareTag("Enemy") && other.CompareTag("Player") && GameController.controller.playerRef.ExplosionState)
+        {
+            Debug.Log("EXPLODIU");
+            GameController.controller.playerRef.ContinuousRageExplosion();
+            GameController.controller.AddPoints(PointsGuiven);
+            Destroy(gameObject);
+        }
+        else if (gameObject.CompareTag("Enemy") && other.CompareTag("Player") && !GameController.controller.playerRef.isDashing)
         {
             //se o player bateu na gula sem dar dash, player recebe dano
 

@@ -40,6 +40,10 @@ public class ParryScript : MonoBehaviour
 
                 Invoke("Destroying", 0.1f);
             }
+            else if (scriptPlayer.ExplosionState)
+            {
+                scriptPlayer.ContinuousRageExplosion();
+            }
         }
     }
     void Destroying()

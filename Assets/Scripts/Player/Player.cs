@@ -6,8 +6,6 @@ using NUnit.Framework;
 
 public class Player : MonoBehaviour
 {
-
-
     [Header("Sistema De Corrida")]
     public float Speed = 1.5f;
     [SerializeField] float MultiplicadorVelocidade = 20f;
@@ -18,6 +16,8 @@ public class Player : MonoBehaviour
     public bool CanJump = false;
     private bool OnJump = false;
     private bool isparrying = false;
+
+    private Vector3 ParryEffect = new Vector3(0f, 9.81f, 0f);
 
     [Header("Dashs")]
     public bool isDashing = false;
@@ -41,8 +41,13 @@ public class Player : MonoBehaviour
     private GameObject ChainsTriggerRef;
     private ChainsScript ChainsScript;
     public enum WeaponTypes { Default, LuxuryChains, RageBlade };
+    [SerializeField] ExplosionScript ExplosionPrefab;
+    public bool ExplosionState = false;
+    private Vector3 ExplosionForce = new Vector3(9f, 2.5f, 0f) * 70f / 4.5f;
+    private Vector3 SecondExplosionForce = new Vector3(9f, 4f, 0f);
 
     [Header("Referencias")] //Referencias e Variaveis
+    private GameObject BombSpawn;
     bool DamageInvulnerability = false;
     private TrailRenderer tr; //Trilha Dash
     private Vector3 V3Move;
@@ -77,6 +82,11 @@ public class Player : MonoBehaviour
 
         ChainsScript = ChainsTriggerRef.GetComponent<ChainsScript>();
 
+        //parte envolvendo scrips da rageBlade INÍCIO
+        BombSpawn = transform.GetChild(3).gameObject;
+        //parte envolvendo scrips da rageBlade FIM
+
+
         //reset para caso começe o jogo com arma X, aparecer o que deveria para sua arma
         if (ActualWeapon == WeaponTypes.Default)
         {
@@ -87,11 +97,13 @@ public class Player : MonoBehaviour
         else if (ActualWeapon == WeaponTypes.LuxuryChains)
         {
             ChainsTriggerRef.SetActive(true);
+            DefaultActive = false;
             ChainsActive = true;
         }
         else if (ActualWeapon == WeaponTypes.RageBlade)
         {
             ChainsTriggerRef.SetActive(false);
+            DefaultActive = false;
             RageActive = true;
         }
 
@@ -234,6 +246,12 @@ public class Player : MonoBehaviour
         {
             CanJump = true;
             OnJump = false;
+
+            if (ActualWeapon == WeaponTypes.RageBlade)
+            {
+                ExplosionState = false;
+                DamageInvulnerability = false;
+            }
         }
         else
         {
@@ -246,6 +264,12 @@ public class Player : MonoBehaviour
             CanJump = true;
             IsOnALane = true;
             OnJump = false;
+
+            if (ActualWeapon == WeaponTypes.RageBlade)
+            {
+                ExplosionState = false;
+                DamageInvulnerability = false;
+            }
         }
 
         //Parte da Lava
@@ -418,10 +442,33 @@ public class Player : MonoBehaviour
         //se não, se a arma atual for a lâmina da ira...
         else if (ActualWeapon == WeaponTypes.RageBlade)
         {
-            Debug.Log("RAGE BLADE EQUIPADA");
-            //mecanica mais loka ainda
+            Debug.Log("RAGE BLADE utilizada");
+
+            DamageInvulnerability = true;
+
+            //instanciar explosão
+            Instantiate(ExplosionPrefab, BombSpawn.transform.position, BombSpawn.transform.rotation);
+
+            //lançar para frente
+            RageExplosion();
+
         }
 
+    }
+
+    public void RageExplosion()
+    {
+        rb.AddForce(ExplosionForce, ForceMode.Impulse);
+        DisableChainsLayersCollision();
+        Invoke("EnableChainsLayersCollision", 2f);
+    }
+
+    public void ContinuousRageExplosion()
+    {
+        CancelInvoke("EnableLayersCollision");
+        rb.AddForce(ParryEffect * 10f, ForceMode.Impulse);
+        DisableLayersCollision();
+        Invoke("EnableChainslayersCollision", 2f);
     }
 
     public void FinishDash()
@@ -440,7 +487,6 @@ public class Player : MonoBehaviour
         }
         //rb.linearVelocity = Vector3.zero;
         isDashing = false;
-        tr.enabled = false;
         canDash = true;
     }
 
@@ -468,7 +514,11 @@ public class Player : MonoBehaviour
         }
         else if (ActualWeapon == WeaponTypes.RageBlade)
         {
-            //coisas de blade
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                BeginDash();
+                ExplosionState = true;
+            }
         }
     }
 

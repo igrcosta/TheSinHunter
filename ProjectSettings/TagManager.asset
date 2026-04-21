@@ -12,6 +12,7 @@ TagManager:
   - Parry
   - Shield
   - GulaTrigger
+  - Bomb
   layers:
   - Default
   - TransparentFX

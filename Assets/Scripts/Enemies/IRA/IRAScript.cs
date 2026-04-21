@@ -27,13 +27,21 @@ public class IRAScript : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing)
+        if (other.CompareTag("Player") && GameController.controller.playerRef.ExplosionState == true)
+        {
+            Debug.Log("RECEBA");
+            GameController.controller.AddPoints(pointsGuiven);
+            GameController.controller.playerRef.ContinuousRageExplosion();
+            Destroy(gameObject);
+        }
+
+        else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing)
         {
             GameController.controller.playerRef.FinishDash();
             GameController.controller.AddPoints(pointsGuiven);
             Destroy(gameObject);
         }
-        if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing == false)
+        else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing == false)
         {
             GameController.controller.playerRef.Hit(Damage);
             Debug.Log("IRA DEU DANO");
