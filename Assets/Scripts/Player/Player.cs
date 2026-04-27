@@ -60,6 +60,9 @@ public class Player : MonoBehaviour
     public GameObject TargetObject; // Target Chains
     public Rigidbody rb;
 
+    //variavel para combo de avarezas (MELHORA FEELING)
+    //public bool isOnA
+
     //variáveis para lanes
     private BoxCollider LaneCollider;
     private bool IsOnALane = false;
@@ -445,7 +448,6 @@ public class Player : MonoBehaviour
             //Speed -= Speed/10;
 
             //rb.MovePosition(rb.position + Vector3.right * dashingpower);
-
             Invoke("FinishDash", dashingtime);
         }
         //Se não, se a arma utilizada for as correntes...
@@ -455,7 +457,7 @@ public class Player : MonoBehaviour
             isDashing = true;
             tr.enabled = true;
 
-            //lerp para a direção do alvo
+            //"lerp" para a direção do alvo
 
         }
         //se não, se a arma atual for a lâmina da ira...
@@ -551,6 +553,14 @@ public class Player : MonoBehaviour
         isDashing = false;
         tr.enabled = false;
         canDash = true;
+    }
+
+    public void ComboDash()
+    {
+        //a ideia aqui é fazer o player continuar no dash após ter matado avareza
+        CancelInvoke("FinishDash");
+
+        BeginDash();
     }
     #endregion Dashes
 
