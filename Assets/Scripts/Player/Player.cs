@@ -43,7 +43,7 @@ public class Player : MonoBehaviour
     public enum WeaponTypes { Default, LuxuryChains, RageBlade };
     [SerializeField] ExplosionScript ExplosionPrefab;
     public bool ExplosionState = false;
-    private Vector3 ExplosionForce = new Vector3(9f, 2.5f, 0f) * 70f / 4.5f;
+    private Vector3 ExplosionForce = new Vector3(9f, 2.8f, 0f) * 70f / 4.5f;
     private Vector3 SecondExplosionForce = new Vector3(9f, 4f, 0f);
 
     [Header("Referencias")] //Referencias e Variaveis
@@ -92,7 +92,7 @@ public class Player : MonoBehaviour
 
         //reset para caso começe o jogo com arma X, aparecer o que deveria para sua arma
         WeaponChecking();
-        
+
         //identificar qual camada de colisão é qual para permitir atravessar as lanes
         LanesLayer = LayerMask.NameToLayer("Lanes");
         PlayerLayer = LayerMask.NameToLayer("Player");
@@ -167,25 +167,7 @@ public class Player : MonoBehaviour
 
         }
         //parte das correntes FIM
-
-        //limitar de vel para explosões INÍCIO
-
-        if (ActualWeapon == WeaponTypes.RageBlade)
-        {
-            if (rb.position.y >= 39f)
-            {
-                rb.MovePosition(new Vector3(rb.position.x, rb.position.y - 10f, rb.position.z));
-            }
-            if (rb.linearVelocity.x >= 120)
-            {
-                rb.linearVelocity = new Vector3(rb.linearVelocity.x - 10f, rb.linearVelocity.y, rb.linearVelocity.z);
-            }
-            if (rb.linearVelocity.y >= 80)
-            {
-                rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y - 10f, rb.linearVelocity.z);
-            }
-        }
-        //limitar de vel para explosões FIM
+        RageSpeedLimiter();
     }
 
     #endregion Updates
@@ -200,7 +182,6 @@ public class Player : MonoBehaviour
             {
                 Speed += MultiplicadorVelocidade * Time.deltaTime;
             }
-
         }
     }
 
@@ -226,7 +207,7 @@ public class Player : MonoBehaviour
         {
             //nada
         }
-        else if (Speed <= 0 && GameController.controller.Cheating == false)
+        else if (Speed <= 20 && GameController.controller.Cheating == false)
         {
             GameController.controller.GameOver();
         }
@@ -384,7 +365,7 @@ public class Player : MonoBehaviour
         Debug.Log("IGNORADO");
     }
 
-    void EnableChainsLayersCollision()
+    void INSTAEnableLayersCollision()
     {
         Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, false);
         Debug.Log("LEMBREI DE VC HEHE");
@@ -438,19 +419,40 @@ public class Player : MonoBehaviour
     #endregion WeaponChecking
 
     #region RageMethods
+
+    private void RageSpeedLimiter()
+    {
+        //limitar de vel para explosões INÍCIO
+        if (ActualWeapon == WeaponTypes.RageBlade)
+        {
+            if (rb.position.y >= 39f)
+            {
+                rb.MovePosition(new Vector3(rb.position.x, rb.position.y - 10f, rb.position.z));
+            }
+            if (rb.linearVelocity.x >= 90)
+            {
+                rb.linearVelocity = new Vector3(rb.linearVelocity.x - rb.linearVelocity.x / 4f, rb.linearVelocity.y, rb.linearVelocity.z);
+            }
+            /* if (rb.linearVelocity.y >= 40)
+            {
+                rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y - rb.linearVelocity.y / 4f, rb.linearVelocity.z);
+            } */
+        }
+        //limitar de vel para explosões FIM
+    }
     public void RageExplosion()
     {
         rb.AddForce(ExplosionForce, ForceMode.Impulse);
         DisableChainsLayersCollision();
-        Invoke("EnableChainsLayersCollision", 2f);
+        Invoke("INSTAEnableLayersCollision", 0.5f);
     }
 
     public void ContinuousRageExplosion()
     {
         CancelInvoke("EnableLayersCollision");
-        rb.AddForce(ParryEffect * 10f, ForceMode.Impulse);
+        rb.AddForce(ParryEffect * 7f, ForceMode.Impulse);
         DisableLayersCollision();
-        Invoke("EnableChainslayersCollision", 2f);
+        Invoke("INSTAEnableLayersCollision", 0.5f);
     }
     #endregion RageMethods
 
@@ -488,8 +490,7 @@ public class Player : MonoBehaviour
         //se não, se a arma atual for a lâmina da ira...
         else if (ActualWeapon == WeaponTypes.RageBlade)
         {
-            Debug.Log("RAGE BLADE utilizada");
-
+            canDash = false;
             DamageInvulnerability = true;
 
             //instanciar explosão
@@ -510,7 +511,7 @@ public class Player : MonoBehaviour
 
             rb.AddForce(ParryEffect * 7f, ForceMode.Impulse);
 
-            EnableChainsLayersCollision();
+            INSTAEnableLayersCollision();
 
             ChainsScript.SelectNewTarget();
 
@@ -539,6 +540,10 @@ public class Player : MonoBehaviour
         }
         else if (ActualWeapon == WeaponTypes.LuxuryChains)
         {
+            if (!canDash)
+            {
+                return;
+            }
             if (Input.GetKeyDown(KeyCode.RightArrow) && ChainsScript.ActualTarget != null)
             {
                 BeginDash();
@@ -546,6 +551,10 @@ public class Player : MonoBehaviour
         }
         else if (ActualWeapon == WeaponTypes.RageBlade)
         {
+            if (!canDash)
+            {
+                return;
+            }
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
                 BeginDash();
