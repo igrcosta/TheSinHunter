@@ -505,6 +505,7 @@ public class Player : MonoBehaviour
             //procurar outro
         }
         //rb.linearVelocity = Vector3.zero;
+        tr.enabled = false;
         isDashing = false;
         canDash = true;
     }
