@@ -91,25 +91,8 @@ public class Player : MonoBehaviour
 
 
         //reset para caso começe o jogo com arma X, aparecer o que deveria para sua arma
-        if (ActualWeapon == WeaponTypes.Default)
-        {
-            //desligar tudo o que não for preciso para arma default
-            ChainsTriggerRef.SetActive(false);
-            DefaultActive = true;
-        }
-        else if (ActualWeapon == WeaponTypes.LuxuryChains)
-        {
-            ChainsTriggerRef.SetActive(true);
-            DefaultActive = false;
-            ChainsActive = true;
-        }
-        else if (ActualWeapon == WeaponTypes.RageBlade)
-        {
-            ChainsTriggerRef.SetActive(false);
-            DefaultActive = false;
-            RageActive = true;
-        }
-
+        WeaponChecking();
+        
         //identificar qual camada de colisão é qual para permitir atravessar as lanes
         LanesLayer = LayerMask.NameToLayer("Lanes");
         PlayerLayer = LayerMask.NameToLayer("Player");
@@ -131,6 +114,7 @@ public class Player : MonoBehaviour
         DefaultdashCD = dashingCD;
     }
 
+    #region Updates
     void FixedUpdate()
     {
         if (isDashing)
@@ -141,9 +125,6 @@ public class Player : MonoBehaviour
         //lógica de física melhorada aqui, isso vai permitir uma queda irada pro player
         rb.AddForce(Physics.gravity * (gravityScale - 1) * rb.mass);
         rb.useGravity = true;
-
-        //(pelamor de Deus, rigidbody pra player é quase tentar ganhar uma triatlo sem saber nadar, tudo começa bem, mas no final...) 
-
     }
 
     void Update()
@@ -181,7 +162,6 @@ public class Player : MonoBehaviour
         //parte das correntes INÍCIO
         if (ActualWeapon == WeaponTypes.LuxuryChains && isDashing && TargetObject != null)
         {
-            Debug.Log("TO INDO TE PEGAR!");
             DisableChainsLayersCollision();
             rb.position = Vector3.MoveTowards(rb.position, TargetObject.transform.position, dashingpower * Time.deltaTime);
 
@@ -208,6 +188,9 @@ public class Player : MonoBehaviour
         //limitar de vel para explosões FIM
     }
 
+    #endregion Updates
+
+    #region Speed/Damage Logic
 
     void SpeedSystem() // Sistema de aumento de velocidade
     {
@@ -249,7 +232,6 @@ public class Player : MonoBehaviour
         }
     }
 
-
     void Move() // Sistema de Corrida infinita
     {
         if (canMove)
@@ -257,6 +239,7 @@ public class Player : MonoBehaviour
             rb.position += Vector3.right * Speed * Time.deltaTime;
         }
     }
+    #endregion Speed/Damage Logic
 
     #region Jumping
     //Pulo do jogador -> INÍCIO
@@ -429,6 +412,48 @@ public class Player : MonoBehaviour
     //Troca de Lanes -> FINAL
     #endregion Lanes
 
+    #region Weapons
+    void WeaponChecking()
+    {
+        if (ActualWeapon == WeaponTypes.Default)
+        {
+            //desligar tudo o que não for preciso para arma default
+            ChainsTriggerRef.SetActive(false);
+            DefaultActive = true;
+        }
+        else if (ActualWeapon == WeaponTypes.LuxuryChains)
+        {
+            ChainsTriggerRef.SetActive(true);
+            DefaultActive = false;
+            ChainsActive = true;
+        }
+        else if (ActualWeapon == WeaponTypes.RageBlade)
+        {
+            ChainsTriggerRef.SetActive(false);
+            DefaultActive = false;
+            RageActive = true;
+        }
+    }
+
+    #endregion WeaponChecking
+
+    #region RageMethods
+    public void RageExplosion()
+    {
+        rb.AddForce(ExplosionForce, ForceMode.Impulse);
+        DisableChainsLayersCollision();
+        Invoke("EnableChainsLayersCollision", 2f);
+    }
+
+    public void ContinuousRageExplosion()
+    {
+        CancelInvoke("EnableLayersCollision");
+        rb.AddForce(ParryEffect * 10f, ForceMode.Impulse);
+        DisableLayersCollision();
+        Invoke("EnableChainslayersCollision", 2f);
+    }
+    #endregion RageMethods
+
     #region Dashes
     public void BeginDash()
     {
@@ -475,21 +500,6 @@ public class Player : MonoBehaviour
 
         }
 
-    }
-
-    public void RageExplosion()
-    {
-        rb.AddForce(ExplosionForce, ForceMode.Impulse);
-        DisableChainsLayersCollision();
-        Invoke("EnableChainsLayersCollision", 2f);
-    }
-
-    public void ContinuousRageExplosion()
-    {
-        CancelInvoke("EnableLayersCollision");
-        rb.AddForce(ParryEffect * 10f, ForceMode.Impulse);
-        DisableLayersCollision();
-        Invoke("EnableChainslayersCollision", 2f);
     }
 
     public void FinishDash()
@@ -569,7 +579,4 @@ public class Player : MonoBehaviour
         //a ideia é ignorar o dash da sua lógica padrão ao dar parry
         isparrying = true;
     }
-
-    #region ChainLogic
-    #endregion ChainLogic
 }
