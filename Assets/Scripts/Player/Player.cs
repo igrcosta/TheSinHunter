@@ -258,18 +258,24 @@ public class Player : MonoBehaviour
             }
         }
 
-        //Parte da Lava
+        //Parte da Lava / obstáculos 
         if (collisionInfo.gameObject.CompareTag("LAVA"))
         {
-            //player para
-            canMove = false;
-
-            //player começa a descer
-            Invoke("DisableLayersCollision", 0.25f);
-
-            GameController.controller.Invoke("GameOver", 0.8f);
-            //invoca depois de alguns segundos a tela de morte
+            LavaKill();
         }
+    }
+
+    //LavaKill também é utilizado para quando se bate em onstáculos não unlocked ainda
+    public void LavaKill()
+    {
+        //player para
+        canMove = false;
+
+        //player começa a descer
+        Invoke("DisableLayersCollision", 0.25f);
+
+        GameController.controller.Invoke("GameOver", 0.8f);
+        //invoca depois de alguns segundos a tela de morte
     }
     void Jumping()
     {

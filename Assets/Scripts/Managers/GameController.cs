@@ -13,6 +13,10 @@ public class GameController : MonoBehaviour
     [Header("Mecanicas")]
     public Vector3 PlayerTargetPosition;
 
+    [Header("Doors / Obstacles")]
+    public LeverScript ActualLever;
+    public ObstacleScript ActualObstacle;
+
     [Header("Referencias")]
     public static GameController controller;
     public UIController UIManager;
@@ -74,4 +78,6 @@ public class GameController : MonoBehaviour
 
         }
     }
+
+
 }

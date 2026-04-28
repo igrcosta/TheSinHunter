@@ -20,7 +20,7 @@ public class ChainsScript : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy") || other.CompareTag("Parry"))
+        if (other.CompareTag("Enemy") || other.CompareTag("Parry") || other.CompareTag("Lever"))
         {
             PossibleTargets.Add(other.gameObject);
 
