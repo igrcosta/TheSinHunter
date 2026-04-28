@@ -1,8 +1,8 @@
-using Unity.VisualScripting;
+/* using Unity.VisualScripting; */
 using UnityEngine;
-using System.Collections;
+/* using System.Collections;
 using System;
-using NUnit.Framework;
+using NUnit.Framework; */
 
 public class Player : MonoBehaviour
 {
@@ -72,10 +72,10 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
+        GameController.controller.playerRef = this; //Referencia Player
+
         rb = GetComponent<Rigidbody>();
         tr = GetComponent<TrailRenderer>();
-
-        GameController.controller.playerRef = this; //Referencia Player
     }
 
     void Start()
@@ -405,21 +405,49 @@ public class Player : MonoBehaviour
         if (ActualWeapon == WeaponTypes.Default)
         {
             //desligar tudo o que não for preciso para arma default
+
+            GameController.controller.UIManager.DisableAim();
+            //desabilitar mira de corrente
+
+            ChainsActive = false;
             ChainsTriggerRef.SetActive(false);
             DefaultActive = true;
+            RageActive = false;
         }
         else if (ActualWeapon == WeaponTypes.LuxuryChains)
         {
+            ChainsActive = true;
             ChainsTriggerRef.SetActive(true);
             DefaultActive = false;
-            ChainsActive = true;
+            RageActive = false;
         }
         else if (ActualWeapon == WeaponTypes.RageBlade)
         {
+            GameController.controller.UIManager.DisableAim();
+            //desabilitar mira de corrente
+
+            ChainsActive = false;
             ChainsTriggerRef.SetActive(false);
             DefaultActive = false;
             RageActive = true;
         }
+    }
+
+    public void SetActualWeapon(string weaponName)
+    {
+        if (weaponName == "LuxuryChains")
+        {
+            ActualWeapon = WeaponTypes.LuxuryChains;
+        }
+        else if (weaponName == "Default")
+        {
+            ActualWeapon = WeaponTypes.Default;
+        }
+        else if (weaponName == "RageBlade")
+        {
+            ActualWeapon = WeaponTypes.RageBlade;
+        }
+        WeaponChecking();
     }
 
     #endregion WeaponChecking

@@ -263,6 +263,7 @@ MonoBehaviour:
   fallingGravityScale: 50
   ActualWeapon: 0
   ExplosionPrefab: {fileID: 2880823463253491105, guid: 86dfadc9df8a7d04f91495142dc9964e, type: 3}
+  ExplosionState: 0
   ChainsActive: 0
   DefaultActive: 0
   RageActive: 0
@@ -653,7 +654,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
