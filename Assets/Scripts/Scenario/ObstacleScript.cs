@@ -8,6 +8,9 @@ public class ObstacleScript : MonoBehaviour
     private float targetY;
     private Vector3 TargetPosition;
 
+    private Vector3 initialScale;
+    private Vector3 targetScale;
+
     void Start()
     {
         GameController.controller.ActualObstacle = this;
@@ -17,19 +20,26 @@ public class ObstacleScript : MonoBehaviour
         targetY = transform.position.y + 31f;
 
         TargetPosition = new Vector3(transform.position.x, targetY, transform.position.z);
+
+        initialScale = transform.localScale;
+        targetScale = new Vector3(0f, transform.localScale.y, transform.localScale.z);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Unlocked)
+        if (Unlocked && gameObject.name == "VDOOR")
         {
             transform.position = Vector3.Lerp(transform.position, TargetPosition, 0.08f);
 
-            /* if (targetY - transform.position.y >= 2f)
-            {
-                Destroy(gameObject);
-            } */
+            Invoke("Destroying", 2f);
+        }
+        else if (Unlocked && gameObject.name == "HDOOR")
+        {
+            //diminuir escala do malandro em X
+            transform.localScale = Vector3.Lerp(transform.localScale, targetScale, 0.03f);
+
+            Invoke("Destroying", 2f);
         }
     }
 
@@ -53,5 +63,10 @@ public class ObstacleScript : MonoBehaviour
     {
         //subir 29 em Y
         Unlocked = true;
+    }
+
+    void Destroying()
+    {
+        Destroy(gameObject);
     }
 }
