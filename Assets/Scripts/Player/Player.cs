@@ -167,7 +167,7 @@ public class Player : MonoBehaviour
 
         if (rb.position.y - JumpingBeginning >= 10f && OnJump)
         {
-            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
+            //rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
             rb.AddForce(Vector3.down * JumpForce / 55f, ForceMode.Impulse);
         }
 
