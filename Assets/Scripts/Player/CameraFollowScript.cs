@@ -5,10 +5,16 @@ public class CameraFollowScript : MonoBehaviour
 {
     //Referencias
     private Player Pref;
+
+    private Vector3 EvenEVENEVENUpwards;
+    private Vector3 EvenEVENUpwards;
     private Vector3 EvenUpwards;
     private Vector3 Upwards;
     private Vector3 Middle;
     private Vector3 DownWards;
+    private Vector3 EvenDownWards;
+    private Vector3 EvenEVENDownWards;
+    private Vector3 EvenEVENEVENDownWards;
 
     void Start()
     {
@@ -20,13 +26,23 @@ public class CameraFollowScript : MonoBehaviour
         {
             Debug.Log("Player vazio meu filho");
         }
-        EvenUpwards = new Vector3(Pref.transform.position.x + 22, 28f, transform.position.z);
+        EvenEVENEVENUpwards = new Vector3(Pref.transform.position.x + 22, 51f, transform.position.z);
+
+        EvenEVENUpwards = new Vector3(Pref.transform.position.x + 22, 42f, transform.position.z);
+
+        EvenUpwards = new Vector3(Pref.transform.position.x + 22, 33f, transform.position.z);
 
         Upwards = new Vector3(Pref.transform.position.x + 22, 18f, transform.position.z);
 
         Middle = new Vector3(Pref.transform.position.x + 22f, 15f, transform.position.z);
 
         DownWards = new Vector3(Pref.transform.position.x + 22f, 12f, transform.position.z);
+
+        EvenDownWards = new Vector3(Pref.transform.position.x + 22f, -3f, transform.position.z);
+
+        EvenEVENDownWards = new Vector3(Pref.transform.position.x + 22, -12f, transform.position.z);
+
+        EvenEVENEVENDownWards = new Vector3(Pref.transform.position.x + 22, -21f, transform.position.z);
     }
     void Update()
     {
@@ -36,14 +52,21 @@ public class CameraFollowScript : MonoBehaviour
 
     void YFollowing()
     {
-        if (Pref.transform.position.y >= 24)
+        if (Pref.transform.position.y >= 40)
+        {
+            transform.position = Vector3.Lerp(transform.position, EvenEVENEVENUpwards, 0.10f);
+        }
+        else if (Pref.transform.position.y >= 32)
+        {
+            transform.position = Vector3.Lerp(transform.position, EvenEVENUpwards, 0.10f);
+        }
+        else if (Pref.transform.position.y >= 24)
         {
             transform.position = Vector3.Lerp(transform.position, EvenUpwards, 0.10f);
         }
-        if (Pref.transform.position.y > 16)
+        else if (Pref.transform.position.y > 16)
         {
             transform.position = Vector3.Lerp(transform.position, Upwards, 0.10f);
-
         }
         else if (Pref.transform.position.y < 16 && Pref.transform.position.y > 12)
         {
@@ -52,6 +75,18 @@ public class CameraFollowScript : MonoBehaviour
         else if (Pref.transform.position.y < 10)
         {
             transform.position = Vector3.Lerp(transform.position, DownWards, 0.10f);
+        }
+        else if (Pref.transform.position.y < 2)
+        {
+            transform.position = Vector3.Lerp(transform.position, EvenDownWards, 0.10f);
+        }
+        else if (Pref.transform.position.y < -6)
+        {
+            transform.position = Vector3.Lerp(transform.position, EvenEVENDownWards, 0.10f);
+        }
+        else if (Pref.transform.position.y < -14)
+        {
+            transform.position = Vector3.Lerp(transform.position, EvenEVENEVENDownWards, 0.10f);
         }
     }
 
@@ -62,6 +97,6 @@ public class CameraFollowScript : MonoBehaviour
 
     void XFollowing()
     {
-        transform.position = new Vector3(Pref.transform.position.x + 20f, transform.position.y, transform.position.z);
+        transform.position = new Vector3(Pref.transform.position.x + 25f, transform.position.y, transform.position.z);
     }
 }
