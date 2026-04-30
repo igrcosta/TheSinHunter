@@ -146,7 +146,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (rb.position.y - JumpingBeginning >= 10f && OnJump)
+        if (rb.position.y - JumpingBeginning >= 10f && OnJump && !isparrying)
         {
             //rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
             rb.AddForce(Vector3.down * JumpForce / 55f, ForceMode.Impulse);
@@ -232,6 +232,7 @@ public class Player : MonoBehaviour
         {
             CanJump = true;
             OnJump = false;
+            isparrying = false;
 
             if (ActualWeapon == WeaponTypes.RageBlade)
             {
@@ -250,6 +251,7 @@ public class Player : MonoBehaviour
             CanJump = true;
             IsOnALane = true;
             OnJump = false;
+            isparrying = false;
 
             if (ActualWeapon == WeaponTypes.RageBlade)
             {
