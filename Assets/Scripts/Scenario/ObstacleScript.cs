@@ -17,7 +17,7 @@ public class ObstacleScript : MonoBehaviour
 
         player = GameController.controller.playerRef;
 
-        targetY = transform.position.y + 31f;
+        targetY = transform.position.y + 40f;
 
         TargetPosition = new Vector3(transform.position.x, targetY, transform.position.z);
 
