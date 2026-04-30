@@ -20,7 +20,7 @@ public class ChainsScript : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy") || other.CompareTag("Parry"))
+        if (other.CompareTag("Enemy") || other.CompareTag("Parry") || other.CompareTag("Lever"))
         {
             PossibleTargets.Add(other.gameObject);
 
@@ -35,20 +35,28 @@ public class ChainsScript : MonoBehaviour
 
     void Update()
     {
-        targetsListed = PossibleTargets.Count;
-        RemoveBehindPlayer();
-
-        if (ActualTarget == null && PossibleTargets != null)
+        if (Pref.ChainsActive)
         {
-            SelectNewTarget();
+            targetsListed = PossibleTargets.Count;
+            RemoveBehindPlayer();
+
+            if (ActualTarget == null && PossibleTargets != null)
+            {
+                SelectNewTarget();
+            }
+            else
+            {
+                GameController.controller.UIManager.DisableAim();
+            }
+
+            TargetTracking();
+            //Esse aqui só funciona quando tem alvos pra rastrear
         }
         else
         {
             GameController.controller.UIManager.DisableAim();
         }
 
-        TargetTracking();
-        //Esse aqui só funciona quando tem alvos pra rastrear
 
     }
     void RemoveBehindPlayer()
@@ -106,28 +114,35 @@ public class ChainsScript : MonoBehaviour
 
     void TargetTracking()
     {
-        if (targetsListed == 0)
+        if (Pref.ChainsActive == true)
         {
-            GameController.controller.UIManager.DisableAim();
-            return;
+            if (targetsListed == 0)
+            {
+                GameController.controller.UIManager.DisableAim();
+                return;
 
-        }
-        if (isTracking && targetsListed != 0)
-        {
-            if (ActualTarget == null) return;
-            TargetPosition = ActualTarget.transform.position;
-            Debug.Log("POSIÇÃO DE " + TargetPosition.y);
-            //posição do alvo armazenada e atualizada em tempo real
+            }
+            if (isTracking && targetsListed != 0)
+            {
+                if (ActualTarget == null) return;
+                TargetPosition = ActualTarget.transform.position;
+                Debug.Log("POSIÇÃO DE " + TargetPosition.y);
+                //posição do alvo armazenada e atualizada em tempo real
 
-            GameController.controller.UIManager.EnableAim();
-            GameController.controller.UIManager.SetAimPosition(TargetPosition);
-            GameController.controller.playerRef.TargetObject = ActualTarget;
-            //ativar target sobre o inimigo
-            //enviar valor pro game controller, assim o player pode acessar
+                GameController.controller.UIManager.EnableAim();
+                GameController.controller.UIManager.SetAimPosition(TargetPosition);
+                GameController.controller.playerRef.TargetObject = ActualTarget;
+                //ativar target sobre o inimigo
+                //enviar valor pro game controller, assim o player pode acessar
+            }
+            else if (ActualTarget == null && PossibleTargets == null)
+            {
+                GameController.controller.UIManager.DisableAim();
+            }
         }
-        else if (ActualTarget == null && PossibleTargets == null)
+        else
         {
-            GameController.controller.UIManager.DisableAim();
+
         }
     }
 }

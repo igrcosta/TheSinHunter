@@ -13,6 +13,9 @@ TagManager:
   - Shield
   - GulaTrigger
   - Bomb
+  - Obstacle
+  - Lever
+  - item
   layers:
   - Default
   - TransparentFX
