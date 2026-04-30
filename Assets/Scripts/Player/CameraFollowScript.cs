@@ -26,11 +26,11 @@ public class CameraFollowScript : MonoBehaviour
         {
             Debug.Log("Player vazio meu filho");
         }
-        EvenEVENEVENUpwards = new Vector3(Pref.transform.position.x + 22, 51f, transform.position.z);
+        EvenEVENEVENUpwards = new Vector3(Pref.transform.position.x + 22, 27f, transform.position.z);
 
-        EvenEVENUpwards = new Vector3(Pref.transform.position.x + 22, 42f, transform.position.z);
+        EvenEVENUpwards = new Vector3(Pref.transform.position.x + 22, 24f, transform.position.z);
 
-        EvenUpwards = new Vector3(Pref.transform.position.x + 22, 33f, transform.position.z);
+        EvenUpwards = new Vector3(Pref.transform.position.x + 22, 21f, transform.position.z);
 
         Upwards = new Vector3(Pref.transform.position.x + 22, 18f, transform.position.z);
 
@@ -38,11 +38,11 @@ public class CameraFollowScript : MonoBehaviour
 
         DownWards = new Vector3(Pref.transform.position.x + 22f, 12f, transform.position.z);
 
-        EvenDownWards = new Vector3(Pref.transform.position.x + 22f, -3f, transform.position.z);
+        EvenDownWards = new Vector3(Pref.transform.position.x + 22f, 6f, transform.position.z);
 
-        EvenEVENDownWards = new Vector3(Pref.transform.position.x + 22, -12f, transform.position.z);
+        EvenEVENDownWards = new Vector3(Pref.transform.position.x + 22, 3f, transform.position.z);
 
-        EvenEVENEVENDownWards = new Vector3(Pref.transform.position.x + 22, -21f, transform.position.z);
+        EvenEVENEVENDownWards = new Vector3(Pref.transform.position.x + 22, 0f, transform.position.z);
     }
     void Update()
     {
@@ -72,19 +72,19 @@ public class CameraFollowScript : MonoBehaviour
         {
             transform.position = Vector3.Lerp(transform.position, Middle, 0.10f);
         }
-        else if (Pref.transform.position.y < 10)
+        else if (Pref.transform.position.y < 10 && Pref.transform.position.y > 2)
         {
             transform.position = Vector3.Lerp(transform.position, DownWards, 0.10f);
         }
-        else if (Pref.transform.position.y < 2)
+        else if (Pref.transform.position.y <= 2 && Pref.transform.position.y > -6)
         {
             transform.position = Vector3.Lerp(transform.position, EvenDownWards, 0.10f);
         }
-        else if (Pref.transform.position.y < -6)
+        else if (Pref.transform.position.y <= -6 && Pref.transform.position.y > -14)
         {
             transform.position = Vector3.Lerp(transform.position, EvenEVENDownWards, 0.10f);
         }
-        else if (Pref.transform.position.y < -14)
+        else if (Pref.transform.position.y <= -14)
         {
             transform.position = Vector3.Lerp(transform.position, EvenEVENEVENDownWards, 0.10f);
         }
