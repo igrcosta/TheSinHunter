@@ -222,6 +222,10 @@ PrefabInstance:
       value: IgorCostaAvareza
       objectReference: {fileID: 0}
     - target: {fileID: 4938317452510725755, guid: 795e74a181bfd7049a6cb755e5ef0ad3, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4938317452510725755, guid: 795e74a181bfd7049a6cb755e5ef0ad3, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: a705d257394f93043840afcaa8f3c306, type: 2}
