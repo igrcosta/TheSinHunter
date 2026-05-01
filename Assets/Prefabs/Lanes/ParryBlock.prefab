@@ -190,7 +190,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: bfe38ddb0021b114e8be57ebd715fb75, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 645edbae901b043489672617b2f980d6, type: 2}
+      objectReference: {fileID: 2100000, guid: 8d56c2b660e247d40af15b9947822f8f, type: 2}
     - target: {fileID: 919132149155446097, guid: bfe38ddb0021b114e8be57ebd715fb75, type: 3}
       propertyPath: m_Name
       value: Envy
