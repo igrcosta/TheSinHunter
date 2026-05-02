@@ -160,11 +160,24 @@ public class Player : MonoBehaviour
 
 
         //parte das correntes INÍCIO
-        if (ActualWeapon == WeaponTypes.LuxuryChains && isDashing && TargetObject != null)
+        if (ActualWeapon == WeaponTypes.LuxuryChains && isDashing)
         {
-            DisableChainsLayersCollision();
-            rb.position = Vector3.MoveTowards(rb.position, TargetObject.transform.position, dashingpower * Time.deltaTime);
+            // SEGUNDA PROTEÇÃO: Se o dash está ativo mas o alvo sumiu do mapa
+            if (TargetObject == null)
+            {
+                FinishDash();
+            }
+            else
+            {
+                DisableChainsLayersCollision();
+                rb.position = Vector3.MoveTowards(rb.position, TargetObject.transform.position, dashingpower * Time.deltaTime);
 
+                // CHECAGEM DE CHEGADA: Se estiver muito perto do alvo, encerra o dash
+                if (Vector3.Distance(transform.position, TargetObject.transform.position) < 0.5f)
+                {
+                    FinishDash();
+                }
+            }
         }
         //parte das correntes FIM
         RageSpeedLimiter();
@@ -495,6 +508,9 @@ public class Player : MonoBehaviour
     #region Dashes
     public void BeginDash()
     {
+        // Se já estiver dando dash, ignora qualquer novo comando de dash
+        if (isDashing) return;
+
         //O DASH MUDA CONFORME FOR A ARMA UTILIZADA, LOGO...
         //caso seja um dash default...
         if (ActualWeapon == WeaponTypes.Default)
@@ -519,9 +535,15 @@ public class Player : MonoBehaviour
         //Se não, se a arma utilizada for as correntes...
         else if (ActualWeapon == WeaponTypes.LuxuryChains)
         {
+            canDash = false;
+            //permitimos isso para cooldown começar a rodar
+
             Debug.Log("LUXURY CHAINS utilizada");
             isDashing = true;
             tr.enabled = true;
+
+            // Debug: Se em 1.5 segundos ele não chegar no alvo, encerra o dash por segurança.
+            // Invoke("FinishDash", 1.5f);
 
             //"lerp" para a direção do alvo
 
@@ -547,6 +569,9 @@ public class Player : MonoBehaviour
         if (ActualWeapon == WeaponTypes.LuxuryChains)
         {
             Vector3 ParryEffect = new Vector3(0f, 9.81f, 0f);
+
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, 0);
+            //resetamos a velocidade pra não acumular nada vertical
 
             rb.AddForce(ParryEffect * 7f, ForceMode.Impulse);
 
