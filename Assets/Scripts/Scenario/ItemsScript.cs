@@ -10,7 +10,7 @@ public class ItemsScript : MonoBehaviour
     {
         player = GameController.controller.playerRef;
         animator = GetComponent<Animator>();
-        animator.Play("ChainsAnimation", -1, 0f);
+        animator.Play("ChainsAnimation");
     }
 
     // Update is called once per frame

@@ -5,6 +5,7 @@ public class ChunkGeneration : MonoBehaviour
     [Header("Chunks Prefabs")]
     [SerializeField] private GameObject[] PrefabsToSpawn;
 
+    public bool SpawnCastle;
     public static ChunkGeneration ChunkGenerator;
 
     void Awake()
@@ -30,6 +31,7 @@ public class ChunkGeneration : MonoBehaviour
 
         if (PrefabsToSpawn != null && PrefabsToSpawn.Length > 0 && needToSpawn)
         {
+            
             int randomIndex = Random.Range(0, PrefabsToSpawn.Length);
             GameObject ChunkSelected = PrefabsToSpawn[randomIndex];
             Instantiate(ChunkSelected, new Vector3(XcoordinatesToSpawn, 0, 0), transform.rotation);

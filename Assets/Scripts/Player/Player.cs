@@ -478,7 +478,7 @@ public class Player : MonoBehaviour
             {
                 rb.MovePosition(new Vector3(rb.position.x, rb.position.y - 10f, rb.position.z));
             }
-            if (rb.linearVelocity.x >= 90)
+            if (rb.linearVelocity.x >= 50)
             {
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x - rb.linearVelocity.x / 4f, rb.linearVelocity.y, rb.linearVelocity.z);
             }
@@ -499,7 +499,7 @@ public class Player : MonoBehaviour
     public void ContinuousRageExplosion()
     {
         CancelInvoke("EnableLayersCollision");
-        rb.AddForce(ParryEffect * 7f, ForceMode.Impulse);
+        rb.AddForce(ParryEffect * 10f, ForceMode.Impulse);
         DisableLayersCollision();
         Invoke("INSTAEnableLayersCollision", 0.5f);
     }

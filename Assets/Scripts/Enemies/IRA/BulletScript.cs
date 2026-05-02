@@ -23,6 +23,7 @@ public class BulletScript : MonoBehaviour
     {
         if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing || GameController.controller.playerRef.ExplosionState)
         {
+            GameController.controller.playerRef.ComboDash();
             Destroy(gameObject);
         }
         else if (other.CompareTag("Player"))

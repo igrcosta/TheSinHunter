@@ -16,6 +16,7 @@ TagManager:
   - Obstacle
   - Lever
   - item
+  - Castle
   layers:
   - Default
   - TransparentFX
