@@ -103,3 +103,5 @@ public class LuxuriaScript : MonoBehaviour
         Destroy(gameObject);
     }
 }
+
+//eu tentei muito deixar algo mais fluido com movetowards ou lerp, perguntei até pras IAS, mas física dá mtos conflitos...
