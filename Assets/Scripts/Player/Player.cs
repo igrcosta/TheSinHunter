@@ -499,6 +499,9 @@ public class Player : MonoBehaviour
         //caso seja um dash default...
         if (ActualWeapon == WeaponTypes.Default)
         {
+            canDash = false;
+            //permitimos isso para cooldown começar a rodar
+
             Debug.Log("ARMA DEFAULT EQUIPADA");
             isDashing = true;
             tr.enabled = true;
@@ -556,7 +559,7 @@ public class Player : MonoBehaviour
         //rb.linearVelocity = Vector3.zero;
         tr.enabled = false;
         isDashing = false;
-        canDash = true;
+        //canDash = true;
     }
 
     void CanDash() // Checa se pode dar dash, e roda se possivel
