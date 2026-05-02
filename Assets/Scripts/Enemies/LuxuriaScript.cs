@@ -1,71 +1,105 @@
 using UnityEngine;
-using UnityEngine.AI;
 
 public class LuxuriaScript : MonoBehaviour
 {
     [Header("Death")]
-    [SerializeField] float PointsGuiven = 250;
+    [SerializeField] float PointsGuiven = 250f;
 
     [Header("Mechanics")]
     [SerializeField] float Damage = 15f;
-    [SerializeField] float pushDistance = 8f;
+    [SerializeField] float pushDistanceChains = 5f; 
+    [SerializeField] float pushForceDefault = 10f;
 
-    [Header("Referencias")]
     private Rigidbody rb;
     private GameObject shield;
 
-    void Awake()
-    {
-        rb = GetComponent<Rigidbody>();
-    }
+    void Awake() => rb = GetComponent<Rigidbody>();
+
     void Start()
     {
-        shield = transform.GetChild(0).gameObject;
+        if (transform.childCount > 0)
+            shield = transform.GetChild(0).gameObject;
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && GameController.controller.playerRef.ExplosionState && shield != null)
+        if (other.CompareTag("Player"))
         {
-            //quebrar escudo
-            Destroy(shield);
+            Player player = GameController.controller.playerRef;
 
-            //joga o player pra esquerda
-            GameController.controller.playerRef.rb.linearVelocity = Vector3.zero;
-
-            GameController.controller.playerRef.rb.MovePosition(rb.position + Vector3.left * pushDistance);
+            if (shield != null)
+            {
+                if (player.isDashing || player.ExplosionState)
+                {
+                    player.rb.position = new Vector3(transform.position.x - 2f, player.rb.position.y, player.rb.position.z);
+                    
+                    HandleShieldBreak(player);
+                }
+                else
+                {
+                    player.Hit(Damage);
+                }
+            }
+            else
+            {
+                if (player.isDashing || player.ExplosionState)
+                {
+                    HandleDeath(player);
+                }
+                else
+                {
+                    player.Hit(Damage);
+                }
+            }
         }
-        if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing && shield != null)
+    }
+
+    void HandleShieldBreak(Player player)
+    {
+        Destroy(shield);
+        shield = null;
+
+        bool isUsingChains = player.ActualWeapon == Player.WeaponTypes.LuxuryChains;
+
+        player.EnableDash(); 
+        player.rb.linearVelocity = Vector3.zero;
+        player.rb.angularVelocity = Vector3.zero; 
+        // Reset total de inércia para impedir que ele continue o movimento do dash
+
+        if (isUsingChains)
         {
-            //quebrar escudo
-            Destroy(shield);
-            GameController.controller.playerRef.EnableDash();
-
-            //jogar luxúria para trás (knockback)
-            rb.MovePosition(rb.position + Vector3.right * pushDistance);
-
-            //dar mais um dash pro jogador
-            GameController.controller.playerRef.EnableDash();
-
+            rb.MovePosition(rb.position + Vector3.right * pushDistanceChains);
+            player.rb.MovePosition(player.rb.position + Vector3.left * 1.5f);
+            // Correntes: Empurrão seco
         }
-        else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing)
+        else
         {
-            GameController.controller.playerRef.FinishDash();
-            GameController.controller.AddPoints(PointsGuiven);
-            Destroy(gameObject);
-            //VASCO //foda
+            rb.AddForce(new Vector3(pushForceDefault, 2f, 0f), ForceMode.Impulse);
+            // Dash Default: Impacto físico
+            // Jogamos a luxúria um pouco pra frente e pra cima (firula)
+            
+            // Jogamos o player um pouco pra trás
+            player.rb.AddForce(new Vector3(-pushForceDefault / 1.5f, 3f, 0f), ForceMode.Impulse);
         }
-        else if (other.CompareTag("Player") && GameController.controller.playerRef.ExplosionState)
-        {
-            GameController.controller.playerRef.ContinuousRageExplosion();
-            GameController.controller.AddPoints(PointsGuiven);
-            Destroy(gameObject);
-            //VASCO //foda
-        }
-        else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing == false)
-        {
-            GameController.controller.playerRef.Hit(Damage);
-            Debug.Log("LUXÚRIA DEU DANO");
-        }
+
+        CancelInvoke("RestoreSpeed");
+        Invoke("RestoreSpeed", 0.15f); 
+        // Delay curto para o jogador ver que bateu, antes de voltar a correr
+    }
+
+    void RestoreSpeed()
+    {
+        Player player = GameController.controller.playerRef;
+        if(player != null)
+            player.rb.linearVelocity = new Vector3(player.Speed, player.rb.linearVelocity.y, 0);
+    }
+
+    void HandleDeath(Player player)
+    {
+        if (player.ExplosionState) player.ContinuousRageExplosion();
+        else player.FinishDash();
+
+        GameController.controller.AddPoints(PointsGuiven);
+        Destroy(gameObject);
     }
 }
