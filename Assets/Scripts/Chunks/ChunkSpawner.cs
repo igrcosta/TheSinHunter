@@ -7,18 +7,18 @@ public class ChunkSpawner : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && gameObject.CompareTag("DecisionPoints"))
         {
             ChunkGeneration.ChunkGenerator.ChunkSpawning(SpawnNecessity);
         }
-        if (other.CompareTag("Player") && SpawnNecessity)
+        if (other.CompareTag("Player") && gameObject.CompareTag("DecisionPoints") && SpawnNecessity)
         {
             ChunkGeneration.ChunkGenerator.DecisionPoint = this;
         }
         if (other.CompareTag("Player") && gameObject.CompareTag("Castle"))
         {
             ChunkGeneration.ChunkGenerator.SpawnCastle = true;
-
+            
         }
     }
 }
