@@ -17,6 +17,8 @@ public class ChainsScript : MonoBehaviour
     private void Start()
     {
         Pref = GameController.controller.playerRef;
+   
+
     }
     void OnTriggerEnter(Collider other)
     {
