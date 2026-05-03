@@ -35,6 +35,7 @@ public class BulletScript : MonoBehaviour
         else if (other.CompareTag("Player"))
         {
             GameController.controller.playerRef.Hit(BulletDamage);
+            Debug.Log("BALA DEU DANO");
             Destroy(gameObject);
         }
     }
