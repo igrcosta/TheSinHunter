@@ -5,6 +5,7 @@ public class IRAScript : MonoBehaviour
     [Header("Death")]
     [SerializeField] float pointsGuiven = 100;
 
+
     [Header("Shoot System")]
     [SerializeField] float Damage = 5f;
     [SerializeField] float shootCooldown = 1.5f;
@@ -32,6 +33,7 @@ public class IRAScript : MonoBehaviour
             Debug.Log("RECEBA");
             GameController.controller.AddPoints(pointsGuiven);
             GameController.controller.playerRef.ContinuousRageExplosion();
+            GameController.controller.playerRef.EnableDash();
             Destroy(gameObject);
         }
 

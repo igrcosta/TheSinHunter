@@ -5,6 +5,7 @@ public class AvarezaScript : MonoBehaviour
     [Header("Death")]
     [SerializeField] float PointsGuiven = 100;
 
+
     [Header("Mechanics")]
     [SerializeField] float Damage = 20f;
     [SerializeField] bool ComboEnabled = false;
@@ -36,8 +37,10 @@ public class AvarezaScript : MonoBehaviour
         else if (other.CompareTag("Player") && GameController.controller.playerRef.ExplosionState)
         {
             GameController.controller.playerRef.ContinuousRageExplosion();
+            GameController.controller.playerRef.EnableDash();
             GameController.controller.AddPoints(PointsGuiven);
             Destroy(gameObject);
+
         }
         else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing == false)
         {

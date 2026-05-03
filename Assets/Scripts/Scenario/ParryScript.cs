@@ -43,6 +43,7 @@ public class ParryScript : MonoBehaviour
             else if (scriptPlayer.ExplosionState)
             {
                 scriptPlayer.ContinuousRageExplosion();
+
             }
         }
     }

@@ -46,6 +46,7 @@ public class Player : MonoBehaviour
     private Vector3 ExplosionForce = new Vector3(9f, 2.8f, 0f) * 70f / 4.5f;
     private Vector3 SecondExplosionForce = new Vector3(9f, 4f, 0f);
 
+
     [Header("Referencias")] //Referencias e Variaveis
     private GameObject BombSpawn;
     bool DamageInvulnerability = false;
@@ -59,6 +60,7 @@ public class Player : MonoBehaviour
     public bool RageActive = false; //MODO: Rage
     public GameObject TargetObject; // Target Chains
     public Rigidbody rb;
+    float currentPosition = 0;
 
     //variavel para combo de avarezas (MELHORA FEELING)
     //public bool isOnA
@@ -146,7 +148,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (rb.position.y - JumpingBeginning >= 10f && OnJump && !isparrying)
+        if (rb.position.y - JumpingBeginning >= 10f && OnJump && !isparrying && !ExplosionState)
         {
             //rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
             rb.AddForce(Vector3.down * JumpForce / 55f, ForceMode.Impulse);
@@ -243,6 +245,7 @@ public class Player : MonoBehaviour
         if (collisionInfo.gameObject.CompareTag("Floor"))
         //lembrar que com colisões, precisamos acessar o gameObject deles para pegar coisas como tags
         {
+
             CanJump = true;
             OnJump = false;
             isparrying = false;
@@ -250,12 +253,12 @@ public class Player : MonoBehaviour
             if (ActualWeapon == WeaponTypes.RageBlade)
             {
                 ExplosionState = false;
-                DamageInvulnerability = false;
+                DamageInvulnerability = false; 
             }
         }
         else
         {
-            CanJump = false;
+            CanJump = false; 
         }
 
         //PARTE PARA DESCER DE LANES
@@ -269,7 +272,7 @@ public class Player : MonoBehaviour
             if (ActualWeapon == WeaponTypes.RageBlade)
             {
                 ExplosionState = false;
-                DamageInvulnerability = false;
+                DamageInvulnerability = false; 
             }
         }
 
@@ -299,7 +302,7 @@ public class Player : MonoBehaviour
         //as outras forças ele mantém padrão, mantendo o X como deveria estar
         //JÁ FUNCIONA ATÉ PARA PULO DUPLO
 
-        if (Input.GetKeyDown(KeyCode.UpArrow) && CanJump)
+        if (Input.GetKeyDown(KeyCode.UpArrow) && CanJump && !isparrying)
         {
             OnJump = true;
 
@@ -355,8 +358,7 @@ public class Player : MonoBehaviour
         {
             rb.AddForce(Vector3.down * JumpForce / 2f, ForceMode.VelocityChange);
         }
-        else
-            if (Input.GetKeyDown(KeyCode.DownArrow) && IsOnALane)
+        else if (Input.GetKeyDown(KeyCode.DownArrow) && IsOnALane)
             {
                 DisableLayersCollision();
                 rb.AddForce(Vector3.down * JumpForce / 3f, ForceMode.VelocityChange);
@@ -371,7 +373,7 @@ public class Player : MonoBehaviour
     void EnableLayersCollision()
     {
         Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, false);
-        rb.AddForce(Vector3.down * JumpForce / 35f, ForceMode.Impulse);
+        //rb.AddForce(Vector3.down * JumpForce / 35f, ForceMode.Impulse);  ---
     }
 
     void DisableLayersCollision()
@@ -474,11 +476,11 @@ public class Player : MonoBehaviour
         //limitar de vel para explosões INÍCIO
         if (ActualWeapon == WeaponTypes.RageBlade)
         {
-            if (rb.position.y >= 39f)
+            if (rb.position.y >= 45f)
             {
                 rb.MovePosition(new Vector3(rb.position.x, rb.position.y - 10f, rb.position.z));
             }
-            if (rb.linearVelocity.x >= 50)
+            if (rb.linearVelocity.x >= 40)
             {
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x - rb.linearVelocity.x / 4f, rb.linearVelocity.y, rb.linearVelocity.z);
             }
@@ -491,6 +493,7 @@ public class Player : MonoBehaviour
     }
     public void RageExplosion()
     {
+        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
         rb.AddForce(ExplosionForce, ForceMode.Impulse);
         DisableChainsLayersCollision();
         Invoke("INSTAEnableLayersCollision", 0.5f);
@@ -499,10 +502,17 @@ public class Player : MonoBehaviour
     public void ContinuousRageExplosion()
     {
         CancelInvoke("EnableLayersCollision");
-        rb.AddForce(ParryEffect * 10f, ForceMode.Impulse);
+
+        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
+        rb.AddForce(ParryEffect * 7f, ForceMode.Impulse);
+
+ 
+
         DisableLayersCollision();
         Invoke("INSTAEnableLayersCollision", 0.5f);
+        
     }
+
     #endregion RageMethods
 
     #region Dashes
@@ -552,7 +562,7 @@ public class Player : MonoBehaviour
         else if (ActualWeapon == WeaponTypes.RageBlade)
         {
             canDash = false;
-            DamageInvulnerability = true;
+            DamageInvulnerability = true; 
 
             //instanciar explosão
             Instantiate(ExplosionPrefab, BombSpawn.transform.position, BombSpawn.transform.rotation);
@@ -596,7 +606,7 @@ public class Player : MonoBehaviour
                 return;
             }
 
-            if (Input.GetKeyDown(KeyCode.RightArrow))
+            if (Input.GetKeyDown(KeyCode.RightArrow) )
             {
                 BeginDash();
             }
@@ -608,7 +618,7 @@ public class Player : MonoBehaviour
             {
                 return;
             }
-            if (Input.GetKeyDown(KeyCode.RightArrow) && ChainsScript.ActualTarget != null)
+            if (Input.GetKeyDown(KeyCode.RightArrow)  && ChainsScript.ActualTarget != null)
             {
                 BeginDash();
             }
@@ -619,7 +629,7 @@ public class Player : MonoBehaviour
             {
                 return;
             }
-            if (Input.GetKeyDown(KeyCode.RightArrow))
+            if (Input.GetKeyDown(KeyCode.RightArrow) )
             {
                 BeginDash();
                 ExplosionState = true;
@@ -643,7 +653,8 @@ public class Player : MonoBehaviour
         //a ideia aqui é fazer o player continuar no dash após ter matado avareza
         CancelInvoke("FinishDash");
 
-        BeginDash();
+        EnableDash();
+        //---
     }
     #endregion Dashes
 

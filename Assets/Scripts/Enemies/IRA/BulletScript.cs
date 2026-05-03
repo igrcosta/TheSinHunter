@@ -21,9 +21,15 @@ public class BulletScript : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing || GameController.controller.playerRef.ExplosionState)
+        if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing)
         {
-            GameController.controller.playerRef.ComboDash();
+           
+            Destroy(gameObject);
+        }
+        else if (other.CompareTag("Player") &&  GameController.controller.playerRef.ExplosionState)
+        {
+            GameController.controller.playerRef.EnableDash();
+
             Destroy(gameObject);
         }
         else if (other.CompareTag("Player"))
