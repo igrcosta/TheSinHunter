@@ -5,7 +5,8 @@ using TMPro;
 public class UIController : MonoBehaviour
 {
     [Header("Referencias")]
-    [SerializeField] GameObject Options;
+    [SerializeField] GameObject OptionsPanel;
+    [SerializeField] GameObject AudioPanel;
     public GameObject ChainsAim;
     public TMPro.TextMeshProUGUI DistanceText;
     public TMPro.TextMeshProUGUI PointsText;
@@ -33,6 +34,7 @@ public class UIController : MonoBehaviour
     public void LoadScene(string scene)
     {
         SceneManager.LoadScene(scene);
+        Time.timeScale = 1.0f;
     }
     public void BotaoJogar()
     {
@@ -47,13 +49,20 @@ public class UIController : MonoBehaviour
 
     public void BotaoConfigON()
     {
-        Options.SetActive(true);
+        OptionsPanel.SetActive(true);
         Time.timeScale = 0;
     }
-
+    public void BotaoAudioON()
+    {
+        AudioPanel.SetActive(true);
+    }
+    public void BotaoAudioOFF()
+    {
+        AudioPanel.SetActive(false);
+    }
     public void BotaoConfigOFF()
     {
-        Options.SetActive(false);
+        OptionsPanel.SetActive(false);
         Time.timeScale = 1;
     }
 
