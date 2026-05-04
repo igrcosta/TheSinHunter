@@ -108,12 +108,408 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Options_Panel
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 35
+        width: 1016
+        height: 517
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b556879ea9d066a4db19794ec25d1da1
+      internalID: 606269408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Options_Button_NoChain
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 740
+        width: 499
+        height: 106
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b5a2c454371b272418c8a822c78d8fc7
+      internalID: -1106514651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Options_Button_Chain
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 872
+        width: 496
+        height: 170
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40d64988b6ff94f4ba96af84c7028afd
+      internalID: 1098580708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Options_Slider_Fill
+      rect:
+        serializedVersion: 2
+        x: 682
+        y: 872
+        width: 380
+        height: 46
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f16df5156499ae74c81f0091f04e30be
+      internalID: 1035011894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Options_SliderEmpty
+      rect:
+        serializedVersion: 2
+        x: 616
+        y: 926
+        width: 430
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 17aa31bffc343bd469afe96eae1b522f
+      internalID: -1157036602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_ChainAim
+      rect:
+        serializedVersion: 2
+        x: 1133
+        y: 822
+        width: 194
+        height: 177
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3f27e36a89738c040a33357ce0793828
+      internalID: -1213286071
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Button_Scythe
+      rect:
+        serializedVersion: 2
+        x: 1095
+        y: 572
+        width: 203
+        height: 223
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 86cd5d8758c3f954a8754a2925658b0b
+      internalID: -1505250091
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Button_ChainsScythe
+      rect:
+        serializedVersion: 2
+        x: 1321
+        y: 516
+        width: 249
+        height: 249
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 87c241d7570d2414184e04f5ad19077a
+      internalID: 528267314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Button_Bomb
+      rect:
+        serializedVersion: 2
+        x: 1620
+        y: 589
+        width: 146
+        height: 197
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb7e997d33da837429c47cc8f943b1bd
+      internalID: -1300415816
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Button_Joystick
+      rect:
+        serializedVersion: 2
+        x: 1480
+        y: 252
+        width: 268
+        height: 257
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c11afe56528b98f498244a00c09f68bd
+      internalID: -767663232
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Button_Background
+      rect:
+        serializedVersion: 2
+        x: 1413
+        y: 788
+        width: 232
+        height: 232
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b3cd0b9dd6ab6384dbb8a670ce980deb
+      internalID: 1256566791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_ButtonSimple
+      rect:
+        serializedVersion: 2
+        x: 595
+        y: 689
+        width: 127
+        height: 108
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 34c040bcf03b58843917bdcbd26d62ae
+      internalID: 1302375730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Options_Button_Pause
+      rect:
+        serializedVersion: 2
+        x: 748
+        y: 695
+        width: 78
+        height: 102
+      alignment: 9
+      pivot: {x: 0.48449707, y: 0.5000006}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0ebaf6903095da848a0f99a3d2d58a58
+      internalID: 224376270
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Options_Button_Play
+      rect:
+        serializedVersion: 2
+        x: 827
+        y: 720
+        width: 55
+        height: 56
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3f5ecc0ce42355348a96c788d94ce4fd
+      internalID: 826221588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Options_Button_OptionsButton
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 719
+        width: 57
+        height: 59
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 549365df72626eb469a4416121b6ec14
+      internalID: -411865334
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Options_Button_Exit
+      rect:
+        serializedVersion: 2
+        x: 965
+        y: 718
+        width: 58
+        height: 57
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1c3800bd3b17fd42b364f639221fd76
+      internalID: 2103057597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Options_Slider_Handle
+      rect:
+        serializedVersion: 2
+        x: 607
+        y: 869
+        width: 67
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea895a669b90f2c4581a008d36955a2b
+      internalID: -1686679795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Options_Image_ChainsOnly
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 971
+        width: 496
+        height: 69
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 4, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 48560369f704cdf4ea890b475bad70e0
+      internalID: 1504915416
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 7a11ee2f76409a34590536b8e7863bca
     internalID: 0
     vertices: []
     indices: 
@@ -122,7 +518,27 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      OptionButton__NoChain: -1106514651
+      Options+_Chain: 1098580708
+      Options_Button_Chain: 1098580708
+      Options_Button_Exit: 2103057597
+      Options_Button_NoChain: -1106514651
+      Options_Button_OptionsButton: -411865334
+      Options_Button_Pause: 224376270
+      Options_Button_Play: 826221588
+      Options_Image_ChainsOnly: 1504915416
+      Options_Panel: 606269408
+      Options_SliderEmpty: -1157036602
+      Options_Slider_Fill: 1035011894
+      Options_Slider_Handle: -1686679795
+      UI_ButtonSimple: 1302375730
+      UI_Button_Background: 1256566791
+      UI_Button_Bomb: -1300415816
+      UI_Button_ChainsScythe: 528267314
+      UI_Button_Joystick: -767663232
+      UI_Button_Scythe: -1505250091
+      UI_ChainAim: -1213286071
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
