@@ -13,7 +13,7 @@ public class ParryScript : MonoBehaviour
             Player scriptPlayer = other.GetComponent<Player>();
             //acesso player
 
-            scriptPlayer.ParryLogicEnable();
+            scriptPlayer.isparrying=true;
             //indico que isParry é true
 
             if (scriptPlayer.isDashing && scriptPlayer.DefaultActive)

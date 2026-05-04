@@ -29,9 +29,13 @@ public class UIController : MonoBehaviour
     }
 
     #region BotoesUI
+    
+    public void LoadScene(string scene)
+    {
+        SceneManager.LoadScene(scene);
+    }
     public void BotaoJogar()
     {
-
         SceneManager.LoadScene(1);
     }
 

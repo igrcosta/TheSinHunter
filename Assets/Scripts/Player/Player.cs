@@ -1,8 +1,6 @@
-/* using Unity.VisualScripting; */
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
-/* using System.Collections;
-using System;
-using NUnit.Framework; */
 
 public class Player : MonoBehaviour
 {
@@ -14,8 +12,8 @@ public class Player : MonoBehaviour
     [Header("Infos para Pulo")]
     [SerializeField] float JumpForce = 10f;
     public bool CanJump = false;
-    private bool OnJump = false;
-    private bool isparrying = false;
+    private bool Jumping = false;
+    public bool isparrying = false;
 
     private Vector3 ParryEffect = new Vector3(0f, 9.81f, 0f);
 
@@ -63,7 +61,6 @@ public class Player : MonoBehaviour
     float currentPosition = 0;
 
     //variavel para combo de avarezas (MELHORA FEELING)
-    //public bool isOnA
 
     //variáveis para lanes
     private BoxCollider LaneCollider;
@@ -119,14 +116,7 @@ public class Player : MonoBehaviour
     #region Updates
     void FixedUpdate()
     {
-        if (isDashing)
-        {
-            rb.useGravity = false;
-            return;
-        }
-        //lógica de física melhorada aqui, isso vai permitir uma queda irada pro player
-        rb.AddForce(Physics.gravity * (gravityScale - 1) * rb.mass);
-        rb.useGravity = true;
+        ApplyExtraGravity();
     }
 
     void Update()
@@ -134,8 +124,6 @@ public class Player : MonoBehaviour
         CanDash();
         Move();
         SpeedSystem();
-        Jumping();
-        DescendingLanes();
         DeathCondition();
 
         if (!canDash)
@@ -148,16 +136,14 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (rb.position.y - JumpingBeginning >= 10f && OnJump && !isparrying && !ExplosionState)
+        if (rb.position.y - JumpingBeginning >= 10f && Jumping && !isparrying && !ExplosionState)
         {
-            //rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
             rb.AddForce(Vector3.down * JumpForce / 55f, ForceMode.Impulse);
         }
 
         if (ActualWeapon == WeaponTypes.Default && rb.position.x - DashingBeginning >= 30f && isDashing)
         {
             rb.linearVelocity = new Vector3(0, 0, rb.linearVelocity.z);
-            //rb.AddForce(Vector3.down * JumpForce / 55f, ForceMode.Impulse);
         }
 
 
@@ -209,7 +195,6 @@ public class Player : MonoBehaviour
         Speed -= damage;
         //reduz a speed com base na vida
 
-        //MultiplicadorVelocidade -= 2f;
         //reduz a taxa de regeneração
 
         DamageInvulnerability = false;
@@ -219,10 +204,8 @@ public class Player : MonoBehaviour
     void DeathCondition()
     {
         if (GameController.controller.Cheating)
-        {
-            //nada
-        }
-        else if (Speed <= 20 && GameController.controller.Cheating == false)
+            return;
+        else if (Speed <= 20)
         {
             GameController.controller.GameOver();
         }
@@ -235,30 +218,32 @@ public class Player : MonoBehaviour
             rb.position += Vector3.right * Speed * Time.deltaTime;
         }
     }
+
+    void ApplyExtraGravity()
+    {
+        rb.AddForce(Physics.gravity * (gravityScale - 1) * rb.mass);
+        rb.useGravity = true;
+    }
     #endregion Speed/Damage Logic
 
     #region Jumping
-    //Pulo do jogador -> INÍCIO
-
     void OnCollisionEnter(Collision collisionInfo)
     {
         if (collisionInfo.gameObject.CompareTag("Floor"))
-        //lembrar que com colisões, precisamos acessar o gameObject deles para pegar coisas como tags
         {
-
             CanJump = true;
-            OnJump = false;
+            Jumping = false;
             isparrying = false;
 
             if (ActualWeapon == WeaponTypes.RageBlade)
             {
                 ExplosionState = false;
-                DamageInvulnerability = false; 
+                DamageInvulnerability = false;
             }
         }
         else
         {
-            CanJump = false; 
+            CanJump = false;
         }
 
         //PARTE PARA DESCER DE LANES
@@ -266,13 +251,13 @@ public class Player : MonoBehaviour
         {
             CanJump = true;
             IsOnALane = true;
-            OnJump = false;
+            Jumping = false;
             isparrying = false;
 
             if (ActualWeapon == WeaponTypes.RageBlade)
             {
                 ExplosionState = false;
-                DamageInvulnerability = false; 
+                DamageInvulnerability = false;
             }
         }
 
@@ -283,28 +268,25 @@ public class Player : MonoBehaviour
         }
     }
 
-    //LavaKill também é utilizado para quando se bate em onstáculos não unlocked ainda
+    //LavaKill também é utilizado para quando se bate em obstáculos não unlocked ainda
     public void LavaKill()
     {
-        //player para
         canMove = false;
-
-        //player começa a descer
         Invoke("DisableLayersCollision", 0.25f);
-
         GameController.controller.Invoke("GameOver", 0.8f);
         //invoca depois de alguns segundos a tela de morte
     }
-    void Jumping()
+
+    public void JumpingMethod()
     {
         //script para o player poder pular
         //ao clicar na seta pra cima, ele define a força y dele pra 0, para poder dar um impulso pra cima
         //as outras forças ele mantém padrão, mantendo o X como deveria estar
         //JÁ FUNCIONA ATÉ PARA PULO DUPLO
 
-        if (Input.GetKeyDown(KeyCode.UpArrow) && CanJump && !isparrying)
+        if (CanJump && !isparrying)
         {
-            OnJump = true;
+            Jumping = true;
 
             JumpingBeginning = rb.position.y;
             //pego a posição do pulo para limitar a altura do pulo
@@ -322,58 +304,26 @@ public class Player : MonoBehaviour
             //vou ter que sair da posição dele atual e subir 10f mantendo X e Z
         }
     }
-
-    public void MobileJumping()
-    {
-        if (CanJump)
-        {
-            OnJump = true;
-
-            JumpingBeginning = rb.position.y;
-            //pego a posição do pulo para limitar a altura do pulo
-
-            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
-            //zero a velocidade em y 
-
-            rb.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
-            //aplicamos a força em Y como impulso, de forma que mantenha a velocidade de X */
-
-            DisableLayersCollision();
-
-            CanJump = false;
-
-            //vou ter que sair da posição dele atual e subir 10f mantendo X e Z
-        }
-    }
-
-    //Pulo do jogador -> FINAL
 
     #endregion Jumping
 
     #region Lanes
-    //Troca de Lanes -> INÍCIO
-    void DescendingLanes()
+    public void DescendingLanes()
     {
-        if (Input.GetKeyDown(KeyCode.DownArrow) && !IsOnALane && !CanJump)
+        if (!IsOnALane && !CanJump)
         {
             rb.AddForce(Vector3.down * JumpForce / 2f, ForceMode.VelocityChange);
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow) && IsOnALane)
-            {
-                DisableLayersCollision();
-                rb.AddForce(Vector3.down * JumpForce / 3f, ForceMode.VelocityChange);
-            }
-        //primeiro ao apertar seta pra baixo
-
-
-
-        //depois pra quando pular e esbarrar em algo da tag Lane
+        else if (IsOnALane)
+        {
+            DisableLayersCollision();
+            rb.AddForce(Vector3.down * JumpForce / 3f, ForceMode.VelocityChange);
+        }
     }
 
     void EnableLayersCollision()
     {
         Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, false);
-        //rb.AddForce(Vector3.down * JumpForce / 35f, ForceMode.Impulse);  ---
     }
 
     void DisableLayersCollision()
@@ -393,27 +343,6 @@ public class Player : MonoBehaviour
         Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, false);
         Debug.Log("LEMBREI DE VC HEHE");
     }
-
-    public void MobileDescendingLanes()
-    {
-        if (!IsOnALane && !CanJump)
-        {
-            rb.AddForce(Vector3.down * JumpForce / 2f, ForceMode.VelocityChange);
-        }
-        else
-            if (IsOnALane)
-            {
-                DisableLayersCollision();
-                rb.AddForce(Vector3.down * JumpForce / 3f, ForceMode.VelocityChange);
-            }
-        //primeiro ao apertar seta pra baixo
-
-
-
-        //depois pra quando pular e esbarrar em algo da tag Lane
-    }
-
-    //Troca de Lanes -> FINAL
     #endregion Lanes
 
     #region Weapons
@@ -473,7 +402,6 @@ public class Player : MonoBehaviour
 
     private void RageSpeedLimiter()
     {
-        //limitar de vel para explosões INÍCIO
         if (ActualWeapon == WeaponTypes.RageBlade)
         {
             if (rb.position.y >= 45f)
@@ -484,12 +412,7 @@ public class Player : MonoBehaviour
             {
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x - rb.linearVelocity.x / 4f, rb.linearVelocity.y, rb.linearVelocity.z);
             }
-            /* if (rb.linearVelocity.y >= 40)
-            {
-                rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y - rb.linearVelocity.y / 4f, rb.linearVelocity.z);
-            } */
         }
-        //limitar de vel para explosões FIM
     }
     public void RageExplosion()
     {
@@ -506,13 +429,11 @@ public class Player : MonoBehaviour
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
         rb.AddForce(ParryEffect * 7f, ForceMode.Impulse);
 
- 
 
         DisableLayersCollision();
         Invoke("INSTAEnableLayersCollision", 0.5f);
-        
-    }
 
+    }
     #endregion RageMethods
 
     #region Dashes
@@ -521,57 +442,43 @@ public class Player : MonoBehaviour
         // Se já estiver dando dash, ignora qualquer novo comando de dash
         if (isDashing) return;
 
-        //O DASH MUDA CONFORME FOR A ARMA UTILIZADA, LOGO...
-        //caso seja um dash default...
-        if (ActualWeapon == WeaponTypes.Default)
+        switch (ActualWeapon)
         {
-            canDash = false;
-            //permitimos isso para cooldown começar a rodar
+            case WeaponTypes.Default:
+                {
+                    canDash = false;
+                    isDashing = true;
+                    tr.enabled = true;
+                    DashingBeginning = rb.position.x;
+                    rb.linearVelocity = Vector3.zero;
+                    rb.useGravity = false;
+                    Debug.Log("ARMA DEFAULT EQUIPADA");
 
-            Debug.Log("ARMA DEFAULT EQUIPADA");
-            isDashing = true;
-            tr.enabled = true;
+                    rb.AddForce(Vector3.right * dashingpower, ForceMode.Impulse);
 
-            DashingBeginning = rb.position.x;
-            rb.linearVelocity = Vector3.zero;
+                    Invoke("FinishDash", dashingtime);
+                    break;
+                }
+            case WeaponTypes.LuxuryChains:
+                {
+                    canDash = false;
+                    isDashing = true;
+                    tr.enabled = true;
+                    Debug.Log("LUXURY CHAINS utilizada");
+                    break;
+                }
+            case WeaponTypes.RageBlade:
+                {
+                    canDash = false;
+                    DamageInvulnerability = true;
 
-            rb.AddForce(Vector3.right * dashingpower, ForceMode.Impulse);
+                    Instantiate(ExplosionPrefab, BombSpawn.transform.position, BombSpawn.transform.rotation);
 
-            //Speed -= Speed/10;
+                    RageExplosion();//lançar para frente
 
-            //rb.MovePosition(rb.position + Vector3.right * dashingpower);
-            Invoke("FinishDash", dashingtime);
+                    break;
+                }
         }
-        //Se não, se a arma utilizada for as correntes...
-        else if (ActualWeapon == WeaponTypes.LuxuryChains)
-        {
-            canDash = false;
-            //permitimos isso para cooldown começar a rodar
-
-            Debug.Log("LUXURY CHAINS utilizada");
-            isDashing = true;
-            tr.enabled = true;
-
-            // Debug: Se em 1.5 segundos ele não chegar no alvo, encerra o dash por segurança.
-            // Invoke("FinishDash", 1.5f);
-
-            //"lerp" para a direção do alvo
-
-        }
-        //se não, se a arma atual for a lâmina da ira...
-        else if (ActualWeapon == WeaponTypes.RageBlade)
-        {
-            canDash = false;
-            DamageInvulnerability = true; 
-
-            //instanciar explosão
-            Instantiate(ExplosionPrefab, BombSpawn.transform.position, BombSpawn.transform.rotation);
-
-            //lançar para frente
-            RageExplosion();
-
-        }
-
     }
 
     public void FinishDash()
@@ -588,52 +495,45 @@ public class Player : MonoBehaviour
             INSTAEnableLayersCollision();
 
             ChainsScript.SelectNewTarget();
-
-            //procurar outro
         }
-        //rb.linearVelocity = Vector3.zero;
+        rb.useGravity = true;
         tr.enabled = false;
         isDashing = false;
-        //canDash = true;
     }
 
     void CanDash() // Checa se pode dar dash, e roda se possivel
     {
-        if (ActualWeapon == WeaponTypes.Default) //depois colocar a lamina tbm
+        if (!canDash)
+            return;
+        switch (ActualWeapon)
         {
-            if (!canDash)
-            {
-                return;
-            }
 
-            if (Input.GetKeyDown(KeyCode.RightArrow) )
-            {
-                BeginDash();
-            }
+            case WeaponTypes.Default:
+                {
+                    if (Input.GetKeyDown(KeyCode.RightArrow))
+                    {
+                        BeginDash();
+                    }
+                    break;
+                }
+            case WeaponTypes.LuxuryChains:
+                {
+                    if (Input.GetKeyDown(KeyCode.RightArrow) && ChainsScript.ActualTarget != null)
+                    {
+                        BeginDash();
+                    }
+                    break;
+                }
 
-        }
-        else if (ActualWeapon == WeaponTypes.LuxuryChains)
-        {
-            if (!canDash)
-            {
-                return;
-            }
-            if (Input.GetKeyDown(KeyCode.RightArrow)  && ChainsScript.ActualTarget != null)
-            {
-                BeginDash();
-            }
-        }
-        else if (ActualWeapon == WeaponTypes.RageBlade)
-        {
-            if (!canDash)
-            {
-                return;
-            }
-            if (Input.GetKeyDown(KeyCode.RightArrow) )
-            {
-                BeginDash();
-                ExplosionState = true;
-            }
+            case WeaponTypes.RageBlade:
+                {
+                    if (Input.GetKeyDown(KeyCode.RightArrow))
+                    {
+                        BeginDash();
+                        ExplosionState = true;
+                    }
+                    break;
+                }
         }
     }
 
@@ -650,17 +550,9 @@ public class Player : MonoBehaviour
 
     public void ComboDash()
     {
-        //a ideia aqui é fazer o player continuar no dash após ter matado avareza
         CancelInvoke("FinishDash");
 
         EnableDash();
-        //---
     }
     #endregion Dashes
-
-    public void ParryLogicEnable()
-    {
-        //a ideia é ignorar o dash da sua lógica padrão ao dar parry
-        isparrying = true;
-    }
 }

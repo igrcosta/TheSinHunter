@@ -11,7 +11,8 @@ public class InputHandler : MonoBehaviour
 
     private void Update()
     {
-        DetectSlides();
+        DetectSlides();//Detecta os slides na tela e chama as funcoes de acordo
+        HandleInputKeyboard(); //Detecta os inputs do teclado e chama as funcoes de acordo
     }
 
     void DetectSlides()
@@ -36,38 +37,38 @@ public class InputHandler : MonoBehaviour
                         {
                             GameController.controller.playerRef.BeginDash();
                         }
-                        else
-                        {
-                            //nada;
-                        }
 
                     }
                     else
                     {
                         if (delta.y > 0)
                         {
-                            GameController.controller.playerRef.MobileJumping();
+                            GameController.controller.playerRef.JumpingMethod();
                         }
 
                         else
                         {
-                            GameController.controller.playerRef.MobileDescendingLanes();
+                            GameController.controller.playerRef.DescendingLanes();
                         }
                     }
 
                 }
 
-
-
-
             }
-
-
-
         }
-
-
-
-
     }
+
+    #region KeyBoard
+
+    void HandleInputKeyboard()
+    {
+        if (Input.GetKeyDown(KeyCode.UpArrow)) GameController.controller.playerRef.JumpingMethod(); //Pulo
+        if (Input.GetKeyDown(KeyCode.DownArrow)) GameController.controller.playerRef.DescendingLanes(); //Dash para baixo
+        if (Input.GetKeyDown(KeyCode.LeftArrow)) GameController.controller.playerRef.BeginDash(); //Dash
+    }
+
+
+    #endregion KeyBoard
+
 }
+
