@@ -64,7 +64,7 @@ public class InputHandler : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.UpArrow)) GameController.controller.playerRef.JumpingMethod(); //Pulo
         if (Input.GetKeyDown(KeyCode.DownArrow)) GameController.controller.playerRef.DescendingLanes(); //Dash para baixo
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) GameController.controller.playerRef.BeginDash(); //Dash
+        if (Input.GetKeyDown(KeyCode.RightArrow)) GameController.controller.playerRef.BeginDash(); //Dash
     }
 
 

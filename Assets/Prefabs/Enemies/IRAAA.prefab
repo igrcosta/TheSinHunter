@@ -155,7 +155,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 393cff7fd1c4cd442acf51026a9a3256, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IRAScript
-  pointsGuiven: 100
+  PointsGuiven: 100
+  ComboEnabled: 1
   Damage: 20
   shootCooldown: 1.8
   BulletPrefab: {fileID: 4103334802519647283, guid: 69981d8d64c583342a16e8c46640f492, type: 3}

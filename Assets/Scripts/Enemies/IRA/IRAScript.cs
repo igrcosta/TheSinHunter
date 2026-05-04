@@ -3,8 +3,9 @@ using UnityEngine;
 public class IRAScript : MonoBehaviour
 {
     [Header("Death")]
-    [SerializeField] float pointsGuiven = 100;
+    [SerializeField] float PointsGuiven = 100;
 
+    [SerializeField] bool ComboEnabled = false;
 
     [Header("Shoot System")]
     [SerializeField] float Damage = 5f;
@@ -31,17 +32,31 @@ public class IRAScript : MonoBehaviour
         if (other.CompareTag("Player") && GameController.controller.playerRef.ExplosionState == true)
         {
             Debug.Log("RECEBA");
-            GameController.controller.AddPoints(pointsGuiven);
+            GameController.controller.AddPoints(PointsGuiven);
             GameController.controller.playerRef.ContinuousRageExplosion();
             GameController.controller.playerRef.EnableDash();
             Destroy(gameObject);
         }
-
-        else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing)
+        else if (other.CompareTag("Player") && GameController.controller.playerRef.DefaultActive && GameController.controller.playerRef.isDashing && ComboEnabled)
+        {
+            GameController.controller.playerRef.ComboDash();
+            Debug.Log("COMBOO");
+            GameController.controller.AddPoints(PointsGuiven);
+            Destroy(gameObject);
+        }
+        else if (other.CompareTag("Player") && GameController.controller.playerRef.ChainsActive && GameController.controller.playerRef.isDashing && ComboEnabled)
+        {
+            Debug.Log("COMBOO CORRENTE");
+            GameController.controller.AddPoints(PointsGuiven);
+            Destroy(gameObject);
+        }
+        else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing && !ComboEnabled)
         {
             GameController.controller.playerRef.FinishDash();
-            GameController.controller.AddPoints(pointsGuiven);
+            Debug.Log("FUI COM GOD");
+            GameController.controller.AddPoints(PointsGuiven);
             Destroy(gameObject);
+
         }
         else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing == false)
         {

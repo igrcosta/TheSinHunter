@@ -28,7 +28,7 @@ public class BulletScript : MonoBehaviour
         }
         else if (other.CompareTag("Player") &&  GameController.controller.playerRef.ExplosionState)
         {
-            GameController.controller.playerRef.EnableDash();
+            //GameController.controller.playerRef.EnableDash();
 
             Destroy(gameObject);
         }

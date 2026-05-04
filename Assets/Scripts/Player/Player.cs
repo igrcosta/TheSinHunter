@@ -1,5 +1,4 @@
-using System.Collections;
-using Unity.VisualScripting;
+
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -121,7 +120,6 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        CanDash();
         Move();
         SpeedSystem();
         DeathCondition();
@@ -134,11 +132,6 @@ public class Player : MonoBehaviour
                 canDash = true;
                 dashingCD = DefaultdashCD;
             }
-        }
-
-        if (rb.position.y - JumpingBeginning >= 10f && Jumping && !isparrying && !ExplosionState)
-        {
-            rb.AddForce(Vector3.down * JumpForce / 55f, ForceMode.Impulse);
         }
 
         if (ActualWeapon == WeaponTypes.Default && rb.position.x - DashingBeginning >= 30f && isDashing)
@@ -221,8 +214,15 @@ public class Player : MonoBehaviour
 
     void ApplyExtraGravity()
     {
+        if (isDashing)
+            return;
         rb.AddForce(Physics.gravity * (gravityScale - 1) * rb.mass);
         rb.useGravity = true;
+
+        if (rb.position.y - JumpingBeginning >= 10f && Jumping && !isparrying && !ExplosionState)
+        {
+            rb.AddForce(Vector3.down * JumpForce / 55f, ForceMode.Impulse);
+        }
     }
     #endregion Speed/Damage Logic
 
@@ -404,7 +404,7 @@ public class Player : MonoBehaviour
     {
         if (ActualWeapon == WeaponTypes.RageBlade)
         {
-            if (rb.position.y >= 45f)
+            if (rb.position.y >= 80)
             {
                 rb.MovePosition(new Vector3(rb.position.x, rb.position.y - 10f, rb.position.z));
             }
@@ -440,7 +440,7 @@ public class Player : MonoBehaviour
     public void BeginDash()
     {
         // Se já estiver dando dash, ignora qualquer novo comando de dash
-        if (isDashing) return;
+        if (isDashing || !canDash) return;
 
         switch (ActualWeapon)
         {
@@ -461,6 +461,8 @@ public class Player : MonoBehaviour
                 }
             case WeaponTypes.LuxuryChains:
                 {
+                    if (ChainsScript.ActualTarget == null)
+                        return;
                     canDash = false;
                     isDashing = true;
                     tr.enabled = true;
@@ -469,6 +471,7 @@ public class Player : MonoBehaviour
                 }
             case WeaponTypes.RageBlade:
                 {
+                    ExplosionState = true;
                     canDash = false;
                     DamageInvulnerability = true;
 
@@ -501,42 +504,6 @@ public class Player : MonoBehaviour
         isDashing = false;
     }
 
-    void CanDash() // Checa se pode dar dash, e roda se possivel
-    {
-        if (!canDash)
-            return;
-        switch (ActualWeapon)
-        {
-
-            case WeaponTypes.Default:
-                {
-                    if (Input.GetKeyDown(KeyCode.RightArrow))
-                    {
-                        BeginDash();
-                    }
-                    break;
-                }
-            case WeaponTypes.LuxuryChains:
-                {
-                    if (Input.GetKeyDown(KeyCode.RightArrow) && ChainsScript.ActualTarget != null)
-                    {
-                        BeginDash();
-                    }
-                    break;
-                }
-
-            case WeaponTypes.RageBlade:
-                {
-                    if (Input.GetKeyDown(KeyCode.RightArrow))
-                    {
-                        BeginDash();
-                        ExplosionState = true;
-                    }
-                    break;
-                }
-        }
-    }
-
     public void EnableDash()
     {
         //método para permitir o parry poder habilitar mais dashes ao jogador
@@ -550,9 +517,12 @@ public class Player : MonoBehaviour
 
     public void ComboDash()
     {
+
         CancelInvoke("FinishDash");
 
         EnableDash();
     }
     #endregion Dashes
+
+   
 }

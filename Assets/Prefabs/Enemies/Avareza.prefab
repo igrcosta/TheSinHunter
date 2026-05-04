@@ -129,7 +129,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AvarezaScripot
   PointsGuiven: 100
   Damage: 20
-  ComboEnabled: 0
+  ComboEnabled: 1
 --- !u!54 &6893348948132035445
 Rigidbody:
   m_ObjectHideFlags: 0
