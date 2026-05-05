@@ -11957,7 +11957,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8744391683510453128, guid: 2d6d4958032fc1a489ad30faf23c49e9, type: 3}
       propertyPath: ChainsEnabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
