@@ -47,7 +47,7 @@ public class ChunkSpawner : MonoBehaviour
         
         if (other.CompareTag("Player") && gameObject.CompareTag("Victory"))
         {
-            GameController.controller.Victory();
+            SceneController.SceneInstance.LoadSomeScene("Victory");
         }
 
 
