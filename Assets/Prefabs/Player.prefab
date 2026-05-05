@@ -254,6 +254,7 @@ MonoBehaviour:
   MultiplicadorVelocidade: 5
   JumpForce: 70
   CanJump: 0
+  isparrying: 0
   isDashing: 0
   canDash: 1
   dashingpower: 100
@@ -775,6 +776,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 88e5038a39305e044b2f4b63d256c3f5, type: 3}
       propertyPath: m_Name
       value: GabrielMartins_Hunter
+      objectReference: {fileID: 0}
+    - target: {fileID: 994083272370081453, guid: 88e5038a39305e044b2f4b63d256c3f5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

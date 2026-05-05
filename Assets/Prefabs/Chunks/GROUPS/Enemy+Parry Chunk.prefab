@@ -1339,6 +1339,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ChunkScript
   DespawningTime: 3000
   TESTING: 0
+  DownWards: 0
   LanesCastle: {fileID: 8462066997837606401}
 --- !u!1 &4579233940184525289
 GameObject:
@@ -2131,7 +2132,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6531718966432663924}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -2625,7 +2626,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7690160862188166520}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -3221,6 +3222,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChunkSpawner
   SpawnNecessity: 0
+  DownWards: 0
 --- !u!1 &8551725458542282954
 GameObject:
   m_ObjectHideFlags: 0
@@ -3512,6 +3514,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4480836164912074800, guid: 9760e89628d22724d80d1a28756c6544, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4480836164912074800, guid: 9760e89628d22724d80d1a28756c6544, type: 3}
       propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
@@ -3633,6 +3639,10 @@ PrefabInstance:
     - target: {fileID: 4432206363135979181, guid: 392bc017eb36638469289ecf3ddedfa3, type: 3}
       propertyPath: m_Name
       value: Chunk01
+      objectReference: {fileID: 0}
+    - target: {fileID: 8359603050992784847, guid: 392bc017eb36638469289ecf3ddedfa3, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8359603050992784847, guid: 392bc017eb36638469289ecf3ddedfa3, type: 3}
       propertyPath: m_CastShadows
@@ -3802,6 +3812,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4480836164912074800, guid: 9760e89628d22724d80d1a28756c6544, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4480836164912074800, guid: 9760e89628d22724d80d1a28756c6544, type: 3}
       propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
@@ -3960,6 +3974,10 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: dd9e51fb2a5ba1d46b152e0c6f4a1ca0, type: 2}
     - target: {fileID: 2297754437781628493, guid: 0412fd0e3ffcf874788e84007a71c0d1, type: 3}
       propertyPath: SpawnNecessity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4480836164912074800, guid: 0412fd0e3ffcf874788e84007a71c0d1, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4480836164912074800, guid: 0412fd0e3ffcf874788e84007a71c0d1, type: 3}
