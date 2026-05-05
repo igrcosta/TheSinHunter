@@ -3,6 +3,7 @@ using UnityEngine;
 public class ChunkSpawner : MonoBehaviour
 {
     [SerializeField] bool SpawnNecessity = false;
+    bool Castle = false;
 
 
     void OnTriggerEnter(Collider other)
@@ -15,10 +16,27 @@ public class ChunkSpawner : MonoBehaviour
         {
             ChunkGeneration.ChunkGenerator.DecisionPoint = this;
         }
-        if (other.CompareTag("Player") && gameObject.CompareTag("Castle"))
+        if (other.CompareTag("Player") && gameObject.CompareTag("Castle") && !Castle)
         {
-            ChunkGeneration.ChunkGenerator.SpawnCastle = true;
-            
+            Castle = true;
+            if (ChunkGeneration.ChunkGenerator.SpawnCastle != true)
+            {
+                ChunkGeneration.ChunkGenerator.SpawnCastle = true;
+            }
         }
+        if (other.CompareTag("Player") && gameObject.CompareTag("Castle") && Castle)
+        {
+            Castle = false;
+            if (ChunkGeneration.ChunkGenerator.SpawnCastle = true)
+            {
+                ChunkGeneration.ChunkGenerator.SpawnCastle = false;
+            }
+        }
+        if (other.CompareTag("Player") && gameObject.CompareTag("Victory"))
+        {
+            GameController.controller.Victory();
+        }
+
+
     }
 }

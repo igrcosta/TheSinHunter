@@ -71,6 +71,13 @@ public class GameController : MonoBehaviour
         Points = 0;
     }
 
+    public void Victory()
+    {
+        SceneManager.LoadScene(2);
+        Distance = 0;
+        Points = 0;
+    }
+
     private void CheatMode()
     {
         if (Cheating)
