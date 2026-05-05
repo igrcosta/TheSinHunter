@@ -100,9 +100,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6099941009382346824}
   - component: {fileID: 595013249055792527}
-  - component: {fileID: 3176729592818124705}
   - component: {fileID: 5217585000330926606}
   - component: {fileID: 7979918031344322322}
+  - component: {fileID: 2148436203929893524}
   m_Layer: 0
   m_Name: Tocha
   m_TagString: Lever
@@ -134,18 +134,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8714741892805097731}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &3176729592818124705
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8714741892805097731}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff09e12be766d3045baa0c96befb7c31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LeverScript
 --- !u!23 &5217585000330926606
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -216,3 +204,15 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.9653118, y: 1.2992046, z: 1}
   m_Center: {x: -1.6000001, y: 0.6018321, z: 0}
+--- !u!114 &2148436203929893524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8714741892805097731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f16b152ce37f9da458223e3a138a1df4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Column

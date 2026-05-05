@@ -620,6 +620,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChunkSpawner
   SpawnNecessity: 0
+  DownWards: 0
 --- !u!1 &650674381035319233
 GameObject:
   m_ObjectHideFlags: 0
@@ -4959,6 +4960,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ChunkScript
   DespawningTime: 3000
   TESTING: 0
+  DownWards: 0
   LanesCastle: {fileID: 8462066997837606401}
 --- !u!1 &4521980085423255691
 GameObject:
@@ -9223,6 +9225,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChunkSpawner
   SpawnNecessity: 0
+  DownWards: 0
 --- !u!1 &8419348770307994693
 GameObject:
   m_ObjectHideFlags: 0
@@ -9487,6 +9490,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChunkSpawner
   SpawnNecessity: 0
+  DownWards: 0
 --- !u!1 &8551725458542282954
 GameObject:
   m_ObjectHideFlags: 0

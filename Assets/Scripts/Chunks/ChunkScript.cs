@@ -6,6 +6,8 @@ public class ChunkScript : MonoBehaviour
 
     [SerializeField] float DespawningTime = 300f;
     [SerializeField] bool TESTING = false;
+    [SerializeField] bool DownWards = false;
+
 
     [SerializeField] GameObject LanesCastle;
 
@@ -25,11 +27,12 @@ public class ChunkScript : MonoBehaviour
         {
             //nada
         }
+        LanesCastle.SetActive(ChunkGeneration.ChunkGenerator.SpawnCastle);
 
-        if (ChunkGeneration.ChunkGenerator.SpawnCastle == true)
-        {
-            LanesCastle.SetActive(true);
-        }
+        //if (ChunkGeneration.ChunkGenerator.SpawnCastle == true)
+        //{
+        //    LanesCastle.SetActive(true);
+        //}
 
     }
 }

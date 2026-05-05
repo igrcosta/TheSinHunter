@@ -488,6 +488,8 @@ public class Player : MonoBehaviour
     {
         if (ActualWeapon == WeaponTypes.LuxuryChains)
         {
+            INSTAEnableLayersCollision();
+
             Vector3 ParryEffect = new Vector3(0f, 9.81f, 0f);
 
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, 0);
@@ -495,7 +497,7 @@ public class Player : MonoBehaviour
 
             rb.AddForce(ParryEffect * 7f, ForceMode.Impulse);
 
-            INSTAEnableLayersCollision();
+            
 
             ChainsScript.SelectNewTarget();
         }
@@ -510,6 +512,9 @@ public class Player : MonoBehaviour
         CancelInvoke("FinishDash");
         rb.linearVelocity = Vector3.zero;
 
+        if(ActualWeapon == WeaponTypes.LuxuryChains)
+        INSTAEnableLayersCollision();
+
         isDashing = false;
         tr.enabled = false;
         canDash = true;
@@ -519,6 +524,9 @@ public class Player : MonoBehaviour
     {
 
         CancelInvoke("FinishDash");
+
+        if(ActualWeapon == WeaponTypes.LuxuryChains)
+        INSTAEnableLayersCollision();
 
         EnableDash();
     }

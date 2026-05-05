@@ -3,6 +3,7 @@ using UnityEngine;
 public class ChunkSpawner : MonoBehaviour
 {
     [SerializeField] bool SpawnNecessity = false;
+    [SerializeField] int DownWards = 0;
     bool Castle = false;
 
 
@@ -10,28 +11,40 @@ public class ChunkSpawner : MonoBehaviour
     {
         if (other.CompareTag("Player") && gameObject.CompareTag("DecisionPoints"))
         {
-            ChunkGeneration.ChunkGenerator.ChunkSpawning(SpawnNecessity);
+            if (DownWards == 0)
+            {
+                ChunkGeneration.ChunkGenerator.ChunkSpawning(SpawnNecessity, DownWards);
+            }
+            else if(DownWards == 1) 
+            {
+                ChunkGeneration.ChunkGenerator.ChunkSpawningDownWards(SpawnNecessity, DownWards);
+
+            }
+
+
         }
+        
         if (other.CompareTag("Player") && gameObject.CompareTag("DecisionPoints") && SpawnNecessity)
         {
             ChunkGeneration.ChunkGenerator.DecisionPoint = this;
         }
-        if (other.CompareTag("Player") && gameObject.CompareTag("Castle") && !Castle)
+        if (other.CompareTag("Player") && gameObject.CompareTag("Castle"))
         {
-            Castle = true;
-            if (ChunkGeneration.ChunkGenerator.SpawnCastle != true)
+            if (ChunkGeneration.ChunkGenerator.SpawnCastle)
             {
-                ChunkGeneration.ChunkGenerator.SpawnCastle = true;
-            }
-        }
-        if (other.CompareTag("Player") && gameObject.CompareTag("Castle") && Castle)
-        {
-            Castle = false;
-            if (ChunkGeneration.ChunkGenerator.SpawnCastle = true)
-            {
+                Castle = false;
                 ChunkGeneration.ChunkGenerator.SpawnCastle = false;
+
+            }
+            else
+            {
+                Castle = true;
+                ChunkGeneration.ChunkGenerator.SpawnCastle = true;
+
             }
         }
+        
+        
         if (other.CompareTag("Player") && gameObject.CompareTag("Victory"))
         {
             GameController.controller.Victory();

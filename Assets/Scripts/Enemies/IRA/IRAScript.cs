@@ -47,6 +47,7 @@ public class IRAScript : MonoBehaviour
         else if (other.CompareTag("Player") && GameController.controller.playerRef.ChainsActive && GameController.controller.playerRef.isDashing && ComboEnabled)
         {
             Debug.Log("COMBOO CORRENTE");
+            
             GameController.controller.AddPoints(PointsGuiven);
             Destroy(gameObject);
         }

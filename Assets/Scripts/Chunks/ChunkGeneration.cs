@@ -4,6 +4,8 @@ public class ChunkGeneration : MonoBehaviour
 {
     [Header("Chunks Prefabs")]
     [SerializeField] private GameObject[] PrefabsToSpawn;
+    [SerializeField] private GameObject[] PrefabsDownWardsToSpawn;
+
 
     public bool SpawnCastle;
     public static ChunkGeneration ChunkGenerator;
@@ -20,7 +22,7 @@ public class ChunkGeneration : MonoBehaviour
     //spawnar chunks de 70 em 70 no X
     //lembrar que a ideia é trabalhar com grupos de chunks, vamos começar com chunks individuais e aí vamos melhorar para grupos de chunks
 
-    public void ChunkSpawning(bool needToSpawn)
+    public void ChunkSpawning(bool needToSpawn, int DownWards)
     {
         //marcar onde a chunk será spawnada
         //selecionar item aleatório do array de chunks
@@ -29,7 +31,7 @@ public class ChunkGeneration : MonoBehaviour
         ActualDistance++;
         float XcoordinatesToSpawn = ActualDistance * 70;
 
-        if (PrefabsToSpawn != null && PrefabsToSpawn.Length > 0 && needToSpawn)
+        if (PrefabsToSpawn != null && PrefabsToSpawn.Length > 0 && needToSpawn && DownWards == 0)
         {
             
             int randomIndex = Random.Range(0, PrefabsToSpawn.Length);
@@ -40,5 +42,26 @@ public class ChunkGeneration : MonoBehaviour
         {
             Debug.LogWarning("array vazio ou nulo");
         }
+
+    }
+    public void ChunkSpawningDownWards(bool needToSpawn, int DownWards)
+    {
+        //Separada para apenas randomizar partes de baixo
+
+        ActualDistance++;
+        float XcoordinatesToSpawn = ActualDistance * 70;
+
+        if (PrefabsDownWardsToSpawn != null && PrefabsDownWardsToSpawn.Length > 0 && needToSpawn && DownWards == 1)
+        {
+
+            int randomIndex = Random.Range(0, PrefabsDownWardsToSpawn.Length);
+            GameObject ChunkSelected = PrefabsDownWardsToSpawn[randomIndex];
+            Instantiate(ChunkSelected, new Vector3(XcoordinatesToSpawn, 0, 0), transform.rotation);
+        }
+        else
+        {
+            Debug.LogWarning("array vazio ou nulo");
+        }
+
     }
 }
