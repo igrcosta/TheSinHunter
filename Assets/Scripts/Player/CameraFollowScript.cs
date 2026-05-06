@@ -46,12 +46,15 @@ public class CameraFollowScript : MonoBehaviour
     }
     void Update()
     {
+        if (Pref.Speed <= 20)
+            return;
         YFollowing();
         XFollowing();
     }
 
     void YFollowing()
     {
+        
         if (Pref.transform.position.y >= 50.5)
         {
             transform.position = Vector3.Lerp(transform.position, EvenEVENEVENUpwards, 0.10f);
@@ -76,11 +79,11 @@ public class CameraFollowScript : MonoBehaviour
         {
             transform.position = Vector3.Lerp(transform.position, DownWards, 0.10f);
         }
-        else if (Pref.transform.position.y <= -0.5 && Pref.transform.position.y > -6)
+        else if (Pref.transform.position.y <= -0.1 && Pref.transform.position.y > -6)
         {
             transform.position = Vector3.Lerp(transform.position, EvenDownWards, 0.10f);
         }
-        else if (Pref.transform.position.y <= -6 && Pref.transform.position.y > -14)
+        else if (Pref.transform.position.y <= -5 && Pref.transform.position.y > -14)
         {
             transform.position = Vector3.Lerp(transform.position, EvenEVENDownWards, 0.10f);
         }
