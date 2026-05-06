@@ -130,6 +130,7 @@ MonoBehaviour:
   PointsGuiven: 100
   Damage: 20
   ComboEnabled: 1
+  ChainsEnabled: 0
 --- !u!54 &6893348948132035445
 Rigidbody:
   m_ObjectHideFlags: 0
