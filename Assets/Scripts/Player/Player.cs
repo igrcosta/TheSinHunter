@@ -1,4 +1,7 @@
 
+using System.Collections;
+using System.Net.NetworkInformation;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -68,6 +71,13 @@ public class Player : MonoBehaviour
     private int PlayerLayer;
     private float JumpingBeginning;
 
+    bool ApplyGravity = true;
+
+    public GameObject Movetothis;
+    
+    public float velocidade,JumpTimer,JumpingDuration = 1, DelayGravidadePulo,PotenciaGravity;
+    public AnimationCurve jumpCurve;
+
     void Awake()
     {
         GameController.controller.playerRef = this; //Referencia Player
@@ -115,7 +125,7 @@ public class Player : MonoBehaviour
     #region Updates
     void FixedUpdate()
     {
-        ApplyExtraGravity();
+        if (ApplyGravity) ApplyExtraGravity();
     }
 
     void Update()
@@ -279,30 +289,59 @@ public class Player : MonoBehaviour
 
     public void JumpingMethod()
     {
-        //script para o player poder pular
-        //ao clicar na seta pra cima, ele define a força y dele pra 0, para poder dar um impulso pra cima
-        //as outras forças ele mantém padrão, mantendo o X como deveria estar
-        //JÁ FUNCIONA ATÉ PARA PULO DUPLO
-
+        
         if (CanJump && !isparrying)
         {
             Jumping = true;
-
-            JumpingBeginning = rb.position.y;
-            //pego a posição do pulo para limitar a altura do pulo
-
-            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
-            //zero a velocidade em y 
-
-            rb.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
-            //aplicamos a força em Y como impulso, de forma que mantenha a velocidade de X */
-
-            DisableLayersCollision();
-
             CanJump = false;
+            ApplyGravity = false;
+            rb.useGravity = false;
+            JumpTimer = 0;
 
-            //vou ter que sair da posição dele atual e subir 10f mantendo X e Z
+            float alturaAtual = rb.position.y;
+            float AlturaAlvo = Movetothis.transform.position.y;
+
+            Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, true);
+
+            StartCoroutine(JumpCoroutine(alturaAtual,AlturaAlvo));
         }
+    }
+    
+    IEnumerator JumpCoroutine(float inicial,float alvo)
+    {
+       while (JumpTimer < JumpingDuration) // Pulo
+        {
+           
+            JumpTimer += Time.deltaTime; //Roda o timer por segundo
+
+            float progresso = JumpTimer / JumpingDuration; // Calcula porcentagem do progresso do pulo
+
+            float CurvaDeTempo = jumpCurve.Evaluate(progresso); //Define o progresso como uma curva
+
+            float newbaby = Mathf.Lerp(inicial,alvo, CurvaDeTempo); //Faz um lerp da distancia aonde deve ir e a atual com a curva feita no progresso
+
+            rb.position = new Vector3(rb.position.x, newbaby, rb.position.z); //Move
+
+            yield return null;
+        }
+
+        float Timernoar = 0;
+        float Delay = DelayGravidadePulo;
+
+       while (Timernoar < Delay) // Gravidade do meio termo
+        {
+            Timernoar += Time.deltaTime;
+
+            rb.position += Vector3.down *PotenciaGravity* Time.deltaTime;
+
+            yield return null;
+        }
+
+        Jumping = false;
+        Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, false);
+
+        ApplyGravity = true;
+        rb.useGravity = true;
     }
 
     #endregion Jumping
@@ -329,7 +368,7 @@ public class Player : MonoBehaviour
     void DisableLayersCollision()
     {
         Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, true);
-        Invoke("EnableLayersCollision", 0.22f);
+        Invoke("EnableLayersCollision", 0.1f);
     }
 
     void DisableChainsLayersCollision()
