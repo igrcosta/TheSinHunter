@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
 
     [Header("Infos para Pulo")]
     [SerializeField] float JumpForce = 10f;
+    public float velocidade, JumpTimer, JumpingDuration = 1, DelayGravidadePulo, PotenciaGravity;
+    public AnimationCurve jumpCurve;
     public bool CanJump = false;
     private bool Jumping = false;
     public bool isparrying = false;
@@ -33,6 +35,8 @@ public class Player : MonoBehaviour
     [SerializeField] float gravityScale = 5f;
     [SerializeField] float fallingGravityScale = 30f;
     private float currentGravityScale;
+    bool ApplyGravity = true;
+
 
 
 
@@ -50,10 +54,11 @@ public class Player : MonoBehaviour
     [Header("Referencias")] //Referencias e Variaveis
     private GameObject BombSpawn;
     bool DamageInvulnerability = false;
-    private TrailRenderer tr; //Trilha Dash
+    public TrailRenderer tr; //Trilha Dash
     private Vector3 V3Move;
     private Vector3 JumpVector;
     private Vector3 Target;
+    public GameObject JumpLocation;
     private bool DummyMode = false;
     public bool ChainsActive = false; //MODO: Chains
     public bool DefaultActive = false; //MODO: Default
@@ -71,19 +76,11 @@ public class Player : MonoBehaviour
     private int PlayerLayer;
     private float JumpingBeginning;
 
-    bool ApplyGravity = true;
-
-    public GameObject Movetothis;
-    
-    public float velocidade,JumpTimer,JumpingDuration = 1, DelayGravidadePulo,PotenciaGravity;
-    public AnimationCurve jumpCurve;
-
     void Awake()
     {
         GameController.controller.playerRef = this; //Referencia Player
 
         rb = GetComponent<Rigidbody>();
-        tr = GetComponent<TrailRenderer>();
     }
 
     void Start()
@@ -299,7 +296,7 @@ public class Player : MonoBehaviour
             JumpTimer = 0;
 
             float alturaAtual = rb.position.y;
-            float AlturaAlvo = Movetothis.transform.position.y;
+            float AlturaAlvo = JumpLocation.transform.position.y;
 
             Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, true);
 
@@ -343,6 +340,7 @@ public class Player : MonoBehaviour
         ApplyGravity = true;
         rb.useGravity = true;
     }
+
 
     #endregion Jumping
 
