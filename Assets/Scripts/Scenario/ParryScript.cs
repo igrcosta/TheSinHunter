@@ -25,7 +25,7 @@ public class ParryScript : MonoBehaviour
 
                 //aumento um POUCO sua velocidade
 
-                GameController.controller.playerRef.FinishDash();
+                //GameController.controller.playerRef.FinishDash();
 
                 Invoke("Destroying", 0.1f);
             }

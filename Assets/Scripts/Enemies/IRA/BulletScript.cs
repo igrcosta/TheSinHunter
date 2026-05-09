@@ -5,7 +5,7 @@ public class BulletScript : MonoBehaviour
 {
     private float bulletSpeed = 40f;
     private float LifeTime = 400f;
-    [SerializeField] float BulletDamage = 15f;
+    [SerializeField] float BulletDamage = 5f;
     void Update()
     {
         Movement();

@@ -125,4 +125,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c8660cf676b44246b769c2ebf9b4ee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BulletScript
-  BulletDamage: 15
+  BulletDamage: 5

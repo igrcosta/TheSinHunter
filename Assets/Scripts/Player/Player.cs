@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Net.NetworkInformation;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -17,6 +18,7 @@ public class Player : MonoBehaviour
     public AnimationCurve jumpCurve;
     public bool CanJump = false;
     private bool Jumping = false;
+    private Coroutine jumpCoroutine;
     public bool isparrying = false;
 
     private Vector3 ParryEffect = new Vector3(0f, 9.81f, 0f);
@@ -29,6 +31,7 @@ public class Player : MonoBehaviour
     [SerializeField] float dashingtime = 1f;
     private float DefaultdashCD;
     public float DashingBeginning;
+    private Vector3 dashTargetPosition;
 
     //variáveis para controlar gravidade
     [Header("GRAVIDADE")]
@@ -59,6 +62,7 @@ public class Player : MonoBehaviour
     private Vector3 JumpVector;
     private Vector3 Target;
     public GameObject JumpLocation;
+    public GameObject DashLocation;
     private bool DummyMode = false;
     public bool ChainsActive = false; //MODO: Chains
     public bool DefaultActive = false; //MODO: Default
@@ -141,9 +145,23 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (ActualWeapon == WeaponTypes.Default && rb.position.x - DashingBeginning >= 30f && isDashing)
+        //if (ActualWeapon == WeaponTypes.Default && rb.position.x - DashingBeginning >= 30f && isDashing)
+        if(ActualWeapon == WeaponTypes.Default && isDashing)
         {
-            rb.linearVelocity = new Vector3(0, 0, rb.linearVelocity.z);
+            //rb.linearVelocity = new Vector3(0, 0, rb.linearVelocity.z);
+
+            //pede para ir ate a posicao salva
+            Vector3 nextPosition = Vector3.MoveTowards(rb.position, dashTargetPosition, dashingpower * Time.fixedDeltaTime);
+
+            //deixa ele mexer apenas em x
+            Vector3 next = Vector3.MoveTowards(rb.position, dashTargetPosition, dashingpower * Time.fixedDeltaTime);
+            rb.MovePosition(next);
+
+            //ele para o dash gando chega na posicao salva
+            if (Vector3.Distance(rb.position, dashTargetPosition) < 0.1f)
+            {
+                FinishDash();
+            }
         }
 
 
@@ -157,8 +175,10 @@ public class Player : MonoBehaviour
             }
             else
             {
-                DisableChainsLayersCollision();
-                rb.position = Vector3.MoveTowards(rb.position, TargetObject.transform.position, dashingpower * Time.deltaTime);
+                Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, true);
+                //rb.MovePosition ( Vector3.MoveTowards(rb.position, TargetObject.transform.position, dashingpower * Time.fixedDeltaTime ));
+                Vector3 dir = (TargetObject.transform.position - rb.position).normalized;
+                rb.MovePosition(rb.position + dir * dashingpower * Time.fixedDeltaTime);
 
                 // CHECAGEM DE CHEGADA: Se estiver muito perto do alvo, encerra o dash
                 if (Vector3.Distance(transform.position, TargetObject.transform.position) < 0.5f)
@@ -177,7 +197,7 @@ public class Player : MonoBehaviour
 
     void SpeedSystem() // Sistema de aumento de velocidade
     {
-        if (Speed <= 50 && !DummyMode)
+        if (Speed <= 30 && !DummyMode)
         {
             if (!DamageInvulnerability)
             {
@@ -213,16 +233,20 @@ public class Player : MonoBehaviour
 
     void Move() // Sistema de Corrida infinita
     {
-        if (canMove)
+        if (canMove && !isDashing)
         {
-            rb.position += Vector3.right * Speed * Time.deltaTime;
+            //rb.position += Vector3.right * Speed * Time.deltaTime
+            rb.MovePosition(rb.position + Vector3.right * Speed * Time.fixedDeltaTime);
         }
     }
 
     void ApplyExtraGravity()
     {
-        if (isDashing)
+        if (isDashing && !Jumping)
+        {
+            rb.useGravity = false;
             return;
+        }
         rb.AddForce(Physics.gravity * (gravityScale - 1) * rb.mass);
         rb.useGravity = true;
 
@@ -300,7 +324,7 @@ public class Player : MonoBehaviour
 
             Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, true);
 
-            StartCoroutine(JumpCoroutine(alturaAtual,AlturaAlvo));
+            jumpCoroutine = StartCoroutine(JumpCoroutine(alturaAtual, AlturaAlvo));
         }
     }
     
@@ -317,7 +341,9 @@ public class Player : MonoBehaviour
 
             float newbaby = Mathf.Lerp(inicial,alvo, CurvaDeTempo); //Faz um lerp da distancia aonde deve ir e a atual com a curva feita no progresso
 
-            rb.position = new Vector3(rb.position.x, newbaby, rb.position.z); //Move
+            //rb.position = new Vector3(rb.position.x, newbaby, rb.position.z); 
+
+            rb.MovePosition(new Vector3(rb.position.x, newbaby, rb.position.z)); //Move
 
             yield return null;
         }
@@ -327,9 +353,13 @@ public class Player : MonoBehaviour
 
        while (Timernoar < Delay) // Gravidade do meio termo
         {
+            if (isDashing || isparrying)
+                break;
+
             Timernoar += Time.deltaTime;
 
-            rb.position += Vector3.down *PotenciaGravity* Time.deltaTime;
+            //rb.position += Vector3.down *PotenciaGravity* Time.deltaTime;
+            rb.MovePosition(rb.position + Vector3.down * PotenciaGravity * Time.fixedDeltaTime);
 
             yield return null;
         }
@@ -341,6 +371,19 @@ public class Player : MonoBehaviour
         rb.useGravity = true;
     }
 
+    void CancelJump()
+    {
+        if (jumpCoroutine != null)
+        {
+            StopCoroutine(jumpCoroutine);
+            jumpCoroutine = null;
+        }
+
+        Jumping = false;
+        ApplyGravity = true;
+        rb.useGravity = true;
+            Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, true);
+    }
 
     #endregion Jumping
 
@@ -479,6 +522,12 @@ public class Player : MonoBehaviour
         // Se já estiver dando dash, ignora qualquer novo comando de dash
         if (isDashing || !canDash) return;
 
+        CancelJump();
+
+        ApplyGravity = true;
+        rb.useGravity = true;
+        Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, false);
+
         switch (ActualWeapon)
         {
             case WeaponTypes.Default:
@@ -487,13 +536,17 @@ public class Player : MonoBehaviour
                     isDashing = true;
                     tr.enabled = true;
                     DashingBeginning = rb.position.x;
-                    rb.linearVelocity = Vector3.zero;
-                    rb.useGravity = false;
+                    //rb.linearVelocity = Vector3.zero;
+                    //rb.useGravity = true;
                     Debug.Log("ARMA DEFAULT EQUIPADA");
 
-                    rb.AddForce(Vector3.right * dashingpower, ForceMode.Impulse);
+                    //rb.AddForce(Vector3.right * dashingpower, ForceMode.Impulse);
 
-                    Invoke("FinishDash", dashingtime);
+                    //rb.MovePosition(rb.position + Vector3.right * dashingpower * Time.deltaTime);
+
+                    dashTargetPosition = DashLocation.transform.position;
+                    // isso salva a posicao do dash quando vc clicou no botao, para a posicao do dash nao ficar andando junto com ele
+
                     break;
                 }
             case WeaponTypes.LuxuryChains:
@@ -521,8 +574,13 @@ public class Player : MonoBehaviour
         }
     }
 
+
     public void FinishDash()
     {
+        ApplyGravity = true;
+        rb.useGravity = true;
+        Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, false);
+
         if (ActualWeapon == WeaponTypes.LuxuryChains)
         {
             INSTAEnableLayersCollision();
@@ -538,6 +596,12 @@ public class Player : MonoBehaviour
 
             ChainsScript.SelectNewTarget();
         }
+
+        if(ActualWeapon == WeaponTypes.Default)
+        {
+            rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, rb.linearVelocity.z);
+        }
+
         rb.useGravity = true;
         tr.enabled = false;
         isDashing = false;
@@ -548,9 +612,11 @@ public class Player : MonoBehaviour
         //método para permitir o parry poder habilitar mais dashes ao jogador
         CancelInvoke("FinishDash");
         rb.linearVelocity = Vector3.zero;
+        //rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y, 0);
 
-        if(ActualWeapon == WeaponTypes.LuxuryChains)
+        if (ActualWeapon == WeaponTypes.LuxuryChains)
         INSTAEnableLayersCollision();
+
 
         isDashing = false;
         tr.enabled = false;

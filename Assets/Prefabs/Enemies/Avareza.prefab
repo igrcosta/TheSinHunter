@@ -128,8 +128,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AvarezaScripot
   PointsGuiven: 100
-  Damage: 20
-  ComboEnabled: 1
+  Damage: 5
+  ComboEnabled: 0
   ChainsEnabled: 0
 --- !u!54 &6893348948132035445
 Rigidbody:

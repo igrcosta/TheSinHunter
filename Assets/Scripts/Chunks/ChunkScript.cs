@@ -11,7 +11,7 @@ public class ChunkScript : MonoBehaviour
 
     [SerializeField] GameObject LanesCastle;
 
-
+    ChunkGeneration ChunkGenerator;
 
     void FixedUpdate()
     {
@@ -27,12 +27,10 @@ public class ChunkScript : MonoBehaviour
         {
             //nada
         }
-        LanesCastle.SetActive(ChunkGeneration.ChunkGenerator.SpawnCastle);
-
-        //if (ChunkGeneration.ChunkGenerator.SpawnCastle == true)
-        //{
-        //    LanesCastle.SetActive(true);
-        //}
+        if (LanesCastle != null && ChunkGeneration.ChunkGenerator != null)
+        {
+            LanesCastle.SetActive(ChunkGeneration.ChunkGenerator.SpawnCastle);
+        }
 
     }
 }

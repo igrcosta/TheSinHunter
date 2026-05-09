@@ -7,7 +7,7 @@ public class AvarezaScript : MonoBehaviour
 
 
     [Header("Mechanics")]
-    [SerializeField] float Damage = 20f;
+    [SerializeField] float Damage = 5f;
     [SerializeField] bool ComboEnabled = false;
     [SerializeField] bool ChainsEnabled = false;
 
@@ -21,7 +21,7 @@ public class AvarezaScript : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && GameController.controller.playerRef.DefaultActive && GameController.controller.playerRef.isDashing && ComboEnabled)
+        if (other.CompareTag("Player") && GameController.controller.playerRef.DefaultActive && GameController.controller.playerRef.isDashing && ChainsEnabled)
         {
             GameController.controller.playerRef.ComboDash();
             Debug.Log("COMBOO");
