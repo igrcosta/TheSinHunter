@@ -127,6 +127,7 @@ public class Player : MonoBehaviour
     void FixedUpdate()
     {
         if (ApplyGravity) ApplyExtraGravity();
+
     }
 
     void Update()
@@ -151,10 +152,10 @@ public class Player : MonoBehaviour
             //rb.linearVelocity = new Vector3(0, 0, rb.linearVelocity.z);
 
             //pede para ir ate a posicao salva
-            Vector3 nextPosition = Vector3.MoveTowards(rb.position, dashTargetPosition, dashingpower * Time.fixedDeltaTime);
+            //Vector3 nextPosition = Vector3.MoveTowards(rb.position, dashTargetPosition, dashingpower * Time.fixedDeltaTime);
 
             //deixa ele mexer apenas em x
-            Vector3 next = Vector3.MoveTowards(rb.position, dashTargetPosition, dashingpower * Time.fixedDeltaTime);
+            Vector3 next = Vector3.MoveTowards(rb.position, dashTargetPosition, dashingpower * Time.deltaTime);
             rb.MovePosition(next);
 
             //ele para o dash gando chega na posicao salva
@@ -176,6 +177,7 @@ public class Player : MonoBehaviour
             else
             {
                 Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, true);
+
                 //rb.MovePosition ( Vector3.MoveTowards(rb.position, TargetObject.transform.position, dashingpower * Time.fixedDeltaTime ));
                 Vector3 dir = (TargetObject.transform.position - rb.position).normalized;
                 rb.MovePosition(rb.position + dir * dashingpower * Time.fixedDeltaTime);
@@ -236,7 +238,7 @@ public class Player : MonoBehaviour
         if (canMove && !isDashing)
         {
             //rb.position += Vector3.right * Speed * Time.deltaTime
-            rb.MovePosition(rb.position + Vector3.right * Speed * Time.fixedDeltaTime);
+            rb.MovePosition(rb.position + Vector3.right * Speed * Time.deltaTime * 2);
         }
     }
 
@@ -359,7 +361,7 @@ public class Player : MonoBehaviour
             Timernoar += Time.deltaTime;
 
             //rb.position += Vector3.down *PotenciaGravity* Time.deltaTime;
-            rb.MovePosition(rb.position + Vector3.down * PotenciaGravity * Time.fixedDeltaTime);
+            rb.MovePosition(rb.position + Vector3.down * PotenciaGravity * Time.deltaTime);
 
             yield return null;
         }
@@ -523,6 +525,8 @@ public class Player : MonoBehaviour
         if (isDashing || !canDash) return;
 
         CancelJump();
+
+        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, 0f);
 
         ApplyGravity = true;
         rb.useGravity = true;

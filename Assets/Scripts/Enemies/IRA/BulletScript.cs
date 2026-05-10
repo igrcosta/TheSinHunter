@@ -4,13 +4,13 @@ using UnityEngine;
 public class BulletScript : MonoBehaviour
 {
     private float bulletSpeed = 40f;
-    private float LifeTime = 400f;
+    private float LifeTime = 1.5f;
     [SerializeField] float BulletDamage = 5f;
     void Update()
     {
         Movement();
 
-        LifeTime--;
+        LifeTime -= 1 * Time.deltaTime;
         if (LifeTime <= 0) Destroy(gameObject);
     }
 

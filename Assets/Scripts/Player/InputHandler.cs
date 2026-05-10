@@ -53,6 +53,11 @@ public class InputHandler : MonoBehaviour
                     }
 
                 }
+                else
+                {
+                    GameController.controller.playerRef.BeginDash();
+
+                }
 
             }
         }
