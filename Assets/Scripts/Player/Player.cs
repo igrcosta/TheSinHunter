@@ -4,6 +4,7 @@ using System.Net.NetworkInformation;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -79,6 +80,8 @@ public class Player : MonoBehaviour
     private int LanesLayer;
     private int PlayerLayer;
     private float JumpingBeginning;
+    [SerializeField] GameObject outlineObj;
+
 
     void Awake()
     {
@@ -221,6 +224,11 @@ public class Player : MonoBehaviour
 
         DamageInvulnerability = false;
         //volta a incrementar velocidade
+        HitEffect();
+    }
+    void HitEffect()
+    {
+        outlineObj.SetActive(true);
     }
 
     void DeathCondition()
@@ -291,6 +299,10 @@ public class Player : MonoBehaviour
             {
                 ExplosionState = false;
                 DamageInvulnerability = false;
+            }
+            if(outlineObj.activeSelf)
+            {
+                outlineObj.SetActive(false);
             }
         }
 

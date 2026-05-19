@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 public class IRAScript : MonoBehaviour
@@ -16,6 +17,7 @@ public class IRAScript : MonoBehaviour
     [SerializeField] GameObject BulletPrefab;
     private Rigidbody rb;
     private Transform ShootPoint;
+    [SerializeField]private GameObject deathFX; 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -35,6 +37,7 @@ public class IRAScript : MonoBehaviour
             GameController.controller.AddPoints(PointsGuiven);
             GameController.controller.playerRef.ContinuousRageExplosion();
             GameController.controller.playerRef.EnableDash();
+            Instantiate(deathFX,this.gameObject.transform.position,Quaternion.identity);
             Destroy(gameObject);
         }
         else if (other.CompareTag("Player") && GameController.controller.playerRef.DefaultActive && GameController.controller.playerRef.isDashing && ComboEnabled)
@@ -42,6 +45,7 @@ public class IRAScript : MonoBehaviour
             GameController.controller.playerRef.ComboDash();
             Debug.Log("COMBOO");
             GameController.controller.AddPoints(PointsGuiven);
+            Instantiate(deathFX,this.gameObject.transform.position,Quaternion.identity);
             Destroy(gameObject);
         }
         else if (other.CompareTag("Player") && GameController.controller.playerRef.ChainsActive && GameController.controller.playerRef.isDashing && ComboEnabled)
@@ -49,6 +53,7 @@ public class IRAScript : MonoBehaviour
             Debug.Log("COMBOO CORRENTE");
             
             GameController.controller.AddPoints(PointsGuiven);
+            Instantiate(deathFX,this.gameObject.transform.position,Quaternion.identity);
             Destroy(gameObject);
         }
         else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing && !ComboEnabled)
@@ -56,6 +61,7 @@ public class IRAScript : MonoBehaviour
             GameController.controller.playerRef.FinishDash();
             Debug.Log("FUI COM GOD");
             GameController.controller.AddPoints(PointsGuiven);
+            Instantiate(deathFX,this.gameObject.transform.position,Quaternion.identity);
             Destroy(gameObject);
 
         }
