@@ -178,9 +178,9 @@ public class Player : MonoBehaviour
             {
                 Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, true);
 
-                //rb.MovePosition ( Vector3.MoveTowards(rb.position, TargetObject.transform.position, dashingpower * Time.fixedDeltaTime ));
-                Vector3 dir = (TargetObject.transform.position - rb.position).normalized;
-                rb.MovePosition(rb.position + dir * dashingpower * Time.fixedDeltaTime);
+                rb.MovePosition ( Vector3.MoveTowards(rb.position, TargetObject.transform.position, dashingpower * Time.deltaTime * 1.5f ));
+                //Vector3 dir = (TargetObject.transform.position - rb.position).normalized;
+                //rb.MovePosition(rb.position + dir * dashingpower * Time.deltaTime);
 
                 // CHECAGEM DE CHEGADA: Se estiver muito perto do alvo, encerra o dash
                 if (Vector3.Distance(transform.position, TargetObject.transform.position) < 0.5f)
