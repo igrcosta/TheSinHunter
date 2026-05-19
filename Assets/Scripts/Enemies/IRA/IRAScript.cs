@@ -7,6 +7,9 @@ public class IRAScript : MonoBehaviour
     [SerializeField] float PointsGuiven = 100;
 
     [SerializeField] bool ComboEnabled = false;
+    [SerializeField] bool Far = false;
+
+    float seconds = 0;
 
     [Header("Shoot System")]
     [SerializeField] float Damage = 5f;
@@ -27,6 +30,13 @@ public class IRAScript : MonoBehaviour
     void Update()
     {
         Shoot();
+
+        seconds += 1 * Time.deltaTime;
+
+        if(seconds > 15)
+        {
+            Far = true;
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -77,8 +87,15 @@ public class IRAScript : MonoBehaviour
     {
         if (CanShoot)
         {
-            Instantiate(BulletPrefab, ShootPoint.position, transform.rotation);
-            Debug.Log("TOMA");
+            if (!Far)
+            {
+                Instantiate(BulletPrefab, ShootPoint.position, transform.rotation);
+                Debug.Log("TOMA");
+            }
+            else if (Far)
+            {
+                Instantiate(BulletPrefab, ShootPoint.position, transform.rotation);
+            }
         }
     }
 

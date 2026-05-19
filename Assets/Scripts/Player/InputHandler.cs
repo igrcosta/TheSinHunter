@@ -55,6 +55,7 @@ public class InputHandler : MonoBehaviour
                 }
                 else
                 {
+                    if(Time.timeScale == 1)
                     GameController.controller.playerRef.BeginDash();
 
                 }
