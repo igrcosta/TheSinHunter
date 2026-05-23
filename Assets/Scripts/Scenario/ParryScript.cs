@@ -13,11 +13,12 @@ public class ParryScript : MonoBehaviour
             Player scriptPlayer = other.GetComponent<Player>();
             //acesso player
 
-            scriptPlayer.isparrying=true;
             //indico que isParry é true
 
             if (scriptPlayer.isDashing && scriptPlayer.DefaultActive)
             {
+                scriptPlayer.isparrying = true;
+
                 scriptPlayer.rb.AddForce(ParryEffect * parryforce, ForceMode.Impulse);
                 //scriptPlayer.IgnoreDashLogic();
                 scriptPlayer.EnableDash();
@@ -31,6 +32,8 @@ public class ParryScript : MonoBehaviour
             }
             else if (scriptPlayer.isDashing && scriptPlayer.ChainsActive)
             {
+                scriptPlayer.isparrying = true;
+
                 scriptPlayer.EnableDash();
                 //permito ele pular
 

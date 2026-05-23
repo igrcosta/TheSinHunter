@@ -27,6 +27,16 @@ public class CameraTrigger : MonoBehaviour
             camera.currentLayer = CameraLayer.Middle;
 
         }
+        if (other.CompareTag("Player") & this.CompareTag("Dungeon"))
+        {
+            camera.currentLayer = CameraLayer.Dungeon;
+
+        if (other.CompareTag("Player") & this.CompareTag("Watchtower"))
+        {
+            camera.currentLayer = CameraLayer.Watchtower;
+
+        }
+        }
 
     }
 }

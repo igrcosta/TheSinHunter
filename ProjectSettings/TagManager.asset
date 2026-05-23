@@ -21,6 +21,8 @@ TagManager:
   - Victory
   - Top
   - Bottom
+  - Dungeon
+  - Watchtower
   layers:
   - Default
   - TransparentFX
