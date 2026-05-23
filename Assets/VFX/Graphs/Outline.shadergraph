@@ -199,7 +199,7 @@
         "a": 1.0
     },
     "isMainColor": false,
-    "m_ColorMode": 0
+    "m_ColorMode": 1
 }
 
 {
@@ -825,10 +825,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -185.04794311523438,
-            "y": 273.0584411621094,
-            "width": 0.0,
-            "height": 0.0
+            "x": -210.66661071777345,
+            "y": 236.66664123535157,
+            "width": 146.66665649414063,
+            "height": 36.00004577636719
         }
     },
     "m_Slots": [

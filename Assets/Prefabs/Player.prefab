@@ -782,13 +782,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87b5266e227e0c841b1e2d4706f77282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
-  Speed: 35
+  Speed: 20
   MultiplicadorVelocidade: 5
-  JumpForce: 90
+  JumpForce: 80
   velocidade: 0
   JumpTimer: 0
-  JumpingDuration: 0.18
-  DelayGravidadePulo: 0.08
+  JumpingDuration: 0.3
+  DelayGravidadePulo: 0
   PotenciaGravity: 1
   jumpCurve:
     serializedVersion: 2
@@ -796,29 +796,29 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 1.1581162
-      outSlope: 1.1581162
+      inSlope: 0.7051708
+      outSlope: 0.7051708
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.84176177
-      value: 0.974858
-      inSlope: 0.022219982
-      outSlope: 0.022219982
+      time: 0.8502759
+      value: 0.5995897
+      inSlope: 0.18323413
+      outSlope: 0.18323413
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.38975325
+      inWeight: 1
+      outWeight: 1
     - serializedVersion: 3
-      time: 1.5046997
-      value: 1
-      inSlope: 0.03792514
-      outSlope: 0.03792514
-      tangentMode: 34
+      time: 0.98377347
+      value: 0.60262275
+      inSlope: -0.120973
+      outSlope: -0.120973
+      tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
+      inWeight: 0.23509833
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

@@ -19,6 +19,8 @@ TagManager:
   - Castle
   - TimeCollider
   - Victory
+  - Top
+  - Bottom
   layers:
   - Default
   - TransparentFX

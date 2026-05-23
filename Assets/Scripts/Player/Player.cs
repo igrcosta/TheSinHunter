@@ -224,10 +224,12 @@ public class Player : MonoBehaviour
 
         DamageInvulnerability = false;
         //volta a incrementar velocidade
+        if(!isDashing)
         HitEffect();
     }
     void HitEffect()
     {
+        
         outlineObj.SetActive(true);
     }
 
@@ -646,6 +648,10 @@ public class Player : MonoBehaviour
 
         if(ActualWeapon == WeaponTypes.LuxuryChains)
         INSTAEnableLayersCollision();
+
+        isDashing = false;
+        tr.enabled = false;
+        canDash = true;
 
         EnableDash();
     }

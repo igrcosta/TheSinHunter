@@ -37,6 +37,7 @@ public class AvarezaScript : MonoBehaviour
         }
         else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing && !ComboEnabled)
         {
+            //GameController.controller.playerRef.FinishDash();
             GameController.controller.playerRef.FinishDash();
             Debug.Log("FUI COM GOD");
             GameController.controller.AddPoints(PointsGuiven);
