@@ -12,30 +12,31 @@ public class CameraTrigger : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") & this.CompareTag("Top"))
+        if (other.CompareTag("Player") && this.CompareTag("Top"))
         {
             camera.currentLayer = CameraLayer.Top;
 
         }
-        if (other.CompareTag("Player") & this.CompareTag("Bottom"))
+        if (other.CompareTag("Player") && this.CompareTag("Bottom"))
         {
             camera.currentLayer = CameraLayer.Bottom;
 
         }
-        if (other.CompareTag("Player") & this.CompareTag("Middle"))
+        if (other.CompareTag("Player") && this.CompareTag("Middle"))
         {
             camera.currentLayer = CameraLayer.Middle;
 
         }
-        if (other.CompareTag("Player") & this.CompareTag("Dungeon"))
+        if (other.CompareTag("Player") && this.CompareTag("Dungeon"))
         {
             camera.currentLayer = CameraLayer.Dungeon;
+        }
 
-        if (other.CompareTag("Player") & this.CompareTag("Watchtower"))
+        if (other.CompareTag("Player") && this.CompareTag("Watchtower"))
         {
             camera.currentLayer = CameraLayer.Watchtower;
 
-        }
+        
         }
 
     }

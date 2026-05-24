@@ -23,6 +23,8 @@ TagManager:
   - Bottom
   - Dungeon
   - Watchtower
+  - Middle
+  - Sky
   layers:
   - Default
   - TransparentFX

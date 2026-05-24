@@ -500,10 +500,10 @@ public class Player : MonoBehaviour
     {
         if (ActualWeapon == WeaponTypes.RageBlade)
         {
-            if (rb.position.y >= 80)
-            {
-                rb.MovePosition(new Vector3(rb.position.x, rb.position.y - 10f, rb.position.z));
-            }
+            //if (rb.position.y >= 80)
+            //{
+            //    rb.MovePosition(new Vector3(rb.position.x, rb.position.y - 10f, rb.position.z));
+            //}
             if (rb.linearVelocity.x >= 40)
             {
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x - rb.linearVelocity.x / 4f, rb.linearVelocity.y, rb.linearVelocity.z);

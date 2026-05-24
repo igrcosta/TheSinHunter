@@ -6,6 +6,8 @@ public class ParryScript : MonoBehaviour
 
     [SerializeField] float parryforce = 8f;
 
+    bool Malware;
+
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
