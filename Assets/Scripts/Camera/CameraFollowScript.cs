@@ -51,7 +51,7 @@ public class CameraFollowScript : MonoBehaviour
                 break;
 
             case CameraLayer.Watchtower:
-                baseY = 80;
+                baseY = 100;
                 break;
         }
 
@@ -61,10 +61,10 @@ public class CameraFollowScript : MonoBehaviour
         localYOffset = Mathf.Clamp(localYOffset, -5f, 5f);
 
         if (currentLayer == CameraLayer.Top)
-            localYOffset = Mathf.Clamp(localYOffset, -5f, 10f);
+            localYOffset = Mathf.Clamp(localYOffset, -5f, 15f);
 
         if (currentLayer == CameraLayer.Watchtower)
-            localYOffset = Mathf.Clamp(localYOffset, -15f, 25f);
+            localYOffset = Mathf.Clamp(localYOffset, -20f, 30f);
 
         if (currentLayer == CameraLayer.Bottom)
             localYOffset = Mathf.Clamp(localYOffset, -10f, 5f);
