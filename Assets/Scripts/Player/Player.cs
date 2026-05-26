@@ -41,7 +41,7 @@ public class Player : MonoBehaviour
     private float currentGravityScale;
     bool ApplyGravity = true;
 
-
+    [SerializeField] GameObject SkySlash;
 
 
     [Header("Armas/Mecânicas")]
@@ -71,6 +71,9 @@ public class Player : MonoBehaviour
     public GameObject TargetObject; // Target Chains
     public Rigidbody rb;
     float currentPosition = 0;
+
+    public bool SlashActive = false;
+    public Transform ShootPoint;
 
     //variavel para combo de avarezas (MELHORA FEELING)
 
@@ -531,6 +534,14 @@ public class Player : MonoBehaviour
 
     }
     #endregion RageMethods
+
+
+    public void BeginSlash()
+    {
+        SlashActive = true;
+        Instantiate(SkySlash, ShootPoint.position, transform.rotation);
+    }
+
 
     #region Dashes
     public void BeginDash()
