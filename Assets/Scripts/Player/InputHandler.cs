@@ -8,7 +8,12 @@ public class InputHandler : MonoBehaviour
 
     Vector2 startTouch;
 
+     Player Pref;
 
+    private void Start()
+    {
+        Pref = GameController.controller.playerRef;
+    }
     private void Update()
     {
         DetectSlides();//Detecta os slides na tela e chama as funcoes de acordo
@@ -35,7 +40,7 @@ public class InputHandler : MonoBehaviour
                     {
                         if (delta.x > 0)
                         {
-                            GameController.controller.playerRef.BeginDash();
+                            Pref.BeginDash();
                         }
 
                     }
@@ -43,12 +48,12 @@ public class InputHandler : MonoBehaviour
                     {
                         if (delta.y > 0)
                         {
-                            GameController.controller.playerRef.JumpingMethod();
+                            Pref.JumpingMethod();
                         }
 
                         else
                         {
-                            GameController.controller.playerRef.DescendingLanes();
+                            Pref.DescendingLanes();
                         }
                     }
 
@@ -56,7 +61,7 @@ public class InputHandler : MonoBehaviour
                 else
                 {
                     if(Time.timeScale == 1)
-                    GameController.controller.playerRef.BeginDash();
+                    Pref.BeginDash();
 
                 }
 
@@ -68,13 +73,18 @@ public class InputHandler : MonoBehaviour
 
     void HandleInputKeyboard()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow)) GameController.controller.playerRef.JumpingMethod(); //Pulo
-        if (Input.GetKeyDown(KeyCode.DownArrow)) GameController.controller.playerRef.DescendingLanes(); //Dash para baixo
-        if (Input.GetKeyDown(KeyCode.RightArrow)) GameController.controller.playerRef.BeginDash(); //Dash
-        if (Input.GetKeyDown(KeyCode.A)) GameController.controller.playerRef.BeginSlash(); //Dash
-        if (Input.GetKeyDown(KeyCode.D)) GameController.controller.playerRef.SetActualWeapon("LuxuryChains"); //Muda para Correntes
-        if (Input.GetKeyDown(KeyCode.S)) GameController.controller.playerRef.SetActualWeapon("Default"); //Muda para Default
-        if (Input.GetKeyDown(KeyCode.W)) GameController.controller.playerRef.SetActualWeapon("RageBlade"); // Pulo duplo
+        if (Pref.CanDoubleJump && Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            Pref.DoubleJump();
+        }
+        if (Input.GetKeyDown(KeyCode.UpArrow) && !Pref.IsDoubleJumping) Pref.JumpingMethod(); //Pulo
+        
+        if (Input.GetKeyDown(KeyCode.DownArrow)) Pref.DescendingLanes(); //Dash para baixo
+        if (Input.GetKeyDown(KeyCode.RightArrow)) Pref.BeginDash(); //Dash
+        if (Input.GetKeyDown(KeyCode.A)) Pref.BeginSlash(); //Dash
+        if (Input.GetKeyDown(KeyCode.D)) Pref.SetActualWeapon("LuxuryChains"); //Muda para Correntes
+        if (Input.GetKeyDown(KeyCode.S)) Pref.SetActualWeapon("Default"); //Muda para Default
+        if (Input.GetKeyDown(KeyCode.W)) Pref.SetActualWeapon("RageBlade"); // Pulo duplo
     }
 
 

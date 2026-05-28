@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField] float MultiplicadorVelocidade = 20f;
     private bool canMove = true;     //variavel para poder parar o movimento do player quando quiser
 
-    [Header("Infos para Pulo")]
+    [Header("Pulo")]
     [SerializeField] float JumpForce = 10f;
     public float velocidade, JumpTimer, JumpingDuration = 1, DelayGravidadePulo, PotenciaGravity;
     public AnimationCurve jumpCurve;
@@ -22,7 +22,13 @@ public class Player : MonoBehaviour
     private Coroutine jumpCoroutine;
     public bool isparrying = false;
 
-    private Vector3 ParryEffect = new Vector3(0f, 9.81f, 0f);
+
+    [SerializeField] bool DoubleJumpUnlocked = true;
+    public bool CanDoubleJump = false;
+    public bool IsDoubleJumping = false;
+
+
+    private Vector3 ParryEffect = new Vector3(0f, 3f, 0f);
 
     [Header("Dashs")]
     public bool isDashing = false;
@@ -30,6 +36,7 @@ public class Player : MonoBehaviour
     [SerializeField] float dashingpower = 100;
     [SerializeField] float dashingCD = 1f;
     [SerializeField] float dashingtime = 1f;
+    [SerializeField] bool DoubleDashUnlocked = true;
     private float DefaultdashCD;
     public float DashingBeginning;
     private Vector3 dashTargetPosition;
@@ -51,7 +58,7 @@ public class Player : MonoBehaviour
     public enum WeaponTypes { Default, LuxuryChains, RageBlade };
     [SerializeField] ExplosionScript ExplosionPrefab;
     public bool ExplosionState = false;
-    private Vector3 ExplosionForce = new Vector3(0f, 4f, 0f) * 70f / 4.5f;
+    private Vector3 ExplosionForce = new Vector3(0f, 70f, 0f);
     private Vector3 SecondExplosionForce = new Vector3(9f, 4f, 0f);
 
 
@@ -141,16 +148,7 @@ public class Player : MonoBehaviour
         Move();
         SpeedSystem();
         DeathCondition();
-
-        if (!canDash)
-        {
-            dashingCD -= Time.deltaTime;
-            if (dashingCD <= 0)
-            {
-                canDash = true;
-                dashingCD = DefaultdashCD;
-            }
-        }
+        Dashtimer();
 
         if(ActualWeapon == WeaponTypes.Default && isDashing)
         {
@@ -192,6 +190,9 @@ public class Player : MonoBehaviour
     }
 
     #endregion Updates
+
+
+   
 
     #region Speed/Damage Logic
 
@@ -272,6 +273,10 @@ public class Player : MonoBehaviour
             CanJump = true;
             Jumping = false;
             isparrying = false;
+            IsDoubleJumping = false;
+            CanDoubleJump = true;
+
+
 
             if (ActualWeapon == WeaponTypes.RageBlade)
             {
@@ -288,6 +293,8 @@ public class Player : MonoBehaviour
         if (collisionInfo.gameObject.CompareTag("Lane"))
         {
             CanJump = true;
+            CanDoubleJump = true;
+            IsDoubleJumping = false;
             IsOnALane = true;
             Jumping = false;
             isparrying = false;
@@ -319,9 +326,10 @@ public class Player : MonoBehaviour
         //invoca depois de alguns segundos a tela de morte
     }
 
+
     public void JumpingMethod()
     {
-        
+        if (isDashing || IsDoubleJumping) return;
         if (CanJump && !isparrying)
         {
             Jumping = true;
@@ -369,7 +377,6 @@ public class Player : MonoBehaviour
 
             Timernoar += Time.deltaTime;
 
-            //rb.position += Vector3.down *PotenciaGravity* Time.deltaTime;
             rb.MovePosition(rb.position + Vector3.down * PotenciaGravity * Time.deltaTime);
 
             yield return null;
@@ -378,6 +385,7 @@ public class Player : MonoBehaviour
         Jumping = false;
         Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, false);
 
+        CanDoubleJump = true;
         ApplyGravity = true;
         rb.useGravity = true;
     }
@@ -396,14 +404,32 @@ public class Player : MonoBehaviour
             Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, true);
     }
 
+    public void DoubleJump()
+    {
+        if(!CanJump && CanDoubleJump && DoubleJumpUnlocked)
+        {
+
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, 0f);
+            rb.useGravity = true;
+            ApplyGravity = true;
+
+            CancelJump();
+            IsDoubleJumping = true;
+            RageExplosion();
+            CanDoubleJump = false;
+            if (DoubleJumpUnlocked) canDash = true;
+        }
+    }
+
     #endregion Jumping
 
     #region Lanes
     public void DescendingLanes()
     {
+        if (isDashing) return;
         if (!IsOnALane && !CanJump)
         {
-            rb.AddForce(Vector3.down * JumpForce / 2f, ForceMode.VelocityChange);
+            rb.AddForce(Vector3.down * JumpForce, ForceMode.VelocityChange);
         }
         else if (IsOnALane)
         {
@@ -503,9 +529,11 @@ public class Player : MonoBehaviour
     }
     public void RageExplosion()
     {
+       
         rb.AddForce(ExplosionForce, ForceMode.Impulse);
         DisableChainsLayersCollision();
         Invoke("INSTAEnableLayersCollision", 0.5f);
+ 
     }
 
     public void ContinuousRageExplosion()
@@ -530,6 +558,19 @@ public class Player : MonoBehaviour
 
 
     #region Dashes
+
+    public void Dashtimer()
+    {
+        if (!canDash)
+        {
+            dashingCD -= Time.deltaTime;
+            if (dashingCD <= 0)
+            {
+                canDash = true;
+                dashingCD = DefaultdashCD;
+            }
+        }
+    }
     public void BeginDash()
     {
         // Se já estiver dando dash, ignora qualquer novo comando de dash

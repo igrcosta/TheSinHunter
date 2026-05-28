@@ -57,11 +57,13 @@ public class IRAScript : MonoBehaviour
         else if (other.CompareTag("Player") && GameController.controller.playerRef.DefaultActive && GameController.controller.playerRef.isDashing && ComboEnabled)
         {
             GameController.controller.playerRef.ComboDash();
+            GameController.controller.playerRef.EnableDash();
             Debug.Log("COMBOO");
             Death();
         }
         else if (other.CompareTag("Player") && GameController.controller.playerRef.ChainsActive && GameController.controller.playerRef.isDashing && ComboEnabled)
         {
+            GameController.controller.playerRef.EnableDash();
             Debug.Log("COMBOO CORRENTE");
             Death();
         }

@@ -58,7 +58,7 @@ public class CameraFollowScript : MonoBehaviour
         float localYOffset = Pref.transform.position.y - baseY;
 
         if (currentLayer == CameraLayer.Middle)
-        localYOffset = Mathf.Clamp(localYOffset, -5f, 5f);
+        localYOffset = Mathf.Clamp(localYOffset, 0f, 10f);
 
         if (currentLayer == CameraLayer.Top)
             localYOffset = Mathf.Clamp(localYOffset, -5f, 15f);
