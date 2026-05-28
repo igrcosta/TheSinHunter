@@ -39,46 +39,47 @@ public class IRAScript : MonoBehaviour
         }
     }
 
+    public void Death()
+    {
+        GameController.controller.AddPoints(PointsGuiven);
+        Instantiate(deathFX, this.gameObject.transform.position, Quaternion.identity);
+        Destroy(gameObject);
+    }
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && GameController.controller.playerRef.ExplosionState == true)
         {
             Debug.Log("RECEBA");
-            GameController.controller.AddPoints(PointsGuiven);
             GameController.controller.playerRef.ContinuousRageExplosion();
             GameController.controller.playerRef.EnableDash();
-            Instantiate(deathFX,this.gameObject.transform.position,Quaternion.identity);
-            Destroy(gameObject);
+            Death();
         }
         else if (other.CompareTag("Player") && GameController.controller.playerRef.DefaultActive && GameController.controller.playerRef.isDashing && ComboEnabled)
         {
             GameController.controller.playerRef.ComboDash();
             Debug.Log("COMBOO");
-            GameController.controller.AddPoints(PointsGuiven);
-            Instantiate(deathFX,this.gameObject.transform.position,Quaternion.identity);
-            Destroy(gameObject);
+            Death();
         }
         else if (other.CompareTag("Player") && GameController.controller.playerRef.ChainsActive && GameController.controller.playerRef.isDashing && ComboEnabled)
         {
             Debug.Log("COMBOO CORRENTE");
-            
-            GameController.controller.AddPoints(PointsGuiven);
-            Instantiate(deathFX,this.gameObject.transform.position,Quaternion.identity);
-            Destroy(gameObject);
+            Death();
         }
         else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing && !ComboEnabled)
         {
             GameController.controller.playerRef.FinishDash();
             Debug.Log("FUI COM GOD");
-            GameController.controller.AddPoints(PointsGuiven);
-            Instantiate(deathFX,this.gameObject.transform.position,Quaternion.identity);
-            Destroy(gameObject);
+            Death();
 
         }
         else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing == false)
         {
             GameController.controller.playerRef.Hit(Damage);
             Debug.Log("IRA DEU DANO");
+        }
+        else if (other.CompareTag("SkySlash"))
+        {
+            Death();
         }
     }
 

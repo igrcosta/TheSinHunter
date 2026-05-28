@@ -6,27 +6,24 @@ public class SkySlash : MonoBehaviour
     [SerializeField] GameObject TargetPosition;
 
     [SerializeField] float SlashDamage = 5f;
-    [SerializeField] float attackSpeed = 40f;
+    [SerializeField] float SlashSpeed = 40f;
     private float LifeTime = 2f;
 
     private void Start()
     {
         Pref = GameController.controller.playerRef;
+        SlashSpeed = Pref.Speed * 4;
     }
-
-    // Update is called once per frame
     void Update()
     {
         if (Pref.SlashActive) 
-            Attack();
+            Move();
         LifeTime -= 1 * Time.deltaTime;
         if (LifeTime <= 0) Destroy(gameObject);
     }
 
-    void Attack()
+    void Move()
     {
-        transform.position = Vector3.MoveTowards(transform.position, TargetPosition.transform.position, attackSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, TargetPosition.transform.position, SlashSpeed * Time.deltaTime);
     }
-
-
 }

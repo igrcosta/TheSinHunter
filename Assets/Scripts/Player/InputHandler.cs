@@ -72,7 +72,9 @@ public class InputHandler : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.DownArrow)) GameController.controller.playerRef.DescendingLanes(); //Dash para baixo
         if (Input.GetKeyDown(KeyCode.RightArrow)) GameController.controller.playerRef.BeginDash(); //Dash
         if (Input.GetKeyDown(KeyCode.A)) GameController.controller.playerRef.BeginSlash(); //Dash
-
+        if (Input.GetKeyDown(KeyCode.D)) GameController.controller.playerRef.SetActualWeapon("LuxuryChains"); //Muda para Correntes
+        if (Input.GetKeyDown(KeyCode.S)) GameController.controller.playerRef.SetActualWeapon("Default"); //Muda para Default
+        if (Input.GetKeyDown(KeyCode.W)) GameController.controller.playerRef.SetActualWeapon("RageBlade"); // Pulo duplo
     }
 
 

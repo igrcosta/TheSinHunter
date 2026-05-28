@@ -51,7 +51,7 @@ public class Player : MonoBehaviour
     public enum WeaponTypes { Default, LuxuryChains, RageBlade };
     [SerializeField] ExplosionScript ExplosionPrefab;
     public bool ExplosionState = false;
-    private Vector3 ExplosionForce = new Vector3(9f, 2.8f, 0f) * 70f / 4.5f;
+    private Vector3 ExplosionForce = new Vector3(0f, 4f, 0f) * 70f / 4.5f;
     private Vector3 SecondExplosionForce = new Vector3(9f, 4f, 0f);
 
 
@@ -152,14 +152,8 @@ public class Player : MonoBehaviour
             }
         }
 
-        //if (ActualWeapon == WeaponTypes.Default && rb.position.x - DashingBeginning >= 30f && isDashing)
         if(ActualWeapon == WeaponTypes.Default && isDashing)
         {
-            //rb.linearVelocity = new Vector3(0, 0, rb.linearVelocity.z);
-
-            //pede para ir ate a posicao salva
-            //Vector3 nextPosition = Vector3.MoveTowards(rb.position, dashTargetPosition, dashingpower * Time.fixedDeltaTime);
-
             //deixa ele mexer apenas em x
             Vector3 next = Vector3.MoveTowards(rb.position, dashTargetPosition, dashingpower * Time.deltaTime);
             rb.MovePosition(next);
@@ -185,8 +179,6 @@ public class Player : MonoBehaviour
                 Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, true);
 
                 rb.MovePosition ( Vector3.MoveTowards(rb.position, TargetObject.transform.position, dashingpower * Time.deltaTime * 1.5f ));
-                //Vector3 dir = (TargetObject.transform.position - rb.position).normalized;
-                //rb.MovePosition(rb.position + dir * dashingpower * Time.deltaTime);
 
                 // CHECAGEM DE CHEGADA: Se estiver muito perto do alvo, encerra o dash
                 if (Vector3.Distance(transform.position, TargetObject.transform.position) < 0.5f)
@@ -503,10 +495,6 @@ public class Player : MonoBehaviour
     {
         if (ActualWeapon == WeaponTypes.RageBlade)
         {
-            //if (rb.position.y >= 80)
-            //{
-            //    rb.MovePosition(new Vector3(rb.position.x, rb.position.y - 10f, rb.position.z));
-            //}
             if (rb.linearVelocity.x >= 40)
             {
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x - rb.linearVelocity.x / 4f, rb.linearVelocity.y, rb.linearVelocity.z);
@@ -515,7 +503,6 @@ public class Player : MonoBehaviour
     }
     public void RageExplosion()
     {
-        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
         rb.AddForce(ExplosionForce, ForceMode.Impulse);
         DisableChainsLayersCollision();
         Invoke("INSTAEnableLayersCollision", 0.5f);
@@ -525,7 +512,6 @@ public class Player : MonoBehaviour
     {
         CancelInvoke("EnableLayersCollision");
 
-        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
         rb.AddForce(ParryEffect * 7f, ForceMode.Impulse);
 
 
@@ -565,13 +551,7 @@ public class Player : MonoBehaviour
                     isDashing = true;
                     tr.enabled = true;
                     DashingBeginning = rb.position.x;
-                    //rb.linearVelocity = Vector3.zero;
-                    //rb.useGravity = true;
                     Debug.Log("ARMA DEFAULT EQUIPADA");
-
-                    //rb.AddForce(Vector3.right * dashingpower, ForceMode.Impulse);
-
-                    //rb.MovePosition(rb.position + Vector3.right * dashingpower * Time.deltaTime);
 
                     dashTargetPosition = DashLocation.transform.position;
                     // isso salva a posicao do dash quando vc clicou no botao, para a posicao do dash nao ficar andando junto com ele
