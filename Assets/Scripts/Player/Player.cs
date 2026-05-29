@@ -268,6 +268,7 @@ public class Player : MonoBehaviour
     #region Jumping
     void OnCollisionEnter(Collision collisionInfo)
     {
+
         if (collisionInfo.gameObject.CompareTag("Floor"))
         {
             CanJump = true;
@@ -284,13 +285,10 @@ public class Player : MonoBehaviour
                 DamageInvulnerability = false;
             }
         }
-        else
-        {
-            CanJump = false;
-        }
+        
 
         //PARTE PARA DESCER DE LANES
-        if (collisionInfo.gameObject.CompareTag("Lane"))
+        else if (collisionInfo.gameObject.CompareTag("Lane"))
         {
             CanJump = true;
             CanDoubleJump = true;
@@ -311,11 +309,20 @@ public class Player : MonoBehaviour
         }
 
         //Parte da Lava / obstáculos 
-        if (collisionInfo.gameObject.CompareTag("LAVA"))
+        else if (collisionInfo.gameObject.CompareTag("LAVA"))
         {
             LavaKill();
         }
+
+        
+        else
+        {
+            CanJump = false;
+        }
+        
     }
+
+    
 
     //LavaKill também é utilizado para quando se bate em obstáculos não unlocked ainda
     public void LavaKill()
@@ -362,7 +369,7 @@ public class Player : MonoBehaviour
 
             //rb.position = new Vector3(rb.position.x, newbaby, rb.position.z); 
 
-            rb.MovePosition(new Vector3(rb.position.x, newbaby, rb.position.z)); //Move
+            rb.position = new Vector3(rb.position.x, newbaby, rb.position.z); //Move
 
             yield return null;
         }
@@ -381,6 +388,8 @@ public class Player : MonoBehaviour
 
             yield return null;
         }
+
+        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
 
         Jumping = false;
         Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, false);
@@ -414,6 +423,7 @@ public class Player : MonoBehaviour
             ApplyGravity = true;
 
             CancelJump();
+            FinishDash();
             IsDoubleJumping = true;
             RageExplosion();
             CanDoubleJump = false;
@@ -659,6 +669,8 @@ public class Player : MonoBehaviour
 
     public void EnableDash()
     {
+
+
         //método para permitir o parry poder habilitar mais dashes ao jogador
         CancelInvoke("FinishDash");
         rb.linearVelocity = Vector3.zero;
@@ -671,6 +683,7 @@ public class Player : MonoBehaviour
         isDashing = false;
         tr.enabled = false;
         canDash = true;
+
     }
 
     public void ComboDash()
