@@ -20,7 +20,9 @@ public class Player : MonoBehaviour
     public bool CanJump = false;
     private bool Jumping = false;
     private Coroutine jumpCoroutine;
+    private bool cancelJumpRequested = false;
     public bool isparrying = false;
+
 
 
     [SerializeField] bool DoubleJumpUnlocked = true;
@@ -40,6 +42,8 @@ public class Player : MonoBehaviour
     private float DefaultdashCD;
     public float DashingBeginning;
     private Vector3 dashTargetPosition;
+
+    public bool SuperDashEnable = false;
 
     //variáveis para controlar gravidade
     [Header("GRAVIDADE")]
@@ -308,13 +312,54 @@ public class Player : MonoBehaviour
             }
         }
 
+        else if (collisionInfo.gameObject.CompareTag("BrittleWall"))
+        {
+            CanJump = false;
+            CanDoubleJump = true;
+            IsDoubleJumping = false;
+            IsOnALane = false;
+            Jumping = false;
+            isparrying = false;
+
+            if (ActualWeapon == WeaponTypes.RageBlade)
+            {
+                ExplosionState = false;
+                DamageInvulnerability = false;
+            }
+            if (outlineObj.activeSelf)
+            {
+                outlineObj.SetActive(false);
+            }
+        }
+
         //Parte da Lava / obstáculos 
         else if (collisionInfo.gameObject.CompareTag("LAVA"))
         {
+            FinishDash();
             LavaKill();
         }
 
-        
+        else if (collisionInfo.gameObject.CompareTag("Wall"))
+        {
+            FinishDash();
+            LavaKill();
+        }
+
+        else if (collisionInfo.gameObject.CompareTag("BrittleWall"))
+        {
+            if (!SuperDashEnable)
+            {
+                FinishDash();
+                LavaKill();
+            }
+            else
+            {
+                EnableDash();
+            }
+        }
+
+
+
         else
         {
             CanJump = false;
@@ -339,6 +384,7 @@ public class Player : MonoBehaviour
         if (isDashing || IsDoubleJumping) return;
         if (CanJump && !isparrying)
         {
+            cancelJumpRequested = false;
             Jumping = true;
             CanJump = false;
             ApplyGravity = false;
@@ -358,7 +404,11 @@ public class Player : MonoBehaviour
     {
        while (JumpTimer < JumpingDuration) // Pulo
         {
-           
+            yield return null;
+
+            if (cancelJumpRequested)
+                yield break;
+
             JumpTimer += Time.deltaTime; //Roda o timer por segundo
 
             float progresso = JumpTimer / JumpingDuration; // Calcula porcentagem do progresso do pulo
@@ -371,7 +421,7 @@ public class Player : MonoBehaviour
 
             rb.position = new Vector3(rb.position.x, newbaby, rb.position.z); //Move
 
-            yield return null;
+        
         }
 
         float Timernoar = 0;
@@ -381,6 +431,9 @@ public class Player : MonoBehaviour
         {
             if (isDashing || isparrying)
                 break;
+
+            if (cancelJumpRequested)
+                yield break;
 
             Timernoar += Time.deltaTime;
 
@@ -401,11 +454,16 @@ public class Player : MonoBehaviour
 
     void CancelJump()
     {
+        //cancelJumpRequested = true;
+        //JumpTimer = JumpingDuration;
+
         if (jumpCoroutine != null)
         {
+           
             StopCoroutine(jumpCoroutine);
             jumpCoroutine = null;
         }
+        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
 
         Jumping = false;
         ApplyGravity = true;
@@ -418,12 +476,14 @@ public class Player : MonoBehaviour
         if(!CanJump && CanDoubleJump && DoubleJumpUnlocked)
         {
 
+            CancelJump();
+            FinishDash();
+
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, 0f);
             rb.useGravity = true;
             ApplyGravity = true;
 
-            CancelJump();
-            FinishDash();
+     
             IsDoubleJumping = true;
             RageExplosion();
             CanDoubleJump = false;
@@ -439,7 +499,9 @@ public class Player : MonoBehaviour
         if (isDashing) return;
         if (!IsOnALane && !CanJump)
         {
+            CancelJump();
             rb.AddForce(Vector3.down * JumpForce, ForceMode.VelocityChange);
+       
         }
         else if (IsOnALane)
         {

@@ -20,6 +20,7 @@ public class ParryScript : MonoBehaviour
             if (scriptPlayer.isDashing && scriptPlayer.DefaultActive)
             {
                 scriptPlayer.isparrying = true;
+                scriptPlayer.CanDoubleJump = true;
 
                 scriptPlayer.rb.AddForce(ParryEffect * parryforce, ForceMode.Impulse);
                 //scriptPlayer.IgnoreDashLogic();
@@ -34,7 +35,9 @@ public class ParryScript : MonoBehaviour
             }
             else if (scriptPlayer.isDashing && scriptPlayer.ChainsActive)
             {
-                scriptPlayer.isparrying = true;
+                scriptPlayer.isparrying = true; 
+                scriptPlayer.CanDoubleJump = true;
+
 
                 scriptPlayer.EnableDash();
                 //permito ele pular

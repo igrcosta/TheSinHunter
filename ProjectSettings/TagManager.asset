@@ -25,6 +25,9 @@ TagManager:
   - Watchtower
   - Middle
   - Sky
+  - SkySlash
+  - Wall
+  - BrittleWall
   layers:
   - Default
   - TransparentFX
