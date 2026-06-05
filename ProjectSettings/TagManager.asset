@@ -28,6 +28,7 @@ TagManager:
   - SkySlash
   - Wall
   - BrittleWall
+  - SuperDash
   layers:
   - Default
   - TransparentFX

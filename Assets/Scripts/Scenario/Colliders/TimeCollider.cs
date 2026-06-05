@@ -2,10 +2,11 @@ using UnityEngine;
 
 public class TimeCollider : MonoBehaviour
 {
-    bool stoptime = false;
+    public bool stoptime = false;
     public float HowFast, Target=2f;
 
     float InitialFixedDeltaTime;
+    InputHandler InputScript;
 
     private void Start()
     {
@@ -15,13 +16,15 @@ public class TimeCollider : MonoBehaviour
     {
         TimeBack();
         if (!stoptime) return;
-        TimeStopper();
+            TimeStopper();
     }
     void OnTriggerEnter(Collider other)
     {
        if (other.CompareTag("Player"))
         {
             stoptime = true;
+            InputScript = other.GetComponent<InputHandler>();
+            InputScript.SlowCinematic = true;
             Debug.Log("Game paused");
         }
 
@@ -34,7 +37,7 @@ public class TimeCollider : MonoBehaviour
 
             Time.timeScale = Mathf.Lerp(Time.timeScale, Target, HowFast * Time.unscaledDeltaTime); // Define o TimeScale
 
-            Time.fixedDeltaTime = InitialFixedDeltaTime * Time.timeScale; //Deixa a fisica smooth, e o time stop tambem
+            Time.fixedDeltaTime = InitialFixedDeltaTime * Time.timeScale; //Deixa a fisica fluida, e o time stop tambem
 
             if (Time.timeScale < 0.01) // Caso o valor pra retirar deixe o time scale menor que 0 define para um valor fixo bem baixo
             {
@@ -53,13 +56,16 @@ public class TimeCollider : MonoBehaviour
 
     }
 
-    void TimeBack()
+    public void TimeBack()
     {
-        if (Time.timeScale > 0.05f) return;
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            Time.timeScale = 1f;
-            stoptime = false;       
+        if (InputScript.SlowCinematic == false)
+
+       { if (Time.timeScale > 0.05f) return;
+
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = InitialFixedDeltaTime;
+        stoptime = false;
         }
+
     }
 }

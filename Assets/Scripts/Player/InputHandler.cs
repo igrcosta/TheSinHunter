@@ -8,7 +8,12 @@ public class InputHandler : MonoBehaviour
 
     Vector2 startTouch;
 
-     Player Pref;
+    Player Pref;
+    [SerializeField] SlowCollider slow;
+    [SerializeField] TimeCollider time;
+
+    public bool TimeCinematic = false;
+    public bool SlowCinematic = false;
 
     private void Start()
     {
@@ -85,6 +90,16 @@ public class InputHandler : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D)) Pref.SetActualWeapon("LuxuryChains"); //Muda para Correntes
         if (Input.GetKeyDown(KeyCode.S)) Pref.SetActualWeapon("Default"); //Muda para Default
         if (Input.GetKeyDown(KeyCode.W)) Pref.SetActualWeapon("RageBlade"); // Pulo duplo
+
+        if (SlowCinematic) // Apenas roda se estiver em uma cinematic
+        {
+            if (Input.GetKeyDown(KeyCode.K)) slow.AcelleratePlayer();// Acelera o player a sua speed normal
+        }
+
+        if (SlowCinematic) // Apenas roda se estiver em uma cinematic
+        {
+            if (Input.GetKeyDown(KeyCode.Space))SlowCinematic = false ; //Retoma o tempo
+        }
     }
 
 

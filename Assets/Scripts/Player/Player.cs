@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
 {
     [Header("Sistema De Corrida")]
     public float Speed = 1.5f;
+    public bool canAccelerate = true;
+    public bool canSlowDown;
     [SerializeField] float MultiplicadorVelocidade = 20f;
     private bool canMove = true;     //variavel para poder parar o movimento do player quando quiser
 
@@ -25,7 +27,7 @@ public class Player : MonoBehaviour
 
 
 
-    [SerializeField] bool DoubleJumpUnlocked = true;
+    public bool DoubleJumpUnlocked = true;
     public bool CanDoubleJump = false;
     public bool IsDoubleJumping = false;
 
@@ -43,7 +45,7 @@ public class Player : MonoBehaviour
     public float DashingBeginning;
     private Vector3 dashTargetPosition;
 
-    public bool SuperDashEnable = false;
+    public bool SuperDashUnlocked = false;
 
     //variáveis para controlar gravidade
     [Header("GRAVIDADE")]
@@ -52,7 +54,7 @@ public class Player : MonoBehaviour
     private float currentGravityScale;
     bool ApplyGravity = true;
 
-    [SerializeField] GameObject SkySlash;
+   
 
 
     [Header("Armas/Mecânicas")]
@@ -65,6 +67,9 @@ public class Player : MonoBehaviour
     private Vector3 ExplosionForce = new Vector3(0f, 70f, 0f);
     private Vector3 SecondExplosionForce = new Vector3(9f, 4f, 0f);
 
+    [SerializeField] GameObject SkySlash;
+    public bool SkySlashUnlocked = false;
+    public bool ChainsUnlocked = false;
 
     [Header("Referencias")] //Referencias e Variaveis
     private GameObject BombSpawn;
@@ -200,9 +205,9 @@ public class Player : MonoBehaviour
 
     #region Speed/Damage Logic
 
-    void SpeedSystem() // Sistema de aumento de velocidade
+    public void SpeedSystem() // Sistema de aumento de velocidade
     {
-        if (Speed <= 30 && !DummyMode)
+        if (Speed <= 30 && !DummyMode && canAccelerate)
         {
             if (!DamageInvulnerability)
             {
@@ -235,7 +240,7 @@ public class Player : MonoBehaviour
 
     void DeathCondition()
     {
-        if (GameController.controller.Cheating)
+        if (GameController.controller.Cheating || canSlowDown)
             return;
         else if (Speed <= 20)
         {
@@ -347,7 +352,7 @@ public class Player : MonoBehaviour
 
         else if (collisionInfo.gameObject.CompareTag("BrittleWall"))
         {
-            if (!SuperDashEnable)
+            if (!SuperDashUnlocked)
             {
                 FinishDash();
                 LavaKill();

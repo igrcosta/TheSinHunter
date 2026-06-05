@@ -16,6 +16,7 @@ public class GameController : MonoBehaviour
     [Header("Doors / Obstacles")]
     public LeverScript ActualLever;
     public ObstacleScript ActualObstacle;
+    public int KeysCollected;
 
     [Header("Referencias")]
     public static GameController controller;

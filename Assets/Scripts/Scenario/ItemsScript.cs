@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class ItemsScript : MonoBehaviour
 {
-    private Player player;
+    private Player Pr;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        player = GameController.controller.playerRef;
+        Pr = GameController.controller.playerRef;
 
     }
 
@@ -20,20 +20,33 @@ public class ItemsScript : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if  (other.CompareTag("Player"))
         {
-            if (gameObject.name == "ChainsItem")
+            switch (tag)
             {
-                player.SetActualWeapon("LuxuryChains");
+
+                case "SuperDash":
+                    {
+                        Pr.SuperDashUnlocked= true;
+                        break;
+                    }
+                case "DoubleJump":
+                    {
+                        Pr.DoubleJumpUnlocked = true; 
+                        break;
+                    }
+                case "SkySlash":
+                    {
+                        Pr.SkySlashUnlocked = true;
+                        break;
+                    }
+                case "Chains":
+                    {
+                        Pr.ChainsUnlocked = true;
+                        break;
+                    }
             }
-            else if (gameObject.name == "DefaultItem")
-            {
-                player.SetActualWeapon("Default");
-            }
-            else if (gameObject.name == "RageItem")
-            {
-                player.SetActualWeapon("RageBlade");
-            }
+
         }
     }
 }
