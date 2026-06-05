@@ -23,7 +23,7 @@ public class SlowCollider : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            other.GetComponent<InputHandler>().ColliderCinematic = true; //Avisa para o input handler que é uma cinematic
+            //other.GetComponent<InputHandler>().ColliderCinematic = true; //Avisa para o input handler que é uma cinematic
             SlowingDown = true;
         }
     }
