@@ -7,6 +7,8 @@ public class UIController : MonoBehaviour
     [Header("Referencias")]
     [SerializeField] GameObject OptionsPanel;
     [SerializeField] GameObject AudioPanel;
+    [SerializeField] GameObject[] CreditsPanel;
+    int currentCredit = 0;
     public GameObject ChainsAim;
     public TMPro.TextMeshProUGUI DistanceText;
     public TMPro.TextMeshProUGUI PointsText;
@@ -59,7 +61,30 @@ public class UIController : MonoBehaviour
     public void BotaoAudioOFF()
     {
         AudioPanel.SetActive(false);
+
     }
+    public void BotaoCredtisON()
+    {
+        currentCredit = 0;
+        CreditsPanel[currentCredit].SetActive(true);
+    }
+    public void BotaoCreditsOFF()
+    {
+        currentCredit = 0;
+        CreditsPanel[currentCredit].SetActive(false);
+    }
+
+    public void BotaoCredtisNext()
+    {
+        currentCredit += 1;
+        CreditsPanel[currentCredit].SetActive(true);
+    }
+    public void BotaoCreditsBefore()
+    {
+        
+        CreditsPanel[currentCredit].SetActive(false);
+        currentCredit -= 1;
+    }         
     public void BotaoConfigOFF()
     {
         OptionsPanel.SetActive(false);
