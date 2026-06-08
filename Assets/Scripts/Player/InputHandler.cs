@@ -72,6 +72,10 @@ public class InputHandler : MonoBehaviour
 
             }
         }
+        if (Input.touchCount == 3)
+        {
+            GameController.controller.Cheating = true;
+        }
     }
 
     #region KeyBoard
@@ -100,6 +104,7 @@ public class InputHandler : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))SlowCinematic = false ; //Retoma o tempo
         }
+        if (Input.GetKeyDown(KeyCode.C)) GameController.controller.Cheating = true;
     }
 
 

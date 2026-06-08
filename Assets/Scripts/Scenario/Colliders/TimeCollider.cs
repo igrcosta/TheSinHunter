@@ -47,7 +47,7 @@ public class TimeCollider : MonoBehaviour
                 Time.timeScale = 0.001f;
             }
 
-            Debug.Log("Escala de tempo atual: " + Time.timeScale);
+            //Debug.Log("Escala de tempo atual: " + Time.timeScale);
 
 
         }
@@ -61,9 +61,13 @@ public class TimeCollider : MonoBehaviour
 
     public void TimeBack()
     {
+        if (InputScript == null)
+            return;
+
         if (InputScript.SlowCinematic == false)
 
-       { if (Time.timeScale > 0.05f) return;
+       {
+            if (Time.timeScale > 0.05f) return;
 
         Time.timeScale = 1f;
         Time.fixedDeltaTime = InitialFixedDeltaTime;

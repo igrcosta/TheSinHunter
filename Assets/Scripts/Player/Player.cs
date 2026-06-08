@@ -222,6 +222,7 @@ public class Player : MonoBehaviour
         DamageInvulnerability = true;
         //detecta colisão para parar de incrementar a velocidade
 
+        if(!GameController.controller.Cheating)
         Speed -= damage;
         //reduz a speed com base na vida
 
@@ -229,7 +230,7 @@ public class Player : MonoBehaviour
 
         DamageInvulnerability = false;
         //volta a incrementar velocidade
-        if(!isDashing)
+        if(!isDashing || !GameController.controller.Cheating)
         HitEffect();
     }
     void HitEffect()
@@ -377,6 +378,8 @@ public class Player : MonoBehaviour
     //LavaKill também é utilizado para quando se bate em obstáculos não unlocked ainda
     public void LavaKill()
     {
+        if (GameController.controller.Cheating)
+            return;
         canMove = false;
         Invoke("DisableLayersCollision", 0.25f);
         GameController.controller.Invoke("GameOver", 0.4f);
@@ -545,6 +548,8 @@ public class Player : MonoBehaviour
         if (ActualWeapon == WeaponTypes.Default)
         {
             //desligar tudo o que não for preciso para arma default
+            if (GameController.controller.UIManager == null)
+                return;
 
             GameController.controller.UIManager.DisableAim();
             //desabilitar mira de corrente

@@ -12,15 +12,17 @@ public class ParryScript : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+       
             Player scriptPlayer = other.GetComponent<Player>();
             //acesso player
 
             //indico que isParry é true
 
-            if (scriptPlayer.isDashing && scriptPlayer.DefaultActive)
+            if (scriptPlayer.isDashing)
             {
                 scriptPlayer.isparrying = true;
                 scriptPlayer.CanDoubleJump = true;
+                Debug.Log("Player Encostou");
 
                 scriptPlayer.rb.AddForce(ParryEffect * parryforce, ForceMode.Impulse);
                 //scriptPlayer.IgnoreDashLogic();

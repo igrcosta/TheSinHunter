@@ -67,6 +67,8 @@ public class GameController : MonoBehaviour
 
     public void GameOver()
     {
+        if (Cheating)
+            return;
         SceneManager.LoadScene(2);
         Distance = 0;
         Points = 0;
