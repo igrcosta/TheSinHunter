@@ -9,6 +9,9 @@ public class ScriptKey : MonoBehaviour
         {
             GameController.controller.KeysCollected += 1;
             Destroy(gameObject);
+
+
+
         }
     }
 }

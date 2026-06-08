@@ -29,6 +29,8 @@ TagManager:
   - Wall
   - BrittleWall
   - SuperDash
+  - DoubleJump
+  - Chains
   layers:
   - Default
   - TransparentFX
