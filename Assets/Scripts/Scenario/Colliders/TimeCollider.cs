@@ -3,7 +3,9 @@ using UnityEngine;
 public class TimeCollider : MonoBehaviour
 {
     public bool stoptime = false;
-    public float HowFast, Target=2f;
+    public float HowFast, Target = 2f;
+    [SerializeField] GameObject Drawing;
+    
 
     float InitialFixedDeltaTime;
     InputHandler InputScript;
@@ -15,6 +17,7 @@ public class TimeCollider : MonoBehaviour
     private void Update()
     {
         TimeBack();
+        ShowDrawing();
         if (!stoptime) return;
             TimeStopper();
     }
@@ -65,7 +68,19 @@ public class TimeCollider : MonoBehaviour
         Time.timeScale = 1f;
         Time.fixedDeltaTime = InitialFixedDeltaTime;
         stoptime = false;
+            Destroy(this);
         }
+    }
 
+    void ShowDrawing()
+    {
+        if (Time.timeScale < 0.15)
+        {
+            Drawing.SetActive(true);
+        }
+        else
+        {
+            Drawing.SetActive(false);
+        }
     }
 }
