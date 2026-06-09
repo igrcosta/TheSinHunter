@@ -61,11 +61,21 @@ public class InputHandler : MonoBehaviour
                     {
                         if (delta.y > 0)
                         {
-                            Pref.JumpingMethod();
+
+                            if (!Pref.CanJump && Pref.CanDoubleJump)
+                            {
+                                Pref.DoubleJump();
+                            }
+                            else
+                            {
+                                Pref.JumpingMethod();
+                            }
+
                         }
 
                         else
                         {
+                            
                             Pref.DescendingLanes();
                         }
                     }
@@ -75,7 +85,6 @@ public class InputHandler : MonoBehaviour
                 {
                         Pref.BeginDash();
                         SlowCinematic = false;
-
                 }
 
             }

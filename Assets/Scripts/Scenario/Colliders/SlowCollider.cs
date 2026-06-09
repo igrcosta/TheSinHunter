@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SlowCollider : MonoBehaviour
 {
-    bool SlowingDown;
+    public bool SlowingDown;
     [SerializeField] float SlowCap;
     [SerializeField] float HowMuchSlow;
 
@@ -17,7 +17,7 @@ public class SlowCollider : MonoBehaviour
     void Update()
     {
         if (!SlowingDown) return;
-        SlowPlayer();
+       
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -25,6 +25,7 @@ public class SlowCollider : MonoBehaviour
         {
             //other.GetComponent<InputHandler>().ColliderCinematic = true; //Avisa para o input handler que é uma cinematic
             SlowingDown = true;
+            SlowPlayer();
         }
     }
 

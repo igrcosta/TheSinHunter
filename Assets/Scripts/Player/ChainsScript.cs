@@ -22,7 +22,18 @@ public class ChainsScript : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy") || other.CompareTag("Parry") || other.CompareTag("Lever"))
+        //if (other.CompareTag("Enemy") || other.CompareTag("Parry"))
+        //{
+        //    PossibleTargets.Add(other.gameObject);
+
+        //    if (targetsListed <= 0)
+        //    {
+        //        ActualTarget = other.gameObject;
+        //        isTracking = true;
+        //        //Rastreia o primeiro inimigo que aparecer
+        //    }
+        //}
+        if (other.CompareTag("Lever"))
         {
             PossibleTargets.Add(other.gameObject);
 
@@ -37,8 +48,21 @@ public class ChainsScript : MonoBehaviour
 
     void Update()
     {
-        if (Pref.ChainsActive)
+
+        if (Pref.ChainsUnlocked)
         {
+
+            if (ActualTarget != null && Pref.ActualWeapon != Player.WeaponTypes.LuxuryChains)
+            {
+                Debug.Log("Corrente");
+                Pref.SetActualWeapon("LuxuryChains");
+            }
+
+            if (ActualTarget == null && Pref.ActualWeapon == Player.WeaponTypes.LuxuryChains)
+            {
+                Pref.SetActualWeapon("Default");
+            }
+
             targetsListed = PossibleTargets.Count;
             RemoveBehindPlayer();
 

@@ -45,6 +45,12 @@ public class ItemsScript : MonoBehaviour
                         Pr.ChainsUnlocked = true;
                         break;
                     }
+                case "Key":
+                {
+                        Pr.KeyCollected = true;
+
+                   break;
+                }
             }
 
         }

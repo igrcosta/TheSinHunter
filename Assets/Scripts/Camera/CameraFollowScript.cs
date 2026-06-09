@@ -43,7 +43,7 @@ public class CameraFollowScript : MonoBehaviour
                 break;
 
             case CameraLayer.Bottom:
-                baseY = -20;
+                baseY = -15;
                 break;
 
             case CameraLayer.Dungeon:

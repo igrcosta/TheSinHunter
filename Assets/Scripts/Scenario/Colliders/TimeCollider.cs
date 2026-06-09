@@ -6,6 +6,7 @@ public class TimeCollider : MonoBehaviour
     public float HowFast, Target = 2f;
     [SerializeField] GameObject Drawing;
     public bool isActive = false;
+    bool Inactive = false;
     
 
     float InitialFixedDeltaTime;
@@ -79,6 +80,7 @@ public class TimeCollider : MonoBehaviour
     {
         if (InputScript == null)
            return;
+        Inactive = true;
 
         if (InputScript.SlowCinematic == false)
 

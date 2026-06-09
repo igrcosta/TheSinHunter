@@ -69,7 +69,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] GameObject SkySlash;
     public bool SkySlashUnlocked = false;
-    public bool ChainsUnlocked = false;
+    [SerializeField] public bool ChainsUnlocked = false;
 
     [Header("Referencias")] //Referencias e Variaveis
     private GameObject BombSpawn;
@@ -84,6 +84,8 @@ public class Player : MonoBehaviour
     public bool ChainsActive = false; //MODO: Chains
     public bool DefaultActive = false; //MODO: Default
     public bool RageActive = false; //MODO: Rage
+    public bool KeyCollected = false;
+
     public GameObject TargetObject; // Target Chains
     public Rigidbody rb;
     float currentPosition = 0;
@@ -321,7 +323,7 @@ public class Player : MonoBehaviour
         else if (collisionInfo.gameObject.CompareTag("BrittleWall"))
         {
             CanJump = false;
-            CanDoubleJump = true;
+            CanDoubleJump = false;
             IsDoubleJumping = false;
             IsOnALane = false;
             Jumping = false;
@@ -360,8 +362,13 @@ public class Player : MonoBehaviour
             }
             else
             {
-                EnableDash();
+                //EnableDash();
             }
+        }
+
+        else if (collisionInfo.gameObject.CompareTag("Key"))
+        {
+            KeyCollection();
         }
 
 
@@ -555,7 +562,7 @@ public class Player : MonoBehaviour
             //desabilitar mira de corrente
 
             ChainsActive = false;
-            ChainsTriggerRef.SetActive(false);
+            ChainsTriggerRef.SetActive(true);
             DefaultActive = true;
             RageActive = false;
         }
@@ -774,5 +781,13 @@ public class Player : MonoBehaviour
     }
     #endregion Dashes
 
+    void KeyCollection()
+    {
+        GameController.controller.KeysCollected += 1;
+         
+
+
+
+    }
    
 }
