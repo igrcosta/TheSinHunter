@@ -5,6 +5,7 @@ public class TimeCollider : MonoBehaviour
     public bool stoptime = false;
     public float HowFast, Target = 2f;
     [SerializeField] GameObject Drawing;
+    public bool isActive = false;
     
 
     float InitialFixedDeltaTime;
@@ -28,6 +29,7 @@ public class TimeCollider : MonoBehaviour
             stoptime = true;
             InputScript = other.GetComponent<InputHandler>();
             InputScript.SlowCinematic = true;
+            isActive = true;
             Debug.Log("Game paused");
         }
 
@@ -58,11 +60,25 @@ public class TimeCollider : MonoBehaviour
         }
 
     }
+    void ShowDrawing()
+    {
+        if (isActive)
+        {
+            if (Time.timeScale < 0.15)
+            {
+                Drawing.SetActive(true);
+            }
+            else
+            {
+                Drawing.SetActive(false);
+            }
+        }
+    }
 
     public void TimeBack()
     {
         if (InputScript == null)
-            return;
+           return;
 
         if (InputScript.SlowCinematic == false)
 
@@ -76,15 +92,5 @@ public class TimeCollider : MonoBehaviour
         }
     }
 
-    void ShowDrawing()
-    {
-        if (Time.timeScale < 0.15)
-        {
-            Drawing.SetActive(true);
-        }
-        else
-        {
-            Drawing.SetActive(false);
-        }
-    }
+    
 }

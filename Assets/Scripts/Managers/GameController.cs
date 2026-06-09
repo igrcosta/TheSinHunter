@@ -57,7 +57,7 @@ public class GameController : MonoBehaviour
             {
                 return;
             }
-            Distance += (playerRef.Speed * Time.deltaTime) / 10;
+            Distance += (playerRef.Speed * Time.deltaTime) / 6;
         }
     }
     public void AddPoints(float add)

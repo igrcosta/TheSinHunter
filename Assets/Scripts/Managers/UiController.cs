@@ -12,6 +12,7 @@ public class UIController : MonoBehaviour
     public GameObject ChainsAim;
     public TMPro.TextMeshProUGUI DistanceText;
     public TMPro.TextMeshProUGUI PointsText;
+    public bool isPause = false;
 
     void Start()
     {
@@ -53,6 +54,19 @@ public class UIController : MonoBehaviour
     {
         OptionsPanel.SetActive(true);
         Time.timeScale = 0;
+    }
+
+    public void BotaoPauseON()
+    {
+        OptionsPanel.SetActive(true);
+        isPause = true;
+        Time.timeScale = 0;
+    }
+    public void BotaoPauseOFF()
+    {
+        OptionsPanel.SetActive(false);
+        isPause = false;
+        Time.timeScale = 1;
     }
     public void BotaoAudioON()
     {

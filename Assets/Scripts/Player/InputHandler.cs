@@ -12,12 +12,16 @@ public class InputHandler : MonoBehaviour
     [SerializeField] SlowCollider slow;
     [SerializeField] TimeCollider time;
 
+    
+
     public bool TimeCinematic = false;
     public bool SlowCinematic = false;
 
     private void Start()
     {
         Pref = GameController.controller.playerRef;
+        
+        
     }
     private void Update()
     {
@@ -27,7 +31,10 @@ public class InputHandler : MonoBehaviour
 
     void DetectSlides()
     {
-        if (Input.touchCount == 1)
+        if (GameController.controller.UIManager.isPause)
+            return;
+
+            if (Input.touchCount == 1)
         {
             Touch t = Input.GetTouch(0);
 
@@ -46,6 +53,7 @@ public class InputHandler : MonoBehaviour
                         if (delta.x > 0)
                         {
                             Pref.BeginDash();
+                            
                         }
 
                     }
@@ -65,8 +73,8 @@ public class InputHandler : MonoBehaviour
                 }
                 else
                 {
-                    if(Time.timeScale == 1)
-                    Pref.BeginDash();
+                        Pref.BeginDash();
+                        SlowCinematic = false;
 
                 }
 
@@ -103,6 +111,7 @@ public class InputHandler : MonoBehaviour
         if (SlowCinematic) // Apenas roda se estiver em uma cinematic
         {
             if (Input.GetKeyDown(KeyCode.Space))SlowCinematic = false ; //Retoma o tempo
+            if (Input.GetKeyDown(KeyCode.RightArrow)) SlowCinematic = false;
         }
         if (Input.GetKeyDown(KeyCode.C)) GameController.controller.Cheating = true;
     }
