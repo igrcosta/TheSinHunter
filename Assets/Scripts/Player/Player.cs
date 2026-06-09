@@ -322,7 +322,15 @@ public class Player : MonoBehaviour
 
         else if (collisionInfo.gameObject.CompareTag("BrittleWall"))
         {
-            CanJump = false;
+            if (!SuperDashUnlocked && !isDashing)
+            {
+
+                FinishDash();
+                LavaKill();
+            }
+            
+
+                CanJump = false;
             CanDoubleJump = false;
             IsDoubleJumping = false;
             IsOnALane = false;
@@ -353,18 +361,7 @@ public class Player : MonoBehaviour
             LavaKill();
         }
 
-        else if (collisionInfo.gameObject.CompareTag("BrittleWall"))
-        {
-            if (!SuperDashUnlocked)
-            {
-                FinishDash();
-                LavaKill();
-            }
-            else
-            {
-                //EnableDash();
-            }
-        }
+      
 
         else if (collisionInfo.gameObject.CompareTag("Key"))
         {
@@ -385,8 +382,11 @@ public class Player : MonoBehaviour
     //LavaKill também é utilizado para quando se bate em obstáculos não unlocked ainda
     public void LavaKill()
     {
+
         if (GameController.controller.Cheating)
             return;
+
+        Debug.Log("deveria ter morrido");
         canMove = false;
         Invoke("DisableLayersCollision", 0.25f);
         GameController.controller.Invoke("GameOver", 0.4f);

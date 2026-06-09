@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour
     [Header("UI Infos")]
     public float Distance;
     public float Points;
+    public bool[] TutorialID = new bool[10];
 
     [Header("Mecanicas")]
     public Vector3 PlayerTargetPosition;
@@ -32,6 +33,7 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
+        TutorialID = new bool[5];
         Singleton();
     }
 

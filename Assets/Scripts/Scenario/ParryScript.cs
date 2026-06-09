@@ -7,7 +7,15 @@ public class ParryScript : MonoBehaviour
     [SerializeField] float parryforce = 8f;
 
     bool Malware;
+    [SerializeField] private GameObject deathFX;
 
+
+
+    public void Death()
+    {
+        Instantiate(deathFX, this.gameObject.transform.position, Quaternion.identity);
+        Destroy(gameObject);
+    }
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))

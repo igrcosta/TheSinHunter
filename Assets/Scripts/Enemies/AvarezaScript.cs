@@ -11,12 +11,21 @@ public class AvarezaScript : MonoBehaviour
     [SerializeField] bool ComboEnabled = false;
     [SerializeField] bool ChainsEnabled = false;
 
+    [Header("FeedBacks")]
+    [SerializeField] private GameObject deathFX;
 
     [Header("Referencias")]
     private Rigidbody rb;
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+    }
+
+    public void Death()
+    {
+        GameController.controller.AddPoints(PointsGuiven);
+        Instantiate(deathFX, this.gameObject.transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 
     void OnTriggerEnter(Collider other)
@@ -26,14 +35,14 @@ public class AvarezaScript : MonoBehaviour
             GameController.controller.playerRef.ComboDash();
             Debug.Log("COMBOO");
             GameController.controller.AddPoints(PointsGuiven);
-            Destroy(gameObject);
+            Death();
         }
         else if (other.CompareTag("Player") && GameController.controller.playerRef.ChainsActive && GameController.controller.playerRef.isDashing && ChainsEnabled)
         {
             GameController.controller.playerRef.ComboDash();
             Debug.Log("COMBOO");
             GameController.controller.AddPoints(PointsGuiven);
-            Destroy(gameObject);
+            Death();
         }
         else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing && !ComboEnabled)
         {
@@ -41,7 +50,7 @@ public class AvarezaScript : MonoBehaviour
             GameController.controller.playerRef.FinishDash();
             Debug.Log("FUI COM GOD");
             GameController.controller.AddPoints(PointsGuiven);
-            Destroy(gameObject);
+            Death();
 
         }
         else if (other.CompareTag("Player") && GameController.controller.playerRef.ExplosionState)
@@ -49,7 +58,7 @@ public class AvarezaScript : MonoBehaviour
             GameController.controller.playerRef.ContinuousRageExplosion();
             GameController.controller.playerRef.EnableDash();
             GameController.controller.AddPoints(PointsGuiven);
-            Destroy(gameObject);
+            Death();    
 
         }
         else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing == false)

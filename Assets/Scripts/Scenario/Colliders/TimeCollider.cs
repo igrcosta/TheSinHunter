@@ -7,13 +7,21 @@ public class TimeCollider : MonoBehaviour
     [SerializeField] GameObject Drawing;
     public bool isActive = false;
     bool Inactive = false;
-    
+    [SerializeField] int TutorialIndex;
 
     float InitialFixedDeltaTime;
     InputHandler InputScript;
 
     private void Start()
     {
+        Debug.Log("TutorialIndex: " + TutorialIndex);
+        Debug.Log("Array Size: " + GameController.controller.TutorialID.Length);
+
+        if (GameController.controller.TutorialID[TutorialIndex] == true)
+        {
+            Destroy(gameObject);
+        }
+
         InitialFixedDeltaTime = Time.fixedDeltaTime;
     }
     private void Update()
@@ -27,6 +35,8 @@ public class TimeCollider : MonoBehaviour
     {
        if (other.CompareTag("Player"))
         {
+            GameController.controller.TutorialID[TutorialIndex] = true;
+
             stoptime = true;
             InputScript = other.GetComponent<InputHandler>();
             InputScript.SlowCinematic = true;
