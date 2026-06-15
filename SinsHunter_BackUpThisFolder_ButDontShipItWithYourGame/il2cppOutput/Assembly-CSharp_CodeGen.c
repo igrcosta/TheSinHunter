@@ -43,6 +43,7 @@ extern void ChunkScript__ctor_mB4F2BC5D1191F0C0E363BC29A6D64F23BE9B58B5 (void);
 extern void ChunkSpawner_OnTriggerEnter_mF730D9239A9987FBBA72480F452D9AC6A1FF3B58 (void);
 extern void ChunkSpawner__ctor_m25030F07E0BC76320571F09808488011437AFA4A (void);
 extern void AvarezaScript_Awake_m67A9689E23913D3A339987593C25E2D55BA332E7 (void);
+extern void AvarezaScript_Death_mCABD9060218C2595D4EAC86773E31A591CA9FD94 (void);
 extern void AvarezaScript_OnTriggerEnter_mA11C3A399B33773619FFBE4533DF25A6171D29E5 (void);
 extern void AvarezaScript__ctor_m06F9B6E533068FD077BE7C64B01E90DE679D5114 (void);
 extern void FakeParryScript_Start_mBACA70F65B2C85108E02EED89C59F54CB1676481 (void);
@@ -206,6 +207,7 @@ extern void ObstacleScript_OnCollisionEnter_m939F30D2929F9ED437C51B124D15FF4B54C
 extern void ObstacleScript_UnlockGate_mC2D7806EC4F0D2A64E5D34F6D7695A1FE56265F5 (void);
 extern void ObstacleScript_Destroying_m3D063DA4B5A04FADCDFA46D063371632E8733F4C (void);
 extern void ObstacleScript__ctor_mF871CE57D673F20A7602AD33C551515F62D10541 (void);
+extern void ParryScript_Death_m9086B192AE574E6C315162298E53E53F8418B7DB (void);
 extern void ParryScript_OnTriggerEnter_mC559107DB43CDB53D3955DC2AAAE08405B0D60F4 (void);
 extern void ParryScript_Destroying_m20CDF811721A8DF8AA79A2DC6F9EF903630ADF0C (void);
 extern void ParryScript__ctor_m3F9D530DBBC5A7118E8DDDDD064A6049E90170AD (void);
@@ -467,7 +469,7 @@ extern void U3CWarpTextU3Ed__8_MoveNext_mCE7A826C5E4854C2C509C77BD18F5A9B6D691B0
 extern void U3CWarpTextU3Ed__8_System_Collections_Generic_IEnumeratorU3CSystem_ObjectU3E_get_Current_mD80368E9B7E259311C03E406B75161ED6F7618E3 (void);
 extern void U3CWarpTextU3Ed__8_System_Collections_IEnumerator_Reset_m07746C332D2D8CE5DEA59873C26F2FAD4B369B42 (void);
 extern void U3CWarpTextU3Ed__8_System_Collections_IEnumerator_get_Current_m71D7F84D9DEF63BEC6B44866515DDCF35B142A19 (void);
-static Il2CppMethodPointer s_methodPointers[460] = 
+static Il2CppMethodPointer s_methodPointers[462] = 
 {
 	ChatController_OnEnable_m025CE203564D82A1CDCE5E5719DB07E29811D0B7,
 	ChatController_OnDisable_mD49D03719CAEBB3F59F24A7FA8F4FD30C8B54E46,
@@ -505,6 +507,7 @@ static Il2CppMethodPointer s_methodPointers[460] =
 	ChunkSpawner_OnTriggerEnter_mF730D9239A9987FBBA72480F452D9AC6A1FF3B58,
 	ChunkSpawner__ctor_m25030F07E0BC76320571F09808488011437AFA4A,
 	AvarezaScript_Awake_m67A9689E23913D3A339987593C25E2D55BA332E7,
+	AvarezaScript_Death_mCABD9060218C2595D4EAC86773E31A591CA9FD94,
 	AvarezaScript_OnTriggerEnter_mA11C3A399B33773619FFBE4533DF25A6171D29E5,
 	AvarezaScript__ctor_m06F9B6E533068FD077BE7C64B01E90DE679D5114,
 	FakeParryScript_Start_mBACA70F65B2C85108E02EED89C59F54CB1676481,
@@ -668,6 +671,7 @@ static Il2CppMethodPointer s_methodPointers[460] =
 	ObstacleScript_UnlockGate_mC2D7806EC4F0D2A64E5D34F6D7695A1FE56265F5,
 	ObstacleScript_Destroying_m3D063DA4B5A04FADCDFA46D063371632E8733F4C,
 	ObstacleScript__ctor_mF871CE57D673F20A7602AD33C551515F62D10541,
+	ParryScript_Death_m9086B192AE574E6C315162298E53E53F8418B7DB,
 	ParryScript_OnTriggerEnter_mC559107DB43CDB53D3955DC2AAAE08405B0D60F4,
 	ParryScript_Destroying_m20CDF811721A8DF8AA79A2DC6F9EF903630ADF0C,
 	ParryScript__ctor_m3F9D530DBBC5A7118E8DDDDD064A6049E90170AD,
@@ -930,7 +934,7 @@ static Il2CppMethodPointer s_methodPointers[460] =
 	U3CWarpTextU3Ed__8_System_Collections_IEnumerator_Reset_m07746C332D2D8CE5DEA59873C26F2FAD4B369B42,
 	U3CWarpTextU3Ed__8_System_Collections_IEnumerator_get_Current_m71D7F84D9DEF63BEC6B44866515DDCF35B142A19,
 };
-static const int32_t s_InvokerIndices[460] = 
+static const int32_t s_InvokerIndices[462] = 
 {
 	13953,
 	13953,
@@ -966,6 +970,7 @@ static const int32_t s_InvokerIndices[460] =
 	13953,
 	13953,
 	10554,
+	13953,
 	13953,
 	13953,
 	10554,
@@ -1128,6 +1133,7 @@ static const int32_t s_InvokerIndices[460] =
 	13953,
 	13953,
 	10554,
+	13953,
 	13953,
 	13953,
 	13953,
@@ -1397,7 +1403,7 @@ IL2CPP_EXTERN_C const Il2CppCodeGenModule g_AssemblyU2DCSharp_CodeGenModule;
 const Il2CppCodeGenModule g_AssemblyU2DCSharp_CodeGenModule = 
 {
 	"Assembly-CSharp.dll",
-	460,
+	462,
 	s_methodPointers,
 	0,
 	NULL,

@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
 
 
 
-    public bool DoubleJumpUnlocked = true;
+    //public bool DoubleJumpUnlocked = true;
     public bool CanDoubleJump = false;
     public bool IsDoubleJumping = false;
 
@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
     public float DashingBeginning;
     private Vector3 dashTargetPosition;
 
-    public bool SuperDashUnlocked = false;
+    //public bool SuperDashUnlocked = false;
 
     //variáveis para controlar gravidade
     [Header("GRAVIDADE")]
@@ -68,8 +68,9 @@ public class Player : MonoBehaviour
     private Vector3 SecondExplosionForce = new Vector3(9f, 4f, 0f);
 
     [SerializeField] GameObject SkySlash;
-    public bool SkySlashUnlocked = false;
-    [SerializeField] public bool ChainsUnlocked = false;
+    //public bool SkySlashUnlocked = false;
+
+    //[SerializeField] public bool ChainsUnlocked = false;
 
     [Header("Referencias")] //Referencias e Variaveis
     private GameObject BombSpawn;
@@ -113,6 +114,9 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        //Armas ja liberadas
+        GameController.controller.ItemColected();
+
         //Encontrar referência Do trigger das correntes
         ChainsTriggerRef = transform.GetChild(1).gameObject;
 
@@ -322,7 +326,7 @@ public class Player : MonoBehaviour
 
         else if (collisionInfo.gameObject.CompareTag("BrittleWall"))
         {
-            if (!SuperDashUnlocked && !isDashing)
+            if (!GameController.controller.SuperDashUnlocked && !isDashing)
             {
 
                 FinishDash();
@@ -488,7 +492,7 @@ public class Player : MonoBehaviour
 
     public void DoubleJump()
     {
-        if(!CanJump && CanDoubleJump && DoubleJumpUnlocked)
+        if(!CanJump && CanDoubleJump && GameController.controller.DoubleJumpUnlocked)
         {
 
             CancelJump();
@@ -502,7 +506,7 @@ public class Player : MonoBehaviour
             IsDoubleJumping = true;
             RageExplosion();
             CanDoubleJump = false;
-            if (DoubleJumpUnlocked) canDash = true;
+            if (GameController.controller.DoubleJumpUnlocked) canDash = true;
         }
     }
 

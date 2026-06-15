@@ -25,6 +25,7 @@ public class AvarezaScript : MonoBehaviour
     {
         GameController.controller.AddPoints(PointsGuiven);
         Instantiate(deathFX, this.gameObject.transform.position, Quaternion.identity);
+
         Destroy(gameObject);
     }
 

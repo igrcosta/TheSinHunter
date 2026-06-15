@@ -22,27 +22,30 @@ public class ItemsScript : MonoBehaviour
     {
         if  (other.CompareTag("Player"))
         {
+            GameController.controller.ItemColected();
+
             switch (tag)
             {
 
                 case "SuperDash":
                     {
-                        Pr.SuperDashUnlocked= true;
+                        GameController.controller.SuperDashUnlocked= true;
+                        
                         break;
                     }
                 case "DoubleJump":
                     {
-                        Pr.DoubleJumpUnlocked = true; 
+                        GameController.controller.DoubleJumpUnlocked = true; 
                         break;
                     }
                 case "SkySlash":
                     {
-                        Pr.SkySlashUnlocked = true;
+                        GameController.controller.SkySlashUnlocked = true;
                         break;
                     }
                 case "Chains":
                     {
-                        Pr.ChainsUnlocked = true;
+                        GameController.controller.ChainsUnlocked = true;
                         break;
                     }
                 case "Key":

@@ -713,8 +713,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Audio
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 3be2617e3918a4b49bb63babd369d1a9, type: 2}
-  m_sharedMaterial: {fileID: 2980403151224776242, guid: 3be2617e3918a4b49bb63babd369d1a9, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5023,8 +5023,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Options
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 3be2617e3918a4b49bb63babd369d1a9, type: 2}
-  m_sharedMaterial: {fileID: 2980403151224776242, guid: 3be2617e3918a4b49bb63babd369d1a9, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5470,8 +5470,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 3be2617e3918a4b49bb63babd369d1a9, type: 2}
-  m_sharedMaterial: {fileID: 2980403151224776242, guid: 3be2617e3918a4b49bb63babd369d1a9, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ca955fbfb14c772489702bfb61fbad08, type: 2}
+  m_sharedMaterial: {fileID: -3465104906542040689, guid: ca955fbfb14c772489702bfb61fbad08, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5579,9 +5579,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIController
   OptionsPanel: {fileID: 32249825}
   AudioPanel: {fileID: 206854727}
+  CreditsPanel: []
   ChainsAim: {fileID: 561975998}
   DistanceText: {fileID: 1658749752}
   PointsText: {fileID: 1297465845}
+  isPause: 0
 --- !u!4 &1306064172
 Transform:
   m_ObjectHideFlags: 0
@@ -5809,8 +5811,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 3be2617e3918a4b49bb63babd369d1a9, type: 2}
-  m_sharedMaterial: {fileID: 2980403151224776242, guid: 3be2617e3918a4b49bb63babd369d1a9, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7092,8 +7094,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 3be2617e3918a4b49bb63babd369d1a9, type: 2}
-  m_sharedMaterial: {fileID: 2980403151224776242, guid: 3be2617e3918a4b49bb63babd369d1a9, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ca955fbfb14c772489702bfb61fbad08, type: 2}
+  m_sharedMaterial: {fileID: -3465104906542040689, guid: ca955fbfb14c772489702bfb61fbad08, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7769,9 +7771,11 @@ MonoBehaviour:
   Cheating: 0
   Distance: 0
   Points: 0
+  TutorialID: 00000000000000000000
   PlayerTargetPosition: {x: 0, y: 0, z: 0}
   ActualLever: {fileID: 0}
   ActualObstacle: {fileID: 0}
+  KeysCollected: 0
   UIManager: {fileID: 1306064171}
   playerRef: {fileID: 2129704348}
 --- !u!4 &1773836327

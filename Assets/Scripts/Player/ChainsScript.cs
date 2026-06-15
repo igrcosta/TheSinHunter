@@ -49,7 +49,7 @@ public class ChainsScript : MonoBehaviour
     void Update()
     {
 
-        if (Pref.ChainsUnlocked)
+        if (GameController.controller.ChainsUnlocked)
         {
 
             if (ActualTarget != null && Pref.ActualWeapon != Player.WeaponTypes.LuxuryChains)

@@ -19,6 +19,14 @@ public class GameController : MonoBehaviour
     public ObstacleScript ActualObstacle;
     public int KeysCollected;
 
+    [Header("Player")]
+    public bool ChainsUnlocked;
+    public bool DoubleJumpUnlocked;
+    public bool SuperDashUnlocked;
+    public bool SkySlashUnlocked;
+
+
+
     [Header("Referencias")]
     public static GameController controller;
     public UIController UIManager;
@@ -28,6 +36,8 @@ public class GameController : MonoBehaviour
     {
         DistanceCalculator();
     }
+
+   
 
     #region Singleton
 
@@ -89,6 +99,13 @@ public class GameController : MonoBehaviour
         {
 
         }
+    }
+
+    public void ItemColected()
+    {
+
+
+
     }
 
 
