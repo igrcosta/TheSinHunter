@@ -32,7 +32,7 @@ public class IRAScript : MonoBehaviour
         Shoot();
 
         seconds += 1 * Time.deltaTime;
-
+        
         if(seconds > 15)
         {
             Far = true;
@@ -43,7 +43,8 @@ public class IRAScript : MonoBehaviour
     {
         GameController.controller.AddPoints(PointsGuiven);
         Instantiate(deathFX, this.gameObject.transform.position, Quaternion.identity);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
+
     }
     void OnTriggerEnter(Collider other)
     {

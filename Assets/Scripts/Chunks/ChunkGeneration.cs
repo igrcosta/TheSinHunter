@@ -40,7 +40,7 @@ public class ChunkGeneration : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("array vazio ou nulo");
+            //Debug.LogWarning("array vazio ou nulo");
         }
 
     }

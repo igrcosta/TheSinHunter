@@ -54,7 +54,7 @@ public class Player : MonoBehaviour
     private float currentGravityScale;
     bool ApplyGravity = true;
 
-   
+    bool isdead = false;
 
 
     [Header("Armas/Mecânicas")]
@@ -115,7 +115,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         //Armas ja liberadas
-        GameController.controller.ItemColected();
+        
 
         //Encontrar referência Do trigger das correntes
         ChainsTriggerRef = transform.GetChild(1).gameObject;
@@ -247,11 +247,14 @@ public class Player : MonoBehaviour
 
     void DeathCondition()
     {
+        if(isdead) return; 
         if (GameController.controller.Cheating || canSlowDown)
             return;
         else if (Speed <= 20)
         {
-            GameController.controller.GameOver();
+            isdead = true;
+            //GameController.controller.GameOver();
+            GameController.controller.UIManager.ShowDeathPanel();
         }
     }
 
@@ -393,7 +396,12 @@ public class Player : MonoBehaviour
         Debug.Log("deveria ter morrido");
         canMove = false;
         Invoke("DisableLayersCollision", 0.25f);
-        GameController.controller.Invoke("GameOver", 0.4f);
+        //GameController.controller.Invoke("GameOver", 0.4f);
+
+        GameController.controller.UIManager.ShowDeathPanel();
+
+
+        //GameController.controller.UIManager.Invoke("ShowDeathPanel", 0.4f);
         //invoca depois de alguns segundos a tela de morte
     }
 
@@ -793,5 +801,32 @@ public class Player : MonoBehaviour
 
 
     }
-   
+
+    public void ResetPlayer()
+    {
+        isdead = false;
+        canMove = true;
+        isDashing = false;
+        Jumping = false;
+        CanJump = true;
+
+        
+        CanDoubleJump = true;
+        IsDoubleJumping = false;
+
+        ExplosionState = false;
+        isparrying = false;
+
+        rb.linearVelocity = Vector3.zero;
+        Time.timeScale = 1;
+
+        ApplyGravity = true;
+        rb.useGravity = true;
+
+        Speed = 30;
+
+        tr.enabled = false;
+    }
+
+
 }

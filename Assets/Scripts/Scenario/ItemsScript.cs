@@ -22,7 +22,7 @@ public class ItemsScript : MonoBehaviour
     {
         if  (other.CompareTag("Player"))
         {
-            GameController.controller.ItemColected();
+            
 
             switch (tag)
             {

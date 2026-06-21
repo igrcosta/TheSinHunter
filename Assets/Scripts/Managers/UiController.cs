@@ -8,15 +8,24 @@ public class UIController : MonoBehaviour
     [SerializeField] GameObject OptionsPanel;
     [SerializeField] GameObject AudioPanel;
     [SerializeField] GameObject[] CreditsPanel;
+    [SerializeField] GameObject DeathPanel;
+    [SerializeField] GameObject CheckpointPanel;
+
+
     int currentCredit = 0;
     public GameObject ChainsAim;
     public TMPro.TextMeshProUGUI DistanceText;
     public TMPro.TextMeshProUGUI PointsText;
     public bool isPause = false;
 
+    [Header("Som")]
+    public AudioSource audioSource;
+
     void Start()
     {
         GameController.controller.UIManager = this;
+
+
     }
 
 
@@ -58,12 +67,14 @@ public class UIController : MonoBehaviour
 
     public void BotaoPauseON()
     {
+        audioSource.Pause();
         OptionsPanel.SetActive(true);
         isPause = true;
         Time.timeScale = 0;
     }
     public void BotaoPauseOFF()
     {
+        audioSource.UnPause();
         OptionsPanel.SetActive(false);
         isPause = false;
         Time.timeScale = 1;
@@ -110,6 +121,45 @@ public class UIController : MonoBehaviour
         SceneManager.LoadScene("Menu");
     }
     #endregion BotoesUI
+
+    #region CheckPonints
+    public void ShowDeathPanel()
+    {
+        DeathPanel.SetActive(true);
+
+        Time.timeScale = 0;
+    }
+
+    public void RespawnCurrentCheckpoint()
+    {
+        DeathPanel.SetActive(false);
+
+        GameController.controller.RespawnPlayer();
+
+        Time.timeScale = 1;
+    }
+    public void OpenCheckpointMenu()
+    {
+        
+        CheckpointPanel.SetActive(true);
+    }
+
+    public void CloseCheckpointMenu()
+    {
+        
+        CheckpointPanel.SetActive(false);
+    }
+
+
+    public void TravelButton(int index)
+    {
+
+        GameController.controller.TravelToCheckpoint(index);
+    }
+
+
+
+    #endregion CheckPoints
 
     #region ChainsUI
 

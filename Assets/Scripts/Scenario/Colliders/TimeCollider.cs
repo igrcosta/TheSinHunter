@@ -6,7 +6,6 @@ public class TimeCollider : MonoBehaviour
     public float HowFast, Target = 2f;
     [SerializeField] GameObject Drawing;
     public bool isActive = false;
-    bool Inactive = false;
     [SerializeField] int TutorialIndex;
 
     float InitialFixedDeltaTime;
@@ -14,8 +13,6 @@ public class TimeCollider : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("TutorialIndex: " + TutorialIndex);
-        Debug.Log("Array Size: " + GameController.controller.TutorialID.Length);
 
         if (GameController.controller.TutorialID[TutorialIndex] == true)
         {
@@ -36,6 +33,9 @@ public class TimeCollider : MonoBehaviour
        if (other.CompareTag("Player"))
         {
             GameController.controller.TutorialID[TutorialIndex] = true;
+
+            PlayerPrefs.SetInt("Tutorial" + TutorialIndex, 1);
+            PlayerPrefs.Save();
 
             stoptime = true;
             InputScript = other.GetComponent<InputHandler>();
@@ -90,7 +90,7 @@ public class TimeCollider : MonoBehaviour
     {
         if (InputScript == null)
            return;
-        Inactive = true;
+        
 
         if (InputScript.SlowCinematic == false)
 
