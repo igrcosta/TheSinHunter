@@ -6,6 +6,7 @@ public class UIController : MonoBehaviour
 {
     [Header("Referencias")]
     [SerializeField] GameObject OptionsPanel;
+    [SerializeField] GameObject PausePanel;
     [SerializeField] GameObject AudioPanel;
     [SerializeField] GameObject[] CreditsPanel;
     [SerializeField] GameObject DeathPanel;
@@ -58,6 +59,10 @@ public class UIController : MonoBehaviour
         Application.Quit();
     }
 
+    public void BotaoLobby()
+    {
+        SceneManager.LoadScene(4);
+    }
 
     public void BotaoConfigON()
     {
@@ -68,14 +73,14 @@ public class UIController : MonoBehaviour
     public void BotaoPauseON()
     {
         audioSource.Pause();
-        OptionsPanel.SetActive(true);
+        PausePanel.SetActive(true);
         isPause = true;
         Time.timeScale = 0;
     }
     public void BotaoPauseOFF()
     {
         audioSource.UnPause();
-        OptionsPanel.SetActive(false);
+        PausePanel.SetActive(false);
         isPause = false;
         Time.timeScale = 1;
     }
@@ -133,6 +138,7 @@ public class UIController : MonoBehaviour
     public void RespawnCurrentCheckpoint()
     {
         DeathPanel.SetActive(false);
+        PausePanel.SetActive(false);
 
         GameController.controller.RespawnPlayer();
 
