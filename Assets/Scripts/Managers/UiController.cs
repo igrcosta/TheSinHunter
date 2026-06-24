@@ -82,7 +82,13 @@ public class UIController : MonoBehaviour
         audioSource.UnPause();
         PausePanel.SetActive(false);
         isPause = false;
+
+        if (Time.timeScale < 1 & Time.timeScale > 0)
+            return;
+
         Time.timeScale = 1;
+
+        
     }
     public void BotaoAudioON()
     {
@@ -118,7 +124,7 @@ public class UIController : MonoBehaviour
     public void BotaoConfigOFF()
     {
         OptionsPanel.SetActive(false);
-        Time.timeScale = 1;
+        
     }
 
     public void VoltarMenu()
@@ -139,6 +145,7 @@ public class UIController : MonoBehaviour
     {
         DeathPanel.SetActive(false);
         PausePanel.SetActive(false);
+        CheckpointPanel.SetActive(false);
 
         GameController.controller.RespawnPlayer();
 

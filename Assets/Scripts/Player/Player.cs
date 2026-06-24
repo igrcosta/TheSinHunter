@@ -103,6 +103,8 @@ public class Player : MonoBehaviour
     private int PlayerLayer;
     private float JumpingBeginning;
     [SerializeField] GameObject outlineObj;
+    [SerializeField] GameObject HitDamageObj;
+    [SerializeField] private GameObject deathFX;
 
 
     void Awake()
@@ -243,6 +245,9 @@ public class Player : MonoBehaviour
     {
         
         outlineObj.SetActive(true);
+
+        //Instantiate(HitDamageObj, this.gameObject.transform.position, Quaternion.identity);
+
     }
 
     void DeathCondition()
@@ -370,10 +375,10 @@ public class Player : MonoBehaviour
 
       
 
-        else if (collisionInfo.gameObject.CompareTag("Key"))
-        {
-            KeyCollection();
-        }
+        //else if (collisionInfo.gameObject.CompareTag("Key"))
+        //{
+        //    KeyCollection();
+        //}
 
 
 
@@ -679,6 +684,7 @@ public class Player : MonoBehaviour
 
         CancelJump();
 
+
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, 0f);
 
         ApplyGravity = true;
@@ -802,6 +808,16 @@ public class Player : MonoBehaviour
 
     }
 
+    public void ParticleCheckpoint()
+    {
+        Instantiate(deathFX, this.gameObject.transform.position, Quaternion.identity);
+    }
+
+    public void SetActiveFalse()
+    {
+        gameObject.SetActive(false);
+    }
+
     public void ResetPlayer()
     {
         isdead = false;
@@ -809,8 +825,8 @@ public class Player : MonoBehaviour
         isDashing = false;
         Jumping = false;
         CanJump = true;
+        gameObject.SetActive(true);
 
-        
         CanDoubleJump = true;
         IsDoubleJumping = false;
 
@@ -826,6 +842,7 @@ public class Player : MonoBehaviour
         Speed = 30;
 
         tr.enabled = false;
+
     }
 
 

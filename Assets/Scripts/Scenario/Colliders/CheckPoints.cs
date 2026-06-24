@@ -29,6 +29,7 @@ public class CheckPoints : MonoBehaviour
 
             GameController.controller.UnlockedCheckpoints[CheckPointIndex] = true;
 
+        GameController.controller.playerRef.ParticleCheckpoint();
 
             PlayerPrefs.SetInt("CurrentCheckpoint", CheckPointIndex);
             PlayerPrefs.SetInt("CheckpointUnlocked" + CheckPointIndex, 1);

@@ -103,10 +103,14 @@ public class FakeParryScript : MonoBehaviour
 
     void StopAttack()
     {
-        Destroy(gameObject);
+        Death();
     }
 
-
+    public void Death()
+    {
+        //Instantiate(deathFX, this.gameObject.transform.position, Quaternion.identity);
+        gameObject.SetActive(false);
+    }
 
 
 }

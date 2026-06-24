@@ -14,7 +14,7 @@ public class ParryScript : MonoBehaviour
     public void Death()
     {
         Instantiate(deathFX, this.gameObject.transform.position, Quaternion.identity);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
     void OnTriggerEnter(Collider other)
     {
@@ -41,7 +41,7 @@ public class ParryScript : MonoBehaviour
 
                 //GameController.controller.playerRef.FinishDash();
 
-                Invoke("Destroying", 0.1f);
+                Death();
             }
             else if (scriptPlayer.isDashing && scriptPlayer.ChainsActive)
             {
@@ -56,7 +56,7 @@ public class ParryScript : MonoBehaviour
 
                 GameController.controller.playerRef.FinishDash();
 
-                Invoke("Destroying", 0.1f);
+                Death();
             }
             else if (scriptPlayer.ExplosionState)
             {
@@ -65,10 +65,7 @@ public class ParryScript : MonoBehaviour
             }
         }
     }
-    void Destroying()
-    {
-        Destroy(gameObject);
-    }
+    
 
 
     //LEMBRE-SE DISSO:

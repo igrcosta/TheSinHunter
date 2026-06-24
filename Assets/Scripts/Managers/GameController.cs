@@ -26,9 +26,9 @@ public class GameController : MonoBehaviour
     [Header("CheckPoints")]
     public bool[] UnlockedCheckpoints = new bool[20];
     public int CurrentCheckpoint = 0;
-    public Transform[] CheckPointPositions;
-    [SerializeField] GameObject[] Enemies;
-    public bool ResetEnemies;
+    //public Transform[] CheckPointPositions;
+    //[SerializeField] GameObject[] Enemies;
+    //public bool ResetEnemies;
 
 
     [Header("Player")]
@@ -56,7 +56,7 @@ public class GameController : MonoBehaviour
         DoubleJumpUnlock = PlayerPrefs.GetInt("DoubleJumpUnlock");
         SkySlashUnlock = PlayerPrefs.GetInt("SkySlashUnlock");
 
-       
+        
 
         for (int i = 0; i < TutorialID.Length; i++)
         {
@@ -133,8 +133,11 @@ public class GameController : MonoBehaviour
 
     public void RespawnPlayer()
     {
+        playerRef.SetActiveFalse();
 
-        playerRef.transform.position = CheckPointPositions[CurrentCheckpoint].position;
+        playerRef.transform.position = CheckPointManager.Instance.CheckPointPositions[CurrentCheckpoint].position;
+
+
 
         playerRef.rb.linearVelocity = Vector3.zero;
         playerRef.Speed = 30f;
@@ -147,10 +150,7 @@ public class GameController : MonoBehaviour
     public void ResetAll()
     {
 
-        for (int i = 0; i < Enemies.Length; i++)
-        {
-            Enemies[i].SetActive(true);
-        }
+        CheckPointManager.Instance.ResetArea(CurrentCheckpoint);
 
     }
 
@@ -158,6 +158,7 @@ public class GameController : MonoBehaviour
     {
         if (!UnlockedCheckpoints[index])
             return;
+        playerRef.SetActiveFalse();
 
         CurrentCheckpoint = index;
 
@@ -166,11 +167,11 @@ public class GameController : MonoBehaviour
         PlayerPrefs.Save();
 
         playerRef.transform.position =
-            CheckPointPositions[index].position;
+            CheckPointManager.Instance.CheckPointPositions[index].position;
 
-        
+        ResetAll();
 
-        
+
 
         UIManager.CloseCheckpointMenu();
 

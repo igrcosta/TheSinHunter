@@ -16,7 +16,7 @@ public class TimeCollider : MonoBehaviour
 
         if (GameController.controller.TutorialID[TutorialIndex] == true)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
 
         InitialFixedDeltaTime = Time.fixedDeltaTime;
@@ -100,7 +100,7 @@ public class TimeCollider : MonoBehaviour
         Time.timeScale = 1f;
         Time.fixedDeltaTime = InitialFixedDeltaTime;
         stoptime = false;
-            Destroy(this);
+            gameObject.SetActive(false);
         }
     }
 
