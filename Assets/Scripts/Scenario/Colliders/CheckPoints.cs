@@ -21,7 +21,6 @@ public class CheckPoints : MonoBehaviour
         if (!other.CompareTag("Player"))
             return;
 
-        Debug.Log("o Player entrou");
 
         //if (other.CompareTag("Player"))
         //{

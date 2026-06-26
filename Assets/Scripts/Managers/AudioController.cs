@@ -48,7 +48,6 @@ public class AudioController : MonoBehaviour
         MasterSlider.onValueChanged.AddListener(SetMasterVolume);
         SFXSlider.onValueChanged.AddListener(SetSFXVolume);
         MusicSlider.onValueChanged.AddListener(SetMusicVolume);
-        Debug.Log("Master carregado: " + master);
     }
 
     void Update()

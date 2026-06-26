@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour
     public float Distance;
     public float Points;
     public bool[] TutorialID = new bool[10];
+    public TimeCollider CurrentTimeCollider;
 
     public float Master;
     public float SFX;
@@ -56,7 +57,7 @@ public class GameController : MonoBehaviour
         DoubleJumpUnlock = PlayerPrefs.GetInt("DoubleJumpUnlock");
         SkySlashUnlock = PlayerPrefs.GetInt("SkySlashUnlock");
 
-        
+
 
         for (int i = 0; i < TutorialID.Length; i++)
         {
@@ -175,7 +176,21 @@ public class GameController : MonoBehaviour
 
         UIManager.CloseCheckpointMenu();
 
-        
+
+    }
+
+    public void ResumeGameTime()
+    {
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f; // valor padrão da Unity
+
+        if (CurrentTimeCollider != null)
+        {
+            CurrentTimeCollider.CloseTutorial();
+            CurrentTimeCollider = null;
+        }
+
+
     }
 
     public void GameOver()
@@ -194,15 +209,30 @@ public class GameController : MonoBehaviour
         Points = 0;
     }
 
-    private void CheatMode()
+    public void CheatMode()
     {
-        if (Cheating)
-        {
+        Cheating = true;
 
-        }
+        ChainsUnlocked = true;
+        DoubleJumpUnlocked = true;
+        SuperDashUnlocked = true;
+        SkySlashUnlocked = true;
+
+
+    }
+    public void NormalMode()
+    {
+        Cheating = false;
+
+        ChainsUnlocked = true;
+        DoubleJumpUnlocked = true;
+        SuperDashUnlocked = true;
+        SkySlashUnlocked = true;
+
+
     }
 
-
+   
 
     public void WeaponsColected()
     {

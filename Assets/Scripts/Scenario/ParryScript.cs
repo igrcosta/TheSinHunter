@@ -30,7 +30,6 @@ public class ParryScript : MonoBehaviour
             {
                 scriptPlayer.isparrying = true;
                 scriptPlayer.CanDoubleJump = true;
-                Debug.Log("Player Encostou");
 
                 scriptPlayer.rb.AddForce(ParryEffect * parryforce, ForceMode.Impulse);
                 //scriptPlayer.IgnoreDashLogic();

@@ -34,14 +34,12 @@ public class AvarezaScript : MonoBehaviour
         if (other.CompareTag("Player") && GameController.controller.playerRef.DefaultActive && GameController.controller.playerRef.isDashing && ChainsEnabled)
         {
             GameController.controller.playerRef.ComboDash();
-            Debug.Log("COMBOO");
             GameController.controller.AddPoints(PointsGuiven);
             Death();
         }
         else if (other.CompareTag("Player") && GameController.controller.playerRef.ChainsActive && GameController.controller.playerRef.isDashing && ChainsEnabled)
         {
             GameController.controller.playerRef.ComboDash();
-            Debug.Log("COMBOO");
             GameController.controller.AddPoints(PointsGuiven);
             Death();
         }
@@ -49,7 +47,6 @@ public class AvarezaScript : MonoBehaviour
         {
             //GameController.controller.playerRef.FinishDash();
             GameController.controller.playerRef.FinishDash();
-            Debug.Log("FUI COM GOD");
             GameController.controller.AddPoints(PointsGuiven);
             Death();
 
@@ -65,7 +62,6 @@ public class AvarezaScript : MonoBehaviour
         else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing == false)
         {
             GameController.controller.playerRef.Hit(Damage);
-            Debug.Log("AVAREZA DEU DANO");
         }
     }
 }

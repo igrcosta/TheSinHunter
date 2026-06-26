@@ -122,7 +122,9 @@ public class InputHandler : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))SlowCinematic = false ; //Retoma o tempo
             if (Input.GetKeyDown(KeyCode.RightArrow)) SlowCinematic = false;
         }
-        if (Input.GetKeyDown(KeyCode.C)) GameController.controller.Cheating = true;
+        if (Input.GetKeyDown(KeyCode.C)) GameController.controller.CheatMode();
+        if (Input.GetKeyDown(KeyCode.V)) GameController.controller.NormalMode();
+
     }
 
 

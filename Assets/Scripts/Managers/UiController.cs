@@ -13,6 +13,7 @@ public class UIController : MonoBehaviour
     [SerializeField] GameObject CheckpointPanel;
 
 
+
     int currentCredit = 0;
     public GameObject ChainsAim;
     public TMPro.TextMeshProUGUI DistanceText;
@@ -25,7 +26,6 @@ public class UIController : MonoBehaviour
     void Start()
     {
         GameController.controller.UIManager = this;
-
 
     }
 
@@ -52,6 +52,8 @@ public class UIController : MonoBehaviour
     public void BotaoJogar()
     {
         SceneManager.LoadScene(1);
+        GameController.controller.ResumeGameTime();
+
     }
 
     public void BotaoSair()
@@ -88,7 +90,9 @@ public class UIController : MonoBehaviour
 
         Time.timeScale = 1;
 
-        
+        GameController.controller.ResumeGameTime();
+
+
     }
     public void BotaoAudioON()
     {
@@ -150,6 +154,8 @@ public class UIController : MonoBehaviour
         GameController.controller.RespawnPlayer();
 
         Time.timeScale = 1;
+        GameController.controller.ResumeGameTime();
+
     }
     public void OpenCheckpointMenu()
     {
@@ -166,8 +172,14 @@ public class UIController : MonoBehaviour
 
     public void TravelButton(int index)
     {
+        DeathPanel.SetActive(false);
+        PausePanel.SetActive(false);
+        CheckpointPanel.SetActive(false);
 
         GameController.controller.TravelToCheckpoint(index);
+
+        GameController.controller.playerRef.ResetPlayer();
+        GameController.controller.ResumeGameTime();
     }
 
 

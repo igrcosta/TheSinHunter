@@ -107,6 +107,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject deathFX;
 
 
+
     void Awake()
     {
         GameController.controller.playerRef = this; //Referencia Player
@@ -334,15 +335,26 @@ public class Player : MonoBehaviour
 
         else if (collisionInfo.gameObject.CompareTag("BrittleWall"))
         {
-            if (!GameController.controller.SuperDashUnlocked && !isDashing)
+            if (!GameController.controller.SuperDashUnlocked)
             {
-
-                FinishDash();
                 LavaKill();
+                FinishDash();
             }
-            
 
-                CanJump = false;
+            if (!isDashing)
+            {
+                LavaKill();
+                FinishDash();
+                
+            }
+
+
+
+            Invoke("EnableDash", 0.4F);
+
+            if (!CanJump)
+            CanJump = false;
+
             CanDoubleJump = false;
             IsDoubleJumping = false;
             IsOnALane = false;
@@ -362,6 +374,12 @@ public class Player : MonoBehaviour
 
         //Parte da Lava / obstáculos 
         else if (collisionInfo.gameObject.CompareTag("LAVA"))
+        {
+            FinishDash();
+            LavaKill();
+        }
+
+        else if (collisionInfo.gameObject.CompareTag("Sky"))
         {
             FinishDash();
             LavaKill();
@@ -398,7 +416,6 @@ public class Player : MonoBehaviour
         if (GameController.controller.Cheating)
             return;
 
-        Debug.Log("deveria ter morrido");
         canMove = false;
         Invoke("DisableLayersCollision", 0.25f);
         //GameController.controller.Invoke("GameOver", 0.4f);
@@ -556,13 +573,11 @@ public class Player : MonoBehaviour
     void DisableChainsLayersCollision()
     {
         Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, true);
-        Debug.Log("IGNORADO");
     }
 
     void INSTAEnableLayersCollision()
     {
         Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, false);
-        Debug.Log("LEMBREI DE VC HEHE");
     }
     #endregion Lanes
 
@@ -699,7 +714,6 @@ public class Player : MonoBehaviour
                     isDashing = true;
                     tr.enabled = true;
                     DashingBeginning = rb.position.x;
-                    Debug.Log("ARMA DEFAULT EQUIPADA");
 
                     dashTargetPosition = DashLocation.transform.position;
                     // isso salva a posicao do dash quando vc clicou no botao, para a posicao do dash nao ficar andando junto com ele
@@ -713,7 +727,6 @@ public class Player : MonoBehaviour
                     canDash = false;
                     isDashing = true;
                     tr.enabled = true;
-                    Debug.Log("LUXURY CHAINS utilizada");
                     break;
                 }
             case WeaponTypes.RageBlade:

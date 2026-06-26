@@ -50,7 +50,6 @@ public class IRAScript : MonoBehaviour
     {
         if (other.CompareTag("Player") && GameController.controller.playerRef.ExplosionState == true)
         {
-            Debug.Log("RECEBA");
             GameController.controller.playerRef.ContinuousRageExplosion();
             GameController.controller.playerRef.EnableDash();
             Death();
@@ -59,26 +58,22 @@ public class IRAScript : MonoBehaviour
         {
             GameController.controller.playerRef.ComboDash();
             GameController.controller.playerRef.EnableDash();
-            Debug.Log("COMBOO");
             Death();
         }
         else if (other.CompareTag("Player") && GameController.controller.playerRef.ChainsActive && GameController.controller.playerRef.isDashing && ComboEnabled)
         {
             GameController.controller.playerRef.EnableDash();
-            Debug.Log("COMBOO CORRENTE");
             Death();
         }
         else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing && !ComboEnabled)
         {
             GameController.controller.playerRef.FinishDash();
-            Debug.Log("FUI COM GOD");
             Death();
 
         }
         else if (other.CompareTag("Player") && GameController.controller.playerRef.isDashing == false)
         {
             GameController.controller.playerRef.Hit(Damage);
-            Debug.Log("IRA DEU DANO");
         }
         else if (other.CompareTag("SkySlash"))
         {
@@ -94,7 +89,6 @@ public class IRAScript : MonoBehaviour
             if (!Far)
             {
                 Instantiate(BulletPrefab, ShootPoint.position, transform.rotation);
-                Debug.Log("TOMA");
             }
             else if (Far)
             {

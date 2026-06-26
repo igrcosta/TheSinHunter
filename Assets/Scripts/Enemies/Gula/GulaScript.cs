@@ -4,6 +4,7 @@ public class GulaScript : MonoBehaviour
 {
     Player player;
     GulaState state;
+    private Animator animator;
 
     [Header("Death")]
     [SerializeField] float PointsGuiven = 150;
@@ -40,6 +41,7 @@ public class GulaScript : MonoBehaviour
 
     private void Start()
     {
+        animator = transform.GetChild(0).GetComponent<Animator>();
         player = GameController.controller.playerRef;
         state = GulaState.Idle;
     }
@@ -99,7 +101,6 @@ public class GulaScript : MonoBehaviour
     {
         if (gameObject.CompareTag("Enemy") && other.CompareTag("Player") && GameController.controller.playerRef.ExplosionState)
         {
-            Debug.Log("EXPLODIU");
             GameController.controller.playerRef.ContinuousRageExplosion();
             GameController.controller.AddPoints(PointsGuiven);
             Die();
@@ -109,7 +110,6 @@ public class GulaScript : MonoBehaviour
             //se o player bateu na gula sem dar dash, player recebe dano
 
             GameController.controller.playerRef.Hit(Damage);
-            Debug.Log("GULA DEU DANO");
         }
         else if (gameObject.CompareTag("Enemy") && other.CompareTag("Player") && GameController.controller.playerRef.isDashing)
         {
@@ -129,20 +129,18 @@ public class GulaScript : MonoBehaviour
         if (state != GulaState.Idle) return;
 
         state = GulaState.GoingUp;
-        Debug.Log("CALL ATTACK");
     }
 
     void MoveUp()
     {
-        transform.position = Vector3.MoveTowards(
-            transform.position,
-            topPos.transform.position,
-            speedUp * Time.deltaTime
-        );
+        transform.position = Vector3.MoveTowards(transform.position, topPos.transform.position, speedUp * Time.deltaTime);
+
+        animator.Play("Gula RIG|ENTREGAAtaque");
 
         if (Vector3.Distance(transform.position, topPos.transform.position) < 0.05f)
         {
             state = GulaState.GoingDown;
+
         }
     }
 
@@ -165,9 +163,9 @@ public class GulaScript : MonoBehaviour
         state = GulaState.Dead;
 
         if (attackTrigger != null)
-            Destroy(attackTrigger);
+            (attackTrigger).SetActive(false);
 
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
 }

@@ -54,7 +54,6 @@ public class ChainsScript : MonoBehaviour
 
             if (ActualTarget != null && Pref.ActualWeapon != Player.WeaponTypes.LuxuryChains)
             {
-                Debug.Log("Corrente");
                 Pref.SetActualWeapon("LuxuryChains");
             }
 
@@ -152,7 +151,6 @@ public class ChainsScript : MonoBehaviour
             {
                 if (ActualTarget == null) return;
                 TargetPosition = ActualTarget.transform.position;
-                Debug.Log("POSIÇÃO DE " + TargetPosition.y);
                 //posição do alvo armazenada e atualizada em tempo real
 
                 GameController.controller.UIManager.EnableAim();

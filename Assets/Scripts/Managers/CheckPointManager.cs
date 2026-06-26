@@ -16,6 +16,11 @@ public class CheckPointManager : MonoBehaviour
     [SerializeField] GameObject[] CavernEnemies;
     [SerializeField] GameObject[] DungeonEnemies;
 
+    [Header("Sky")]
+    [SerializeField] GameObject[] Sky;
+
+
+
     public int Area;
 
     private void Awake()
@@ -30,10 +35,25 @@ public class CheckPointManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        Area = GameController.controller.CurrentCheckpoint;
+        if (Area == 5)
+        {
+            for (int i = 0; i < Sky.Length; i++)
+            {
+                Sky[i].SetActive(true);
+            }
+        }
+        if (Area == 2)
+        {
+            for (int i = 0; i < Sky.Length; i++)
+            {
+                Sky[i].SetActive(false);
+            }
+        }
     }
     public void ResetArea(int area)
     {
+        
 
         if (area == 0)
             ResetEnemies(CemiteryEnemies);

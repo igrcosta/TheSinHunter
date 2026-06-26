@@ -34,6 +34,8 @@ public class TimeCollider : MonoBehaviour
         {
             GameController.controller.TutorialID[TutorialIndex] = true;
 
+            GameController.controller.CurrentTimeCollider = this;
+
             PlayerPrefs.SetInt("Tutorial" + TutorialIndex, 1);
             PlayerPrefs.Save();
 
@@ -41,7 +43,6 @@ public class TimeCollider : MonoBehaviour
             InputScript = other.GetComponent<InputHandler>();
             InputScript.SlowCinematic = true;
             isActive = true;
-            Debug.Log("Game paused");
         }
 
     }
@@ -67,7 +68,6 @@ public class TimeCollider : MonoBehaviour
         if (Time.timeScale <= 0.001f)
         {
                 stoptime = false; // Desliga o Update
-                Debug.Log("Tempo parado completamente!");
         }
 
     }
@@ -84,6 +84,15 @@ public class TimeCollider : MonoBehaviour
                 Drawing.SetActive(false);
             }
         }
+    }
+
+    public void CloseTutorial()
+    {
+        stoptime = false;
+        isActive = false;
+        
+        Drawing.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     public void TimeBack()
