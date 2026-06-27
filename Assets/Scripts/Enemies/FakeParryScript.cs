@@ -66,6 +66,8 @@ public class FakeParryScript : MonoBehaviour
 
     void IdleState()
         {
+        
+
             float distance = Vector3.Distance(transform.position, player.transform.position);
 
             if (distance <= wakeDistance && !awakened)

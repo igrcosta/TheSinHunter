@@ -103,8 +103,11 @@ public class InputHandler : MonoBehaviour
         {
             Pref.DoubleJump();
         }
-        if (Input.GetKeyDown(KeyCode.UpArrow) && !Pref.IsDoubleJumping) Pref.JumpingMethod(); //Pulo
-        
+        if (Input.GetKeyDown(KeyCode.UpArrow) && !Pref.IsDoubleJumping)
+        {
+           
+            Pref.JumpingMethod(); //Pulo
+        }
         if (Input.GetKeyDown(KeyCode.DownArrow)) Pref.DescendingLanes(); //Dash para baixo
         if (Input.GetKeyDown(KeyCode.RightArrow)) Pref.BeginDash(); //Dash
         if (Input.GetKeyDown(KeyCode.A)) Pref.BeginSlash(); //Dash

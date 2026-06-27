@@ -23,13 +23,14 @@ public class ParryScript : MonoBehaviour
        
             Player scriptPlayer = other.GetComponent<Player>();
             //acesso player
-
+            scriptPlayer.Jumping = true;
             //indico que isParry é true
 
             if (scriptPlayer.isDashing)
             {
                 scriptPlayer.isparrying = true;
                 scriptPlayer.CanDoubleJump = true;
+                
 
                 scriptPlayer.rb.AddForce(ParryEffect * parryforce, ForceMode.Impulse);
                 //scriptPlayer.IgnoreDashLogic();

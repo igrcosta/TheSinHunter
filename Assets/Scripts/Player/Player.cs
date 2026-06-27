@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
     public float velocidade, JumpTimer, JumpingDuration = 1, DelayGravidadePulo, PotenciaGravity;
     public AnimationCurve jumpCurve;
     public bool CanJump = false;
-    private bool Jumping = false;
+    public bool Jumping = false;
     private Coroutine jumpCoroutine;
     private bool cancelJumpRequested = false;
     public bool isparrying = false;
@@ -56,6 +56,9 @@ public class Player : MonoBehaviour
 
     bool isdead = false;
 
+
+    [Header("Animations")]
+    [SerializeField] AnimationsPlayer animations;
 
     [Header("Armas/Mecânicas")]
     public WeaponTypes ActualWeapon;
@@ -245,7 +248,7 @@ public class Player : MonoBehaviour
     void HitEffect()
     {
         
-        outlineObj.SetActive(true);
+        //outlineObj.SetActive(true);
 
         //Instantiate(HitDamageObj, this.gameObject.transform.position, Quaternion.identity);
 
@@ -302,7 +305,7 @@ public class Player : MonoBehaviour
             IsDoubleJumping = false;
             CanDoubleJump = true;
 
-
+            RuningAnimation();
 
             if (ActualWeapon == WeaponTypes.RageBlade)
             {
@@ -322,15 +325,17 @@ public class Player : MonoBehaviour
             Jumping = false;
             isparrying = false;
 
+            RuningAnimation();
+
             if (ActualWeapon == WeaponTypes.RageBlade)
             {
                 ExplosionState = false;
                 DamageInvulnerability = false;
             }
-            if(outlineObj.activeSelf)
-            {
-                outlineObj.SetActive(false);
-            }
+            //if(outlineObj.activeSelf)
+            //{
+            //    outlineObj.SetActive(false);
+            //}
         }
 
         else if (collisionInfo.gameObject.CompareTag("BrittleWall"))
@@ -433,6 +438,7 @@ public class Player : MonoBehaviour
         if (isDashing || IsDoubleJumping) return;
         if (CanJump && !isparrying)
         {
+            
             cancelJumpRequested = false;
             Jumping = true;
             CanJump = false;
@@ -446,6 +452,9 @@ public class Player : MonoBehaviour
             Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, true);
 
             jumpCoroutine = StartCoroutine(JumpCoroutine(alturaAtual, AlturaAlvo));
+
+            
+
         }
     }
     
@@ -524,7 +533,7 @@ public class Player : MonoBehaviour
     {
         if(!CanJump && CanDoubleJump && GameController.controller.DoubleJumpUnlocked)
         {
-
+            
             CancelJump();
             FinishDash();
 
@@ -699,6 +708,7 @@ public class Player : MonoBehaviour
 
         CancelJump();
 
+        
 
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, 0f);
 
@@ -711,8 +721,13 @@ public class Player : MonoBehaviour
             case WeaponTypes.Default:
                 {
                     canDash = false;
-                    isDashing = true;
+                    
                     tr.enabled = true;
+                    Jumping = false;
+
+                    animations.Dash();
+
+                    isDashing = true;
                     DashingBeginning = rb.position.x;
 
                     dashTargetPosition = DashLocation.transform.position;
@@ -750,6 +765,8 @@ public class Player : MonoBehaviour
         ApplyGravity = true;
         rb.useGravity = true;
         Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, false);
+
+       
 
         if (ActualWeapon == WeaponTypes.LuxuryChains)
         {
@@ -818,6 +835,12 @@ public class Player : MonoBehaviour
          
 
 
+
+    }
+
+    void RuningAnimation()
+    {
+        animations.BackRun();
 
     }
 
