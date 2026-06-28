@@ -27,6 +27,8 @@ public class CameraFollowScript : MonoBehaviour
     {
         if (Pref.Speed <= 20)
             return;
+        if (GameController.controller.IsOnCheckpointsPanel)
+            return;
 
         XFollowing();
 

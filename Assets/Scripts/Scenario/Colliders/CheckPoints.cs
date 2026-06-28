@@ -20,19 +20,12 @@ public class CheckPoints : MonoBehaviour
     {
         if (!other.CompareTag("Player"))
             return;
+        
+        GameController.controller.UnlockCheckpoint(CheckPointIndex);
 
-
-        //if (other.CompareTag("Player"))
-        //{
-            GameController.controller.CurrentCheckpoint = CheckPointIndex;
-
-            GameController.controller.UnlockedCheckpoints[CheckPointIndex] = true;
 
         GameController.controller.playerRef.ParticleCheckpoint();
 
-            PlayerPrefs.SetInt("CurrentCheckpoint", CheckPointIndex);
-            PlayerPrefs.SetInt("CheckpointUnlocked" + CheckPointIndex, 1);
-            PlayerPrefs.Save();
         //}
 
 

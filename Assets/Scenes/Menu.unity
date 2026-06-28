@@ -3638,6 +3638,7 @@ MonoBehaviour:
   Distance: 0
   Points: 0
   TutorialID: 00000000000000000000
+  CurrentTimeCollider: {fileID: 0}
   Master: 0
   SFX: 0
   Music: 0
@@ -3647,9 +3648,6 @@ MonoBehaviour:
   KeysCollected: 0
   UnlockedCheckpoints: 0000000000000000000000000000000000000000
   CurrentCheckpoint: 0
-  CheckPointPositions: []
-  Enemies: []
-  ResetEnemies: 0
   ChainsUnlocked: 0
   DoubleJumpUnlocked: 0
   SuperDashUnlocked: 0

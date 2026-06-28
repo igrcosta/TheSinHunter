@@ -1,6 +1,7 @@
+using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
 
 public class UIController : MonoBehaviour
 {
@@ -11,8 +12,11 @@ public class UIController : MonoBehaviour
     [SerializeField] GameObject[] CreditsPanel;
     [SerializeField] GameObject DeathPanel;
     [SerializeField] GameObject CheckpointPanel;
+    [SerializeField] GameObject[] Haeds;
+    [SerializeField] GameObject[] Maps;
 
 
+    
 
     int currentCredit = 0;
     public GameObject ChainsAim;
@@ -26,13 +30,14 @@ public class UIController : MonoBehaviour
     void Start()
     {
         GameController.controller.UIManager = this;
-
+        MapsUnlocked();
     }
 
 
     private void Update()
     {
         ShowTextOnUI();
+        
     }
     public void ShowTextOnUI()
     {
@@ -157,29 +162,74 @@ public class UIController : MonoBehaviour
         GameController.controller.ResumeGameTime();
 
     }
+
+ 
+
+
     public void OpenCheckpointMenu()
     {
-        
+        GameController.controller.IsOnCheckpointsPanel = true;
         CheckpointPanel.SetActive(true);
     }
 
     public void CloseCheckpointMenu()
     {
-        
+        GameController.controller.IsOnCheckpointsPanel = false;
+
         CheckpointPanel.SetActive(false);
     }
 
 
-    public void TravelButton(int index)
+    public void TravelButton()
     {
         DeathPanel.SetActive(false);
         PausePanel.SetActive(false);
         CheckpointPanel.SetActive(false);
 
-        GameController.controller.TravelToCheckpoint(index);
+        
+
 
         GameController.controller.playerRef.ResetPlayer();
         GameController.controller.ResumeGameTime();
+        CloseCheckpointMenu();
+    }
+
+    public void NumberChackpoint(int index)
+    {
+
+        for (int i = 0; i < Haeds.Length; i++)
+        {
+            if (Haeds[i]) Haeds[i].SetActive(false);
+
+
+        }
+
+        for (int i = 0; i < Haeds.Length; i ++)
+        {
+            if(Haeds[index]) Haeds[index].SetActive(true);
+
+            
+        }
+       
+
+        GameController.controller.TravelToCheckpoint(index);
+    }
+
+    public void MapsUnlocked()
+    {
+        for (int i = 0; i < Maps.Length; i++)
+        {
+            if (Maps[i]) Maps[i].SetActive(false);
+
+
+        }
+
+        for (int i = 0; i < Maps.Length; i++)
+        {
+            if (GameController.controller.UnlockedCheckpoints[i] == true) Maps[i].SetActive(true);
+
+
+        }
     }
 
 

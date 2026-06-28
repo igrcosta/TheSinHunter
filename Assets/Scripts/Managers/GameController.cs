@@ -25,11 +25,13 @@ public class GameController : MonoBehaviour
     public int KeysCollected;
 
     [Header("CheckPoints")]
-    public bool[] UnlockedCheckpoints = new bool[20];
+    public int[] CheckpointUnlock = new int[11];
+    public bool[] UnlockedCheckpoints = new bool[11];
     public int CurrentCheckpoint = 0;
     //public Transform[] CheckPointPositions;
     //[SerializeField] GameObject[] Enemies;
     //public bool ResetEnemies;
+    public bool IsOnCheckpointsPanel = false;
 
 
     [Header("Player")]
@@ -52,12 +54,15 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+
+        Debug.Log(gameObject.GetInstanceID());
+
         ChainsUnlock = PlayerPrefs.GetInt("ChainsUnlock");
         SuperDashUnlock = PlayerPrefs.GetInt("SuperDashUnlock");
         DoubleJumpUnlock = PlayerPrefs.GetInt("DoubleJumpUnlock");
         SkySlashUnlock = PlayerPrefs.GetInt("SkySlashUnlock");
 
-
+        //PlayerPrefs.DeleteAll();
 
         for (int i = 0; i < TutorialID.Length; i++)
         {
@@ -65,23 +70,28 @@ public class GameController : MonoBehaviour
         }
 
 
-        for (int i = 0; i < UnlockedCheckpoints.Length; i++)
-        {
-            UnlockedCheckpoints[i] = PlayerPrefs.GetInt("CheckpointUnlocked" + i, 0) == 1;
+        for(int i = 0; i < CheckpointUnlock.Length; i++)
+{
+            CheckpointUnlock[i] = PlayerPrefs.GetInt("CheckpointUnlock" + i, 0);
         }
+
+        CheckpointsCollected();
 
 
         CurrentCheckpoint = PlayerPrefs.GetInt("CurrentCheckpoint", 0);
 
-        //PlayerPrefs.DeleteAll();
+        
 
         WeaponsColected();
 
-        CurrentCheckpoint = 0;
+        //CurrentCheckpoint = 0;
     }
     private void Update()
     {
         DistanceCalculator();
+
+       
+
     }
 
 
@@ -174,7 +184,7 @@ public class GameController : MonoBehaviour
 
 
 
-        UIManager.CloseCheckpointMenu();
+        //UIManager.CloseCheckpointMenu();
 
 
     }
@@ -232,7 +242,37 @@ public class GameController : MonoBehaviour
 
     }
 
-   
+    public void UnlockCheckpoint(int index)
+    {
+        if (UnlockedCheckpoints[index])
+            return;
+
+        UnlockedCheckpoints[index] = true;
+        CurrentCheckpoint = index;
+
+        PlayerPrefs.SetInt("CheckpointUnlocked" + index, 1);
+        PlayerPrefs.SetInt("CurrentCheckpoint", index);
+
+        PlayerPrefs.Save();
+    }
+
+    public void CheckpointsCollected()
+    {
+        for (int i = 0; i < CheckpointUnlock.Length; i++)
+        {
+            if (CheckpointUnlock[i] == 1)
+            {
+                UnlockedCheckpoints[i] = true;
+            }
+            else
+            {
+                UnlockedCheckpoints[i] = false;
+            }
+        }
+
+        // Garante que o checkpoint inicial sempre esteja liberado
+        UnlockedCheckpoints[0] = true;
+    }
 
     public void WeaponsColected()
     {
