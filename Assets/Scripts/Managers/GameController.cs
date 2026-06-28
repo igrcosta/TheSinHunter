@@ -55,7 +55,7 @@ public class GameController : MonoBehaviour
     private void Start()
     {
 
-        Debug.Log(gameObject.GetInstanceID());
+        
 
         ChainsUnlock = PlayerPrefs.GetInt("ChainsUnlock");
         SuperDashUnlock = PlayerPrefs.GetInt("SuperDashUnlock");
@@ -214,7 +214,7 @@ public class GameController : MonoBehaviour
 
     public void Victory()
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(3);
         Distance = 0;
         Points = 0;
     }
@@ -228,16 +228,26 @@ public class GameController : MonoBehaviour
         SuperDashUnlocked = true;
         SkySlashUnlocked = true;
 
+        for(int i = 0; i < UnlockedCheckpoints.Length; i++)
+        {
+            UnlockedCheckpoints[i] = true;
+        }
+
 
     }
     public void NormalMode()
     {
         Cheating = false;
 
-        ChainsUnlocked = true;
-        DoubleJumpUnlocked = true;
-        SuperDashUnlocked = true;
-        SkySlashUnlocked = true;
+        ChainsUnlocked = false;
+        DoubleJumpUnlocked = false;
+        SuperDashUnlocked = false;
+        SkySlashUnlocked = false;
+
+        for (int i = 0; i < UnlockedCheckpoints.Length; i++)
+        {
+            UnlockedCheckpoints[i] = false;
+        }
 
 
     }

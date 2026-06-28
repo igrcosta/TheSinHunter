@@ -65,10 +65,12 @@ public class InputHandler : MonoBehaviour
                             if (!Pref.CanJump && Pref.CanDoubleJump)
                             {
                                 Pref.DoubleJump();
+                                SlowCinematic = false;
                             }
                             else
                             {
                                 Pref.JumpingMethod();
+                                SlowCinematic = false;
                             }
 
                         }
@@ -111,10 +113,10 @@ public class InputHandler : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.DownArrow)) Pref.DescendingLanes(); //Dash para baixo
         if (Input.GetKeyDown(KeyCode.RightArrow)) Pref.BeginDash(); //Dash
-        if (Input.GetKeyDown(KeyCode.A)) Pref.BeginSlash(); //Dash
-        if (Input.GetKeyDown(KeyCode.D)) Pref.SetActualWeapon("LuxuryChains"); //Muda para Correntes
-        if (Input.GetKeyDown(KeyCode.S)) Pref.SetActualWeapon("Default"); //Muda para Default
-        if (Input.GetKeyDown(KeyCode.W)) Pref.SetActualWeapon("RageBlade"); // Pulo duplo
+        //if (Input.GetKeyDown(KeyCode.A)) Pref.BeginSlash(); //Dash
+        //if (Input.GetKeyDown(KeyCode.D)) Pref.SetActualWeapon("LuxuryChains"); //Muda para Correntes
+        //if (Input.GetKeyDown(KeyCode.S)) Pref.SetActualWeapon("Default"); //Muda para Default
+        //if (Input.GetKeyDown(KeyCode.W)) Pref.SetActualWeapon("RageBlade"); // Pulo duplo
 
         if (SlowCinematic) // Apenas roda se estiver em uma cinematic
         {

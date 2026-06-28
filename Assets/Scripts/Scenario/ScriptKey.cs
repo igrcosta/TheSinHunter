@@ -5,7 +5,7 @@ public class ScriptKey : MonoBehaviour
     InputHandler InputScript;
     SlowCollider SlowTime;
 
-    private void OnTriggerEnter(Collider other)
+    private void OnColliderEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {

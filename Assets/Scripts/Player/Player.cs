@@ -113,6 +113,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject DoubleJumpFX;
     [SerializeField] private GameObject JumpFX;
     [SerializeField] private GameObject DashFX;
+    [SerializeField] private GameObject ItemFX;
 
     SkinnedMeshRenderer[] meshes = new SkinnedMeshRenderer[2];
     ParticleSystem ps;
@@ -502,10 +503,10 @@ public class Player : MonoBehaviour
 
 
 
-        //else if (collisionInfo.gameObject.CompareTag("Key"))
-        //{
-        //    KeyCollection();
-        //}
+        else if (collisionInfo.gameObject.CompareTag("Keys"))
+        {
+            KeyCollection();
+        }
 
 
 
@@ -972,11 +973,22 @@ public class Player : MonoBehaviour
     }
     #endregion Dashes
 
+
+    public void CollecteItem()
+    {
+        Instantiate(ItemFX, this.gameObject.transform.position, Quaternion.identity);
+    }
     void KeyCollection()
     {
         GameController.controller.KeysCollected += 1;
 
+        canMove = false;
 
+        if (GameController.controller.KeysCollected == 3)
+            GameController.controller.Victory();
+
+        if(GameController.controller.KeysCollected < 3)
+        GameController.controller.UIManager.ShowVictoryPanel();
 
 
     }

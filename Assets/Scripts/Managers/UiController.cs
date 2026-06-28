@@ -11,7 +11,10 @@ public class UIController : MonoBehaviour
     [SerializeField] GameObject AudioPanel;
     [SerializeField] GameObject[] CreditsPanel;
     [SerializeField] GameObject DeathPanel;
+    [SerializeField] GameObject VictoryPanel;
     [SerializeField] GameObject CheckpointPanel;
+    [SerializeField] GameObject [] TutorialPanel;
+
     [SerializeField] GameObject[] Haeds;
     [SerializeField] GameObject[] Maps;
 
@@ -19,6 +22,7 @@ public class UIController : MonoBehaviour
     
 
     int currentCredit = 0;
+    int currentTutorial = 0;
     public GameObject ChainsAim;
     public TMPro.TextMeshProUGUI DistanceText;
     public TMPro.TextMeshProUGUI PointsText;
@@ -129,7 +133,39 @@ public class UIController : MonoBehaviour
         
         CreditsPanel[currentCredit].SetActive(false);
         currentCredit -= 1;
-    }         
+    }
+
+
+
+
+
+    public void BotaoTutorialON()
+    {
+        currentTutorial = 0;
+        TutorialPanel[currentTutorial].SetActive(true);
+    }
+    public void BotaoTutorialOFF()
+    {
+        currentTutorial = 0;
+        TutorialPanel[currentTutorial].SetActive(false);
+    }
+
+    public void BotaoTutorialNext()
+    {
+        currentTutorial += 1;
+        TutorialPanel[currentTutorial].SetActive(true);
+    }
+    public void BotaoTutorialBefore()
+    {
+
+        TutorialPanel[currentTutorial].SetActive(false);
+        currentTutorial -= 1;
+    }
+
+
+
+
+
     public void BotaoConfigOFF()
     {
         OptionsPanel.SetActive(false);
@@ -143,6 +179,8 @@ public class UIController : MonoBehaviour
     #endregion BotoesUI
 
     #region CheckPonints
+
+
     public void ShowDeathPanel()
     {
         DeathPanel.SetActive(true);
@@ -150,9 +188,19 @@ public class UIController : MonoBehaviour
         Time.timeScale = 0;
     }
 
+    public void ShowVictoryPanel()
+    {
+        VictoryPanel.SetActive(true);
+
+        Time.timeScale = 0;
+    }
+
+
+
     public void RespawnCurrentCheckpoint()
     {
         DeathPanel.SetActive(false);
+        VictoryPanel.SetActive(false);
         PausePanel.SetActive(false);
         CheckpointPanel.SetActive(false);
 
@@ -183,6 +231,7 @@ public class UIController : MonoBehaviour
     public void TravelButton()
     {
         DeathPanel.SetActive(false);
+        VictoryPanel.SetActive(false);
         PausePanel.SetActive(false);
         CheckpointPanel.SetActive(false);
 

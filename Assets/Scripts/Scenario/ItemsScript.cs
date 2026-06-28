@@ -23,7 +23,7 @@ public class ItemsScript : MonoBehaviour
         if  (other.CompareTag("Player"))
         {
             
-
+            Pr.CollecteItem();
             switch (tag)
             {
 
@@ -55,6 +55,8 @@ public class ItemsScript : MonoBehaviour
                    break;
                 }
             }
+
+            Destroy(gameObject);
 
         }
     }

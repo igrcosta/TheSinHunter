@@ -3646,8 +3646,10 @@ MonoBehaviour:
   ActualLever: {fileID: 0}
   ActualObstacle: {fileID: 0}
   KeysCollected: 0
+  CheckpointUnlock: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   UnlockedCheckpoints: 0000000000000000000000000000000000000000
   CurrentCheckpoint: 0
+  IsOnCheckpointsPanel: 0
   ChainsUnlocked: 0
   DoubleJumpUnlocked: 0
   SuperDashUnlocked: 0
@@ -4130,9 +4132,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Orienta\xE7\xE3o do modelo do personagem \r\nLuis Felipe Matsya de Aruanda
-    Ramos Garrocho\r\n\r\nOrienta\xE7\xE3o na texturiza\xE7\xE3o\r\nDaniel Pinheiro
-    Lima\n \r\nOrienta\xE7\xE3o na produ\xE7\xE3o do jogo\r\nDiego Vieira Antunes"
+  m_Text: "Orienta\xE7\xE3o na produ\xE7\xE3o do jogo\nDiego Vieira Antunes\n\nOrienta\xE7\xE3o
+    do modelo do personagem \r\nLuis Felipe Matsya de Aruanda Ramos Garrocho\r\n\r\nOrienta\xE7\xE3o
+    na texturiza\xE7\xE3o\r\nDaniel Pinheiro Lima\n\r\n"
 --- !u!222 &1167730614
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6743,6 +6745,8 @@ MonoBehaviour:
   - {fileID: 1477716771}
   DeathPanel: {fileID: 0}
   CheckpointPanel: {fileID: 0}
+  Haeds: []
+  Maps: []
   ChainsAim: {fileID: 0}
   DistanceText: {fileID: 0}
   PointsText: {fileID: 0}
