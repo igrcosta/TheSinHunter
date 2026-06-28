@@ -8,12 +8,20 @@ public class ParryScript : MonoBehaviour
 
     bool Malware;
     [SerializeField] private GameObject deathFX;
+    [SerializeField] private GameObject JumpFX;
+    ParticleSystem ps;
 
 
 
+    private void Start()
+    {
+        ps = JumpFX.GetComponent<ParticleSystem>();
+
+    }
     public void Death()
     {
         Instantiate(deathFX, this.gameObject.transform.position, Quaternion.identity);
+        ps.Play();
         gameObject.SetActive(false);
     }
     void OnTriggerEnter(Collider other)
@@ -37,6 +45,7 @@ public class ParryScript : MonoBehaviour
                 scriptPlayer.EnableDash();
                 //permito ele pular
 
+                scriptPlayer.Invoke("FallingTrue", 0.3F);
                 //aumento um POUCO sua velocidade
 
                 //GameController.controller.playerRef.FinishDash();

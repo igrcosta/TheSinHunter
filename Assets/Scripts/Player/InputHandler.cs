@@ -99,6 +99,7 @@ public class InputHandler : MonoBehaviour
 
     void HandleInputKeyboard()
     {
+        if (Pref.isdead) return;
         if (Pref.CanDoubleJump && Input.GetKeyDown(KeyCode.UpArrow))
         {
             Pref.DoubleJump();

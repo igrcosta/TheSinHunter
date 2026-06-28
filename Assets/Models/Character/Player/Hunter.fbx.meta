@@ -64,7 +64,7 @@ ModelImporter:
       takeName: Armature_Hunter|Hunter_Chains
       internalID: -7792020106400879240
       firstFrame: 0
-      lastFrame: 69
+      lastFrame: 40
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -121,15 +121,15 @@ ModelImporter:
       name: Armature_Hunter|Hunter_Fall
       takeName: Armature_Hunter|Hunter_Fall
       internalID: -4642442425822396075
-      firstFrame: 0
-      lastFrame: 44
+      firstFrame: 5
+      lastFrame: 26
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -151,7 +151,7 @@ ModelImporter:
       takeName: Armature_Hunter|Hunter_Hit
       internalID: 6294876708216409877
       firstFrame: 0
-      lastFrame: 45
+      lastFrame: 35
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

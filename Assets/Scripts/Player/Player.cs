@@ -1,10 +1,6 @@
 
 using System.Collections;
-using System.Net.NetworkInformation;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -24,6 +20,7 @@ public class Player : MonoBehaviour
     private Coroutine jumpCoroutine;
     private bool cancelJumpRequested = false;
     public bool isparrying = false;
+    public bool Falling = false;
 
 
 
@@ -54,7 +51,9 @@ public class Player : MonoBehaviour
     private float currentGravityScale;
     bool ApplyGravity = true;
 
-    bool isdead = false;
+    public bool isdead = false;
+
+    float LastY;
 
 
     [Header("Animations")]
@@ -105,9 +104,18 @@ public class Player : MonoBehaviour
     private int LanesLayer;
     private int PlayerLayer;
     private float JumpingBeginning;
-    [SerializeField] GameObject outlineObj;
+
+    [Header("VFX")]
+    //[SerializeField] GameObject outlineObj;
     [SerializeField] GameObject HitDamageObj;
     [SerializeField] private GameObject deathFX;
+    [SerializeField] private GameObject FeedBackFX;
+    [SerializeField] private GameObject DoubleJumpFX;
+    [SerializeField] private GameObject JumpFX;
+    [SerializeField] private GameObject DashFX;
+
+    SkinnedMeshRenderer[] meshes = new SkinnedMeshRenderer[2];
+    ParticleSystem ps;
 
 
 
@@ -121,7 +129,11 @@ public class Player : MonoBehaviour
     void Start()
     {
         //Armas ja liberadas
-        
+
+        ps = DashFX.GetComponent<ParticleSystem>();
+
+
+        meshes = GetComponentsInChildren<SkinnedMeshRenderer>();
 
         //Encontrar referência Do trigger das correntes
         ChainsTriggerRef = transform.GetChild(1).gameObject;
@@ -131,6 +143,7 @@ public class Player : MonoBehaviour
         //parte envolvendo scrips da rageBlade INÍCIO
         BombSpawn = transform.GetChild(3).gameObject;
         //parte envolvendo scrips da rageBlade FIM
+
 
 
         //reset para caso começe o jogo com arma X, aparecer o que deveria para sua arma
@@ -171,7 +184,7 @@ public class Player : MonoBehaviour
         DeathCondition();
         Dashtimer();
 
-        if(ActualWeapon == WeaponTypes.Default && isDashing)
+        if (ActualWeapon == WeaponTypes.Default && isDashing)
         {
             //deixa ele mexer apenas em x
             Vector3 next = Vector3.MoveTowards(rb.position, dashTargetPosition, dashingpower * Time.deltaTime);
@@ -182,6 +195,15 @@ public class Player : MonoBehaviour
             {
                 FinishDash();
             }
+        }
+
+        LastY = rb.position.y;
+        if (CanJump && rb.position.y < LastY - 0.5f)
+        {
+
+            CanJump = false;
+            Falling = true;
+            IsOnALane = false;
         }
 
 
@@ -197,7 +219,7 @@ public class Player : MonoBehaviour
             {
                 Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, true);
 
-                rb.MovePosition ( Vector3.MoveTowards(rb.position, TargetObject.transform.position, dashingpower * Time.deltaTime * 1.5f ));
+                rb.MovePosition(Vector3.MoveTowards(rb.position, TargetObject.transform.position, dashingpower * Time.deltaTime * 1.5f));
 
                 // CHECAGEM DE CHEGADA: Se estiver muito perto do alvo, encerra o dash
                 if (Vector3.Distance(transform.position, TargetObject.transform.position) < 0.5f)
@@ -213,7 +235,7 @@ public class Player : MonoBehaviour
     #endregion Updates
 
 
-   
+
 
     #region Speed/Damage Logic
 
@@ -228,44 +250,97 @@ public class Player : MonoBehaviour
         }
     }
 
+
+
     //função para espinhos detectarem colisão
     public void Hit(float damage)
     {
         DamageInvulnerability = true;
         //detecta colisão para parar de incrementar a velocidade
 
-        if(!GameController.controller.Cheating)
-        Speed -= damage;
+        if (!GameController.controller.Cheating)
+            Speed -= damage;
         //reduz a speed com base na vida
 
         //reduz a taxa de regeneração
 
         DamageInvulnerability = false;
         //volta a incrementar velocidade
-        if(!isDashing || !GameController.controller.Cheating)
-        HitEffect();
-    }
-    void HitEffect()
-    {
-        
-        //outlineObj.SetActive(true);
-
-        //Instantiate(HitDamageObj, this.gameObject.transform.position, Quaternion.identity);
-
+        if (!isDashing || !GameController.controller.Cheating)
+            HitEffect();
     }
 
     void DeathCondition()
     {
-        if(isdead) return; 
+        if (isdead) return;
         if (GameController.controller.Cheating || canSlowDown)
             return;
         else if (Speed <= 20)
         {
-            isdead = true;
-            //GameController.controller.GameOver();
-            GameController.controller.UIManager.ShowDeathPanel();
+            PlayerDeath();
         }
     }
+
+    public void PlayerDeath()
+    {
+        DeathEffect();
+
+        animations.HitDeath();
+
+        isdead = true;
+
+
+        //GameController.controller.GameOver();
+
+        canMove = false;
+
+
+
+        GameController.controller.UIManager.Invoke("ShowDeathPanel", 2F);
+    }
+
+    void HitEffect()
+    {
+        if (!isdead)
+            animations.Hit();
+
+        //outlineObj.SetActive(true);
+        foreach (SkinnedMeshRenderer mesh in meshes)
+        {
+            mesh.material.color = Color.gray5;
+        }
+        Instantiate(HitDamageObj, this.gameObject.transform.position, Quaternion.identity);
+
+       
+            Invoke("ResetColor", 0.3f);
+        
+    }
+
+    void DeathEffect()
+    {
+   
+
+        //outlineObj.SetActive(true);
+        foreach (SkinnedMeshRenderer mesh in meshes)
+        {
+            mesh.material.color = Color.gray3;
+        }
+        Instantiate(HitDamageObj, this.gameObject.transform.position, Quaternion.identity);
+
+
+
+    }
+
+    void ResetColor()
+    {
+        foreach (SkinnedMeshRenderer mesh in meshes)
+        {
+            mesh.material.color = Color.white;
+        }
+    }
+
+   
+
 
     void Move() // Sistema de Corrida infinita
     {
@@ -282,13 +357,16 @@ public class Player : MonoBehaviour
         {
             rb.useGravity = false;
             return;
+
+
         }
         rb.AddForce(Physics.gravity * (gravityScale - 1) * rb.mass);
         rb.useGravity = true;
 
-        if (rb.position.y - JumpingBeginning >= 10f && Jumping && !isparrying && !ExplosionState)
+        if (rb.position.y - JumpingBeginning >= 10f && Jumping && !isparrying && !ExplosionState && IsDoubleJumping)
         {
             rb.AddForce(Vector3.down * JumpForce / 55f, ForceMode.Impulse);
+            Falling = true;
         }
     }
     #endregion Speed/Damage Logic
@@ -296,14 +374,23 @@ public class Player : MonoBehaviour
     #region Jumping
     void OnCollisionEnter(Collision collisionInfo)
     {
-
+        CanJump = true;
         if (collisionInfo.gameObject.CompareTag("Floor"))
         {
+
+
+            if (!CanJump)
+                Instantiate(FeedBackFX, this.gameObject.transform.position, Quaternion.identity);
+
             CanJump = true;
             Jumping = false;
             isparrying = false;
             IsDoubleJumping = false;
             CanDoubleJump = true;
+            Falling = false;
+            IsOnALane = false;
+
+
 
             RuningAnimation();
 
@@ -313,17 +400,24 @@ public class Player : MonoBehaviour
                 DamageInvulnerability = false;
             }
         }
-        
+
 
         //PARTE PARA DESCER DE LANES
         else if (collisionInfo.gameObject.CompareTag("Lane"))
         {
+
+            if (!CanJump)
+                Instantiate(FeedBackFX, this.gameObject.transform.position, Quaternion.identity);
+
             CanJump = true;
             CanDoubleJump = true;
             IsDoubleJumping = false;
             IsOnALane = true;
             Jumping = false;
             isparrying = false;
+            Falling = false;
+
+
 
             RuningAnimation();
 
@@ -350,7 +444,7 @@ public class Player : MonoBehaviour
             {
                 LavaKill();
                 FinishDash();
-                
+
             }
 
 
@@ -358,28 +452,31 @@ public class Player : MonoBehaviour
             Invoke("EnableDash", 0.4F);
 
             if (!CanJump)
-            CanJump = false;
+                CanJump = false;
 
             CanDoubleJump = false;
             IsDoubleJumping = false;
             IsOnALane = false;
             Jumping = false;
             isparrying = false;
+            Falling = true;
 
             if (ActualWeapon == WeaponTypes.RageBlade)
             {
                 ExplosionState = false;
                 DamageInvulnerability = false;
             }
-            if (outlineObj.activeSelf)
-            {
-                outlineObj.SetActive(false);
-            }
+            //if (outlineObj.activeSelf)
+            //{
+            //    outlineObj.SetActive(false);
+            //}
         }
 
         //Parte da Lava / obstáculos 
         else if (collisionInfo.gameObject.CompareTag("LAVA"))
         {
+            if (!isdead)
+                animations.Drowned();
             FinishDash();
             LavaKill();
         }
@@ -392,11 +489,18 @@ public class Player : MonoBehaviour
 
         else if (collisionInfo.gameObject.CompareTag("Wall"))
         {
+            if (!isdead)
+            {
+                animations.Death();
+                DeathEffect();
+            }
+
             FinishDash();
             LavaKill();
+
         }
 
-      
+
 
         //else if (collisionInfo.gameObject.CompareTag("Key"))
         //{
@@ -408,11 +512,11 @@ public class Player : MonoBehaviour
         else
         {
             CanJump = false;
+            Falling = true;
         }
-        
+
     }
 
-    
 
     //LavaKill também é utilizado para quando se bate em obstáculos não unlocked ainda
     public void LavaKill()
@@ -425,20 +529,29 @@ public class Player : MonoBehaviour
         Invoke("DisableLayersCollision", 0.25f);
         //GameController.controller.Invoke("GameOver", 0.4f);
 
-        GameController.controller.UIManager.ShowDeathPanel();
+        Falling = false;
 
+        if (!isdead)
+            GameController.controller.UIManager.Invoke("ShowDeathPanel", 1F);
 
+        isdead = true;
         //GameController.controller.UIManager.Invoke("ShowDeathPanel", 0.4f);
         //invoca depois de alguns segundos a tela de morte
     }
 
+    public void DisableCollider()
+    {
+        GetComponent<Collider>().enabled = false;
+    }
 
     public void JumpingMethod()
     {
         if (isDashing || IsDoubleJumping) return;
         if (CanJump && !isparrying)
         {
-            
+
+            Instantiate(JumpFX, this.gameObject.transform.position, Quaternion.identity);
+
             cancelJumpRequested = false;
             Jumping = true;
             CanJump = false;
@@ -453,14 +566,14 @@ public class Player : MonoBehaviour
 
             jumpCoroutine = StartCoroutine(JumpCoroutine(alturaAtual, AlturaAlvo));
 
-            
+
 
         }
     }
-    
-    IEnumerator JumpCoroutine(float inicial,float alvo)
+
+    IEnumerator JumpCoroutine(float inicial, float alvo)
     {
-       while (JumpTimer < JumpingDuration) // Pulo
+        while (JumpTimer < JumpingDuration) // Pulo
         {
             yield return null;
 
@@ -473,19 +586,19 @@ public class Player : MonoBehaviour
 
             float CurvaDeTempo = jumpCurve.Evaluate(progresso); //Define o progresso como uma curva
 
-            float newbaby = Mathf.Lerp(inicial,alvo, CurvaDeTempo); //Faz um lerp da distancia aonde deve ir e a atual com a curva feita no progresso
+            float newbaby = Mathf.Lerp(inicial, alvo, CurvaDeTempo); //Faz um lerp da distancia aonde deve ir e a atual com a curva feita no progresso
 
             //rb.position = new Vector3(rb.position.x, newbaby, rb.position.z); 
 
             rb.position = new Vector3(rb.position.x, newbaby, rb.position.z); //Move
 
-        
+
         }
 
         float Timernoar = 0;
         float Delay = DelayGravidadePulo;
 
-       while (Timernoar < Delay) // Gravidade do meio termo
+        while (Timernoar < Delay) // Gravidade do meio termo
         {
             if (isDashing || isparrying)
                 break;
@@ -503,6 +616,7 @@ public class Player : MonoBehaviour
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
 
         Jumping = false;
+        Falling = true;
         Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, false);
 
         CanDoubleJump = true;
@@ -517,7 +631,7 @@ public class Player : MonoBehaviour
 
         if (jumpCoroutine != null)
         {
-           
+
             StopCoroutine(jumpCoroutine);
             jumpCoroutine = null;
         }
@@ -526,22 +640,32 @@ public class Player : MonoBehaviour
         Jumping = false;
         ApplyGravity = true;
         rb.useGravity = true;
-            Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, true);
+
+        Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, true);
     }
 
     public void DoubleJump()
     {
-        if(!CanJump && CanDoubleJump && GameController.controller.DoubleJumpUnlocked)
+        if (!CanJump && CanDoubleJump && GameController.controller.DoubleJumpUnlocked)
         {
-            
+            //Jumping = true;
             CancelJump();
             FinishDash();
+
+
+            Instantiate(FeedBackFX, this.gameObject.transform.position, Quaternion.identity);
 
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, 0f);
             rb.useGravity = true;
             ApplyGravity = true;
 
-     
+            CanJump = false;
+            Falling = false;
+            Jumping = true;
+
+
+            Instantiate(DoubleJumpFX, this.gameObject.transform.position, Quaternion.identity);
+
             IsDoubleJumping = true;
             RageExplosion();
             CanDoubleJump = false;
@@ -555,16 +679,24 @@ public class Player : MonoBehaviour
     public void DescendingLanes()
     {
         if (isDashing) return;
-        if (!IsOnALane && !CanJump)
+        if (!CanJump)
         {
             CancelJump();
             rb.AddForce(Vector3.down * JumpForce, ForceMode.VelocityChange);
-       
+            Falling = true;
+            Instantiate(JumpFX, this.gameObject.transform.position, Quaternion.identity);
+
+            INSTAEnableLayersCollision();
+           
+
         }
-        else if (IsOnALane)
+         if (IsOnALane && CanJump && Falling == false)
         {
+
             DisableLayersCollision();
             rb.AddForce(Vector3.down * JumpForce / 3f, ForceMode.VelocityChange);
+            Falling = true;
+            Instantiate(JumpFX, this.gameObject.transform.position, Quaternion.identity);
         }
     }
 
@@ -659,11 +791,11 @@ public class Player : MonoBehaviour
     }
     public void RageExplosion()
     {
-       
+
         rb.AddForce(ExplosionForce, ForceMode.Impulse);
         DisableChainsLayersCollision();
         Invoke("INSTAEnableLayersCollision", 0.5f);
- 
+
     }
 
     public void ContinuousRageExplosion()
@@ -708,7 +840,7 @@ public class Player : MonoBehaviour
 
         CancelJump();
 
-        
+
 
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, 0f);
 
@@ -721,11 +853,13 @@ public class Player : MonoBehaviour
             case WeaponTypes.Default:
                 {
                     canDash = false;
-                    
+
                     tr.enabled = true;
                     Jumping = false;
-
+                    
                     animations.Dash();
+
+                    ps.Play();
 
                     isDashing = true;
                     DashingBeginning = rb.position.x;
@@ -742,6 +876,10 @@ public class Player : MonoBehaviour
                     canDash = false;
                     isDashing = true;
                     tr.enabled = true;
+                    Falling = false;
+
+                    animations.Chains();
+
                     break;
                 }
             case WeaponTypes.RageBlade:
@@ -766,7 +904,7 @@ public class Player : MonoBehaviour
         rb.useGravity = true;
         Physics.IgnoreLayerCollision(LanesLayer, PlayerLayer, false);
 
-       
+
 
         if (ActualWeapon == WeaponTypes.LuxuryChains)
         {
@@ -779,12 +917,15 @@ public class Player : MonoBehaviour
 
             rb.AddForce(ParryEffect * 7f, ForceMode.Impulse);
 
-            
+            Falling = false;
+            //Jumping = true;
+
+            Invoke("FallingTrue", 0.5F);
 
             ChainsScript.SelectNewTarget();
         }
 
-        if(ActualWeapon == WeaponTypes.Default)
+        if (ActualWeapon == WeaponTypes.Default)
         {
             rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, rb.linearVelocity.z);
         }
@@ -804,12 +945,13 @@ public class Player : MonoBehaviour
         //rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y, 0);
 
         if (ActualWeapon == WeaponTypes.LuxuryChains)
-        INSTAEnableLayersCollision();
+            INSTAEnableLayersCollision();
 
 
         isDashing = false;
         tr.enabled = false;
         canDash = true;
+
 
     }
 
@@ -818,12 +960,13 @@ public class Player : MonoBehaviour
 
         CancelInvoke("FinishDash");
 
-        if(ActualWeapon == WeaponTypes.LuxuryChains)
-        INSTAEnableLayersCollision();
+        if (ActualWeapon == WeaponTypes.LuxuryChains)
+            INSTAEnableLayersCollision();
 
         isDashing = false;
         tr.enabled = false;
         canDash = true;
+
 
         EnableDash();
     }
@@ -832,7 +975,7 @@ public class Player : MonoBehaviour
     void KeyCollection()
     {
         GameController.controller.KeysCollected += 1;
-         
+
 
 
 
@@ -854,6 +997,16 @@ public class Player : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    public void FallingTrue()
+    {
+        Falling = true;
+    }
+
+    public void CanJumpFalse()
+    {
+        CanJump = false;
+    }
+
     public void ResetPlayer()
     {
         isdead = false;
@@ -862,6 +1015,7 @@ public class Player : MonoBehaviour
         Jumping = false;
         CanJump = true;
         gameObject.SetActive(true);
+        Falling = false;
 
         CanDoubleJump = true;
         IsDoubleJumping = false;
@@ -878,6 +1032,7 @@ public class Player : MonoBehaviour
         Speed = 30;
 
         tr.enabled = false;
+        ResetColor();
 
     }
 
