@@ -115,6 +115,20 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject DashFX;
     [SerializeField] private GameObject ItemFX;
 
+    [Header("SFX")]
+
+    [SerializeField] AudioSource AudioSource;
+    [SerializeField] AudioSource AudioSourcePulo;
+    public AudioSource AudioSourceDeath;
+    [SerializeField] AudioSource AudioSourceDash;
+    [SerializeField] AudioSource AudioSourceChains;
+    [SerializeField] AudioClip  KeycollectedAudio;
+    [SerializeField] AudioClip DeathAudio;
+    [SerializeField] AudioClip Death2;
+    [SerializeField] AudioClip JumpAudio;
+    [SerializeField] AudioClip AttackAudio;
+    [SerializeField] AudioClip ChainsAudio;
+
     SkinnedMeshRenderer[] meshes = new SkinnedMeshRenderer[2];
     ParticleSystem ps;
 
@@ -287,6 +301,8 @@ public class Player : MonoBehaviour
         DeathEffect();
 
         animations.HitDeath();
+        AudioSourceDeath.PlayOneShot(Death2);
+        TocarSFX(DeathAudio);
 
         isdead = true;
 
@@ -552,6 +568,8 @@ public class Player : MonoBehaviour
         {
 
             Instantiate(JumpFX, this.gameObject.transform.position, Quaternion.identity);
+
+            AudioSourcePulo.PlayOneShot(JumpAudio);
 
             cancelJumpRequested = false;
             Jumping = true;
@@ -859,6 +877,7 @@ public class Player : MonoBehaviour
                     Jumping = false;
                     
                     animations.Dash();
+                    AudioSourceDash.PlayOneShot(AttackAudio);
 
                     ps.Play();
 
@@ -880,6 +899,7 @@ public class Player : MonoBehaviour
                     Falling = false;
 
                     animations.Chains();
+                    AudioSourceDash.PlayOneShot(ChainsAudio);
 
                     break;
                 }
@@ -973,7 +993,10 @@ public class Player : MonoBehaviour
     }
     #endregion Dashes
 
-
+    public void TocarSFX(AudioClip somParaTocar)
+    {
+        AudioSource.PlayOneShot(somParaTocar);
+    }
     public void CollecteItem()
     {
         Instantiate(ItemFX, this.gameObject.transform.position, Quaternion.identity);
@@ -982,9 +1005,10 @@ public class Player : MonoBehaviour
     {
         GameController.controller.KeysCollected += 1;
 
+        TocarSFX(KeycollectedAudio);
         canMove = false;
 
-        if (GameController.controller.KeysCollected == 3)
+        if (GameController.controller.KeysCollected == 3)   
             GameController.controller.Victory();
 
         if(GameController.controller.KeysCollected < 3)
@@ -1002,6 +1026,7 @@ public class Player : MonoBehaviour
     public void ParticleCheckpoint()
     {
         Instantiate(deathFX, this.gameObject.transform.position, Quaternion.identity);
+
     }
 
     public void SetActiveFalse()

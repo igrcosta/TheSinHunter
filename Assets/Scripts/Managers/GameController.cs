@@ -192,7 +192,7 @@ public class GameController : MonoBehaviour
     public void ResumeGameTime()
     {
         Time.timeScale = 1f;
-        Time.fixedDeltaTime = 0.02f; // valor padrão da Unity
+        Time.fixedDeltaTime = 0.02f; // valor padrï¿½o da Unity
 
         if (CurrentTimeCollider != null)
         {
