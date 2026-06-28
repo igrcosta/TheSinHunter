@@ -57,7 +57,6 @@ public class UIController : MonoBehaviour
     {
         SceneManager.LoadScene(scene);
         Time.timeScale = 1.0f;
-        GameController.controller.playerRef.AudioSourceDeath.Stop();
     }
     public void BotaoJogar()
     {
@@ -206,7 +205,7 @@ public class UIController : MonoBehaviour
         CheckpointPanel.SetActive(false);
 
         GameController.controller.RespawnPlayer();
-        GameController.controller.playerRef.AudioSourceDeath.Stop();
+
         Time.timeScale = 1;
         GameController.controller.ResumeGameTime();
 
