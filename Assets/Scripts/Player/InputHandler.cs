@@ -31,8 +31,7 @@ public class InputHandler : MonoBehaviour
 
     void DetectSlides()
     {
-        if (GameController.controller.UIManager.isPause)
-            return;
+       
 
             if (Input.touchCount == 1)
         {
@@ -94,6 +93,10 @@ public class InputHandler : MonoBehaviour
         if (Input.touchCount == 3)
         {
             GameController.controller.Cheating = true;
+        }
+        if (Input.touchCount == 2)
+        {
+            GameController.controller.NormalMode();
         }
     }
 

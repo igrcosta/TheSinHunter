@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour
     [Header("UI Infos")]
     public float Distance;
     public float Points;
+    public float Keys;
     public bool[] TutorialID = new bool[10];
     public TimeCollider CurrentTimeCollider;
 
@@ -136,6 +137,10 @@ public class GameController : MonoBehaviour
     {
         Points += add;
     }
+    public void AddKey(int KeysCollected)
+    {
+        Keys = KeysCollected;
+    }
 
     public void PlayerDied()
     {
@@ -162,6 +167,8 @@ public class GameController : MonoBehaviour
     {
 
         CheckPointManager.Instance.ResetArea(CurrentCheckpoint);
+        Distance = 0f;
+        Points = 0f;    
 
     }
 
@@ -239,14 +246,14 @@ public class GameController : MonoBehaviour
     {
         Cheating = false;
 
-        ChainsUnlocked = false;
-        DoubleJumpUnlocked = false;
-        SuperDashUnlocked = false;
-        SkySlashUnlocked = false;
+        ChainsUnlocked = true;
+        DoubleJumpUnlocked = true;
+        SuperDashUnlocked = true;
+        SkySlashUnlocked = true;
 
         for (int i = 0; i < UnlockedCheckpoints.Length; i++)
         {
-            UnlockedCheckpoints[i] = false;
+            UnlockedCheckpoints[i] = true;
         }
 
 

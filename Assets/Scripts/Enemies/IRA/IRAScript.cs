@@ -20,9 +20,14 @@ public class IRAScript : MonoBehaviour
     [SerializeField] GameObject BulletPrefab;
     private Rigidbody rb;
     private Transform ShootPoint;
-    [SerializeField]private GameObject deathFX; 
+    [SerializeField]private GameObject deathFX;
+
+    private Animator animator;
+
     void Start()
     {
+        animator = transform.GetChild(2).GetComponent<Animator>();
+
         rb = GetComponent<Rigidbody>();
         ShootPoint = gameObject.transform.GetChild(0);
         EnableShoot();
@@ -101,6 +106,7 @@ public class IRAScript : MonoBehaviour
 
     void EnableShoot()
     {
+        animator.Play("Game_Bark");
         CanShoot = true;
         Invoke("DisableShoot", 0.01f);
     }

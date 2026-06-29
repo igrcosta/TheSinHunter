@@ -174,6 +174,7 @@ public class UIController : MonoBehaviour
 
     public void VoltarMenu()
     {
+
         SceneManager.LoadScene("Menu");
     }
     #endregion BotoesUI
@@ -203,6 +204,8 @@ public class UIController : MonoBehaviour
         VictoryPanel.SetActive(false);
         PausePanel.SetActive(false);
         CheckpointPanel.SetActive(false);
+
+        audioSource.UnPause();
 
         GameController.controller.RespawnPlayer();
 
@@ -235,7 +238,7 @@ public class UIController : MonoBehaviour
         PausePanel.SetActive(false);
         CheckpointPanel.SetActive(false);
 
-        
+        audioSource.UnPause();
 
 
         GameController.controller.playerRef.ResetPlayer();

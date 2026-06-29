@@ -151,9 +151,27 @@ MonoBehaviour:
   Cheating: 0
   Distance: 0
   Points: 0
+  TutorialID: 00000000000000000000
+  CurrentTimeCollider: {fileID: 0}
+  Master: 0
+  SFX: 0
+  Music: 0
   PlayerTargetPosition: {x: 0, y: 0, z: 0}
   ActualLever: {fileID: 0}
   ActualObstacle: {fileID: 0}
+  KeysCollected: 0
+  CheckpointUnlock: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  UnlockedCheckpoints: 0000000000000000000000
+  CurrentCheckpoint: 0
+  IsOnCheckpointsPanel: 0
+  ChainsUnlocked: 0
+  DoubleJumpUnlocked: 0
+  SuperDashUnlocked: 0
+  SkySlashUnlocked: 0
+  ChainsUnlock: 0
+  SuperDashUnlock: 0
+  DoubleJumpUnlock: 0
+  SkySlashUnlock: 0
   UIManager: {fileID: 1756531019}
   playerRef: {fileID: 0}
 --- !u!4 &35314080
@@ -741,8 +759,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Victory!
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 3be2617e3918a4b49bb63babd369d1a9, type: 2}
-  m_sharedMaterial: {fileID: 2980403151224776242, guid: 3be2617e3918a4b49bb63babd369d1a9, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ca955fbfb14c772489702bfb61fbad08, type: 2}
+  m_sharedMaterial: {fileID: -3465104906542040689, guid: ca955fbfb14c772489702bfb61fbad08, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3379,10 +3397,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneController
   OptionsPanel: {fileID: 0}
+  PausePanel: {fileID: 0}
   AudioPanel: {fileID: 0}
+  CreditsPanel: []
+  DeathPanel: {fileID: 0}
+  VictoryPanel: {fileID: 0}
+  CheckpointPanel: {fileID: 0}
+  TutorialPanel: []
+  Haeds: []
+  Maps: []
   ChainsAim: {fileID: 0}
   DistanceText: {fileID: 0}
   PointsText: {fileID: 0}
+  isPause: 0
+  audioSource: {fileID: 0}
 --- !u!4 &1756531020
 Transform:
   m_ObjectHideFlags: 0
@@ -4125,8 +4153,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Main Menu
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 3be2617e3918a4b49bb63babd369d1a9, type: 2}
-  m_sharedMaterial: {fileID: 2980403151224776242, guid: 3be2617e3918a4b49bb63babd369d1a9, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ca955fbfb14c772489702bfb61fbad08, type: 2}
+  m_sharedMaterial: {fileID: -3465104906542040689, guid: ca955fbfb14c772489702bfb61fbad08, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

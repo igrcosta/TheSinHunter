@@ -297,7 +297,7 @@ public class Player : MonoBehaviour
 
 
 
-        GameController.controller.UIManager.Invoke("ShowDeathPanel", 2F);
+        GameController.controller.UIManager.Invoke("ShowDeathPanel", 1.3F);
     }
 
     void HitEffect()
@@ -990,6 +990,7 @@ public class Player : MonoBehaviour
         if(GameController.controller.KeysCollected < 3)
         GameController.controller.UIManager.ShowVictoryPanel();
 
+       
 
     }
 

@@ -60,7 +60,7 @@ public class FakeParryScript : MonoBehaviour
          if (other.CompareTag("Player"))
         {
             GameController.controller.playerRef.Hit(Damage);
-            Debug.Log("AVAREZA DEU DANO");
+         
         }
     }
 

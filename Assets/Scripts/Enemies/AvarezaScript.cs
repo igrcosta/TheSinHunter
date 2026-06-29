@@ -16,9 +16,14 @@ public class AvarezaScript : MonoBehaviour
 
     [Header("Referencias")]
     private Rigidbody rb;
+
+    private Animator animator;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        animator = transform.GetChild(0).GetComponent<Animator>();
+
     }
 
     public void Death()

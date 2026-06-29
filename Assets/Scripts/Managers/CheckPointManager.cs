@@ -85,6 +85,7 @@ public class CheckPointManager : MonoBehaviour
     {
         for (int i = 0; i < enemies.Length; i++)
         {
+            Debug.Log("Inimigo " + i + ": " + enemies[i]);
             enemies[i].SetActive(true);
         }
     }

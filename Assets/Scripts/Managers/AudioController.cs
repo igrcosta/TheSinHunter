@@ -58,7 +58,7 @@ public class AudioController : MonoBehaviour
     public void SetMasterVolume(float value)
     {
 
-        Debug.Log("Master salvo: " + value);
+        
 
         Mixer.SetFloat(MixerMaster, value);
         controller.Master = value;
@@ -69,7 +69,7 @@ public class AudioController : MonoBehaviour
     }
     public void SetSFXVolume(float value)
     {
-        Mixer.SetFloat(MixerSfx, value);
+        Mixer.SetFloat("MixerSfx", value);
         controller.SFX = value;
 
         Mixer.SetFloat(MixerSfx, value);
@@ -77,7 +77,7 @@ public class AudioController : MonoBehaviour
     }
     public void SetMusicVolume(float value)
     {
-        Mixer.SetFloat(MixerMusic, value);
+        Mixer.SetFloat("MixerMusic", value);
         controller.Music = value; 
 
         Mixer.SetFloat(MixerMusic, value);
